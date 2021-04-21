@@ -1,7 +1,7 @@
 from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 from logging import basicConfig, getLogger, INFO
-from os import getcwd, environ, listdir, system as executor
+from os import path, chdir, getcwd, environ, listdir, system as executor
 from socketserver import TCPServer
 from subprocess import check_output, SubprocessError
 from threading import Thread
@@ -14,10 +14,14 @@ LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log
 basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = getLogger(__name__)
 
+# Change this path to the directory on your computer which you want to make accessible by the server.
+# Currently set to the user's home directory
+host_path = path.expanduser('~')
+
 
 class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
-        logger.info(f'Currently Displaying: {self.path}')  # self.path will be the current directory displayed as /
+        logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
         SimpleHTTPRequestHandler.do_GET(self)
 
 
@@ -25,6 +29,7 @@ def initiate_host():
     host = '127.0.0.1'
     logger.info(f'Access it using http://{host}:{port}')
     try:
+        chdir(host_path)
         TCPServer((host, port), NetworkManager).serve_forever()
     except OSError as os_error:
         if str(os_error) == '[Errno 48] Address already in use':
