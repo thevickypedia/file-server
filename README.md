@@ -9,12 +9,13 @@ Set up a personal cloud to access files in local machine from anywhere on the in
 <br>
 `PORT` Port number using which the endpoint is to be accessed.
 
+Example:
 ```
 export USERNAME=IronMan
 export PASSWORD=Jarvis
 export PORT=0502
 ```
-> Tip: Save the env vars (`PORT` in specific) in `.bashrc` or `.bash_profile` so that, the vars can be accessed across multiple terminal sessions.
+> Tip:bulb: &nbsp; Save the env vars (specifically, `PORT`) in `.bashrc`/`.zshrc` or `.bash_profile`/`.zsh_profile` so that, the vars are set during launch and can be accessed across multiple terminal sessions.
 
 Another important variable:<br>
 `host_path` - Path which is to be hosted.
@@ -29,7 +30,7 @@ Another important variable:<br>
 - Open a new terminal tab/window and run `ngrok tcp $PORT`
 - Once the `Session Status` shows `Online` and turns green, copy the `Forwarding` endpoint.
 - Replace the `tcp` with `http` and start browsing your local content from anywhere on the internet.
-   - Example: `tcp://37.tcp.ngrok.io:12345` :arrow_right: `http://37.tcp.ngrok.io:12345`
+   - Example: `tcp://37.tcp.ngrok.io:12345` &#8594; `http://37.tcp.ngrok.io:12345`
 
 ### Webpage Functionalities:
 - Enter the Username and Password that was set in [environment variables](https://github.com/thevickypedia/personal_cloud/blob/main/README.md#environment-variables-required)
@@ -41,4 +42,10 @@ Another important variable:<br>
 - In case of incorrect `Username` and `Password` for 5 consecutive attempts, the server will lock itself for 5 minutes. User will be redirected to a waiting page with a timer displayed.
    - The timer will not reset itself unless a hard refresh is done.
 
-###### DISCLAIMER: Neither `USERNAME` nor `PASSWORD` is encrypted. In fact, the script uses the header on the html page to fetch username and password to authenticate. So use this script at your own risk.
+> :warning: &nbsp; DISCLAIMER: Neither `USERNAME` nor `PASSWORD` is encrypted. In fact, the script uses the header on the html page to fetch username and password to authenticate. So use this script at your own risk.
+
+## License & copyright
+
+&copy; Vignesh Sivanandha Rao
+
+Licensed under the [MIT License](LICENSE)
