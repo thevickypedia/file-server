@@ -31,6 +31,14 @@
          </div>
       </div>
    </body>
+   <script>
+      window.onload = function () {
+      if (localStorage.getItem("hasCodeRunBefore") === null) {
+        window.location.reload();
+        localStorage.setItem("hasCodeRunBefore", true);
+      }
+   }
+   </script>
    <style>
       h1, h2, h3, h4, h5 {
       white-space: nowrap;
