@@ -20,6 +20,7 @@ class NetworkManager(SimpleHTTPRequestHandler):
 
 
 def check_auth(hyperlink):
+    # todo: make auth look for number of attempts and block user if max tries reached
     logger = getLogger('check_auth')
     if "username=" in hyperlink and "password=" in hyperlink:
         result = hyperlink.split('=')
@@ -37,6 +38,8 @@ def check_auth(hyperlink):
             logger.info('User tried to access the page without any credentials.')
             logger.info(f'No access was granted. Redirected to {script_path}')
             chdir(script_path)
+    elif hyperlink == '/':
+        chdir(script_path)
 
 
 def initiate_host():
