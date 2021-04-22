@@ -1,11 +1,11 @@
 from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 from logging import basicConfig, getLogger, INFO
-from os import path, chdir, getcwd, environ, listdir, system as executor
-from socketserver import TCPServer
-from subprocess import check_output, SubprocessError
-from threading import Thread
+from os import path, getcwd, environ, listdir, system as executor
 from socket import gethostbyname
+from socketserver import TCPServer
+from subprocess import check_output
+from threading import Thread
 
 
 class NetworkManager(SimpleHTTPRequestHandler):
@@ -16,28 +16,29 @@ class NetworkManager(SimpleHTTPRequestHandler):
 
 
 def initiate_host():
-    logger = getLogger('initiate_host')
-    host = gethostbyname('localhost')
-    logger.info(f'Access it using http://{host}:{port}')
     try:
-        chdir(host_path)
-        TCPServer((host, port), NetworkManager).serve_forever()
+        TCPServer((gethostbyname('localhost'), port), NetworkManager).serve_forever()
     except OSError as os_error:
         if str(os_error) == '[Errno 48] Address already in use':
-            try:
-                busy = check_output(f'lsof -i :{port}', shell=True).decode('utf-8').split('\n')[0]
-                print(f"Port {port} is busy. Currently used by the PID {busy}")
-            except SubprocessError as subprocess_error:
-                if str(subprocess_error) == f"Command 'lsof -i :{port}' returned non-zero exit status 1.":
-                    print(f"Port {port} was temporarily busy. Please retry.")
-                else:
-                    print(f'Failed to initiate server with the error: {subprocess_error}')
+            busy = check_output(f'netstat -vanp tcp | grep {port}', shell=True).decode('utf-8').split('\n')[0]
+            pid = int(busy.split()[-4])
+            action = str(busy.split()[5])
+            if action == 'TIME_WAIT':
+                print(f"Port {port} is currently on TIME-WAIT\nPID: {pid}\n"
+                      f"Please wait while the remote TCP receives the acknowledgment of its connection termination "
+                      f"request or use 'SO_REUSEADDR' to reuse the port.\n"
+                      f"Implementation: https://stackoverflow.com/a/18858817")
+            elif action == 'LISTEN':
+                print(f"An active listener is in progress.\n"
+                      f"PID: {pid}\n"
+                      f"Usage: http://{gethostbyname('localhost')}:{port}\n"
+                      f"You can kill the process with 'kill -9 {pid}' if you wish to start a new session.")
         else:
             print(f'Failed to initiate server with the error: {os_error}')
 
 
 if __name__ == '__main__':
-    if (port := int(environ.get('PORT'))) and (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')):
+    if (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')) and (port := int(environ.get('PORT'))):
         executor(f'mkdir logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
         LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log')  # set log file name
         basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(levelname)s %(message)s')  # setup config
