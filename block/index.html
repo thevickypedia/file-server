@@ -24,28 +24,41 @@
       <p>
          <img border="0" src="https://thevickypedia.com/error_img/Preloader_3.gif" width="200" height="200" alt="loader" class="center">
       </p>
-      <h4 style="text-align:center">Redirect to <a href="../index.html">Login Page</a> after <span id="timer"></span> minutes.</h4>
+      <h4 id="time" style="text-align:center"></h4>
    </body>
    <script>
-      document.getElementById('timer').innerHTML =
-      005 + ":" + 00;
-      startTimer();
-      function startTimer() {
-      var presentTime = document.getElementById('timer').innerHTML;
-      var timeArray = presentTime.split(/[:]+/);
-      var m = timeArray[0];
-      var s = checkSecond((timeArray[1] - 1));
-      if(s==59){m=m-1}
-      //if(m<0){alert('timer completed')}
-      document.getElementById('timer').innerHTML =
-      m + ":" + s;
-      console.log(m)
-      setTimeout(startTimer, 1000);
+      function startTimer(duration, display) {
+      var timer = duration, minutes, seconds;
+      setInterval(function () {
+      minutes = parseInt(timer / 60, 10)
+      seconds = parseInt(timer % 60, 10);
+
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+
+      display.textContent = minutes + "  " + seconds;
+
+      if (--timer < 0) {
+          timer = duration;
       }
-      function checkSecond(sec) {
-      if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
-      if (sec < 0) {sec = "59"};
-      return sec;
+      console.log(parseInt(seconds))
+      window.localStorage.setItem("seconds",seconds)
+      window.localStorage.setItem("minutes",minutes)
+      }, 1000);
       }
+
+      window.onload = function () {
+      sec  = parseInt(window.localStorage.getItem("seconds"))
+      min = parseInt(window.localStorage.getItem("minutes"))
+
+      if(parseInt(min*sec)){
+      var fiveMinutes = (parseInt(min*60)+sec);
+      }else{
+      var fiveMinutes = 60 * 5;
+      }
+      // var fiveMinutes = 60 * 5;
+      display = document.querySelector('#time');
+      startTimer(fiveMinutes, display);
+      };
    </script>
 </html>
