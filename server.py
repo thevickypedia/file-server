@@ -1,7 +1,7 @@
 from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 from logging import basicConfig, getLogger, INFO
-from os import path, getcwd, environ, listdir, makedirs, remove
+from os import path, chdir, getcwd, environ, listdir, makedirs, remove
 from socket import gethostbyname
 from socketserver import TCPServer
 from subprocess import check_output
@@ -11,11 +11,24 @@ from threading import Thread
 class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         logger = getLogger('do_GET')
+        check_auth(hyperlink=str(self.path))
         logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
         try:
             SimpleHTTPRequestHandler.do_GET(self)
         except BrokenPipeError:
             pass
+
+
+def check_auth(hyperlink):
+    logger = getLogger('check_auth')
+    if "username=" in hyperlink and "password=" in hyperlink:
+        result = hyperlink.split('=')
+        username = result[1].split('&')[0]
+        password = result[-1]
+        if username and password and username == environ.get('USERNAME') and password == environ.get('PASSWORD'):
+            logger.info(f'Received username: {username} and password: {password}')
+            logger.info(f'Granting Access to {host_path + hyperlink}')
+            chdir(host_path)
 
 
 def initiate_host():
