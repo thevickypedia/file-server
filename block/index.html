@@ -25,6 +25,7 @@
          <img border="0" src="https://thevickypedia.com/error_img/Preloader_3.gif" width="200" height="200" alt="loader" class="center">
       </p>
       <h4 id="time" style="text-align:center"></h4>
+      <h4 style="text-align:center">Redirect to <a href="../index.html">Login Page</a></h4>
    </body>
    <script>
       function startTimer(duration, display) {
@@ -36,7 +37,7 @@
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
 
-      display.textContent = minutes + "  " + seconds;
+      display.textContent = "Time Remaining: " + minutes + "m " + seconds + "s";
 
       if (--timer < 0) {
           timer = duration;
