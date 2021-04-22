@@ -66,7 +66,8 @@ if __name__ == '__main__':
     if (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')) and (port := int(environ.get('PORT'))):
         makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
         LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log')  # set log file name
-        basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(levelname)s %(message)s')  # setup config
+        basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(funcName)s %(message)s',
+                    datefmt='%b-%d-%Y %H:%M:%S')  # setup config
 
         host_path = path.expanduser('~')  # path that will be hosted
         script_path = getcwd()  # current path of the script
