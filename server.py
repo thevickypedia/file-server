@@ -1,7 +1,7 @@
 from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 from logging import basicConfig, getLogger, INFO
-from os import path, getcwd, environ, listdir, system as executor
+from os import path, getcwd, environ, listdir, makedirs, remove
 from socket import gethostbyname
 from socketserver import TCPServer
 from subprocess import check_output
@@ -12,7 +12,10 @@ class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         logger = getLogger('do_GET')
         logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
-        SimpleHTTPRequestHandler.do_GET(self)
+        try:
+            SimpleHTTPRequestHandler.do_GET(self)
+        except BrokenPipeError:
+            pass
 
 
 def initiate_host():
@@ -33,13 +36,14 @@ def initiate_host():
                       f"PID: {pid}\n"
                       f"Usage: http://{gethostbyname('localhost')}:{port}\n"
                       f"You can kill the process with 'kill -9 {pid}' if you wish to start a new session.")
+            remove(LOG_FILENAME)
         else:
             print(f'Failed to initiate server with the error: {os_error}')
 
 
 if __name__ == '__main__':
     if (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')) and (port := int(environ.get('PORT'))):
-        executor(f'mkdir logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
+        makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
         LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log')  # set log file name
         basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(levelname)s %(message)s')  # setup config
 
