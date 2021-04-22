@@ -1,11 +1,19 @@
 <html>
    <head>
+      <meta charset=utf-8>
+      <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
       <title>Vignesh Rao - Personal Cloud</title>
+      <meta property="og:type" content="Personal Cloud">
+      <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
+      <meta content="no-cache" http-equiv="Pragma"/>
+      <meta content="0" http-equiv="Expires"/>
+      <meta content="Welcome to Vignesh's Personal Cloud" name="description">
+      <meta name="keywords" content="AWS, HTML, CSS, JavaScript">
+      <meta name="author" content="Vignesh Sivanandha Rao">
+      <meta name="image" property="og:image" content="https://thevickypedia.com/img/apple-touch-icon.jpg">
+      <meta content="width=device-width, initial-scale=1" name="viewport">
+      <link href="https://thevickypedia.com/img/apple-touch-icon.jpg" rel="apple-touch-icon">
    </head>
-   <meta charset=utf-8>
-   <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control"/>
-   <meta content="no-cache" http-equiv="Pragma"/>
-   <meta content="0" http-equiv="Expires"/>
    <body oncontextmenu="return false">
       <link href="https://fonts.googleapis.com/css?family=Courier+New" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css?family=Georgia" rel="stylesheet">
@@ -17,8 +25,8 @@
             <form id="login_form" enctype="multipart/form-data">
                Username: <input class="input" id="username" onkeyup="success()" name="username"><br><br>
                Password: <input class="input" id="password" onkeyup="success()" type="password" name="password"><br><br>
-               <button id="auth" type="submit" disabled>Verify</button>
-               <input id="reset" type="submit" onclick="setTimeout(function () { window.location.reload(); }, 1)" value="&#8634;">
+               <button id="auth" type="submit" disabled>Authenticate</button>
+               <input id="reset" type="submit" onclick="setTimeout(function () { window.location.reload(); }, 1)" value="&#10227;">
             </form>
          </div>
       </div>
