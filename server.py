@@ -29,6 +29,14 @@ def check_auth(hyperlink):
             logger.info(f'Received username: {username} and password: {password}')
             logger.info(f'Granting Access to {host_path + hyperlink}')
             chdir(host_path)
+        elif username and password:
+            logger.info(f'Received username: {username} and password: {password}')
+            logger.info(f'No access was granted. Redirected to {script_path}')
+            chdir(script_path)
+        else:
+            logger.info('User tried to access the page without any credentials.')
+            logger.info(f'No access was granted. Redirected to {script_path}')
+            chdir(script_path)
 
 
 def initiate_host():
