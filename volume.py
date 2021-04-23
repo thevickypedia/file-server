@@ -8,6 +8,10 @@ for id_ in pid_list:
 
 disk_check = check_output(f"diskutil list 2>&1;", shell=True)
 disk_list = disk_check.decode('utf-8').split('\n\n')
+condition = '(external, physical):'
 for disk in disk_list:
-    if disk and '(external, physical)' in disk:
-        print(disk.split('\n')[-1].split())
+    if disk and condition in disk:
+        unmount_value = disk.split('\n')[0].strip(condition)
+        disk_info = disk.split('\n')[-1].split()
+        if volume_name in disk_info:
+            os.system(f'diskutil unmountDisk {unmount_value} 2>&1;')
