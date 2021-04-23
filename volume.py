@@ -1,6 +1,7 @@
 from subprocess import check_output
 import os
-pid_check = check_output("ps -ef | grep 'QuickLook'", shell=True)
+volume_name = input("Enter the Volume Name you'd like to kill usage for:\n")
+pid_check = check_output(f"lsof | grep {volume_name}", shell=True)
 pid_list = pid_check.decode('utf-8').split('\n')
 for id_ in pid_list:
     if id_ and 'Applications' in id_ and '/usr/bin/login' not in id_:
