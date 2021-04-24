@@ -21,9 +21,12 @@ class NetworkManager(SimpleHTTPRequestHandler):
 
 
 def reset_auth():
+    logger = getLogger('reset_auth')
     global login_attempts, thread
     thread = True
+    logger.info('Started sleep timer for 5 Minutes.')
     sleep(300)
+    logger.info('Time Up. Resetting login_attempts to 0.')
     login_attempts = 0
     thread = False
     return
@@ -99,7 +102,6 @@ if __name__ == '__main__':
 
         host_path = path.expanduser('~')  # path that will be hosted
         script_path = getcwd()  # current path of the script
-
-        Thread(target=initiate_host).start()
+        initiate_host()
     else:
         print('Please add the environment variables for USERNAME, PASSWORD and desired PORT')
