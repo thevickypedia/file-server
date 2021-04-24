@@ -14,7 +14,7 @@
       <meta content="width=device-width, initial-scale=1" name="viewport">
       <link href="https://thevickypedia.com/img/apple-touch-icon.jpg" rel="apple-touch-icon">
    </head>
-   <body oncontextmenu="return false">
+   <body oncontextmenu="return false" onload="doRequest()">
       <link href="https://fonts.googleapis.com/css?family=Courier+New" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css?family=Georgia" rel="stylesheet">
       <div class="main">
@@ -26,15 +26,23 @@
                Username: <input class="input" id="username" onkeyup="success()" name="username"><br><br>
                Password: <input class="input" id="password" onkeyup="success()" type="password" name="password"><br><br>
                <button id="auth" type="submit" disabled>Authenticate</button>
-               <input id="reset" type="submit" onclick="setTimeout(function () { window.location.reload(); }, 1)" value="&#10227;">
+               <!-- window.location.reload() or window.location.reload(false) reloads the page from cache -->
+               <input id="reset" type="submit" onclick="setTimeout(function () { window.location.reload(false); }, 1)" value="&#10227;">
             </form>
          </div>
       </div>
    </body>
    <script>
+      /* window.location.reload(true) reloads the page from server */
+      function doRequest() {
+         window.location.reload(true)
+      }
+   </script>
+   <script>
+      /* window.location.reload(true) reloads the page from server */
       window.onload = function () {
       if (localStorage.getItem("hasCodeRunBefore") === null) {
-        window.location.reload();
+        window.location.reload(true);
         localStorage.setItem("hasCodeRunBefore", true);
       }
    }
@@ -47,7 +55,7 @@
       background-image: url(https://thevickypedia.com/img/fourth_bg.jpg);
       height:100%;
       background-size: cover;
-      overflow: hidden; /*Disables scrolling*/
+      overflow: hidden; /* Disables scrolling */
       }
       .main{
       margin: auto;
@@ -60,7 +68,7 @@
       #username{
       border-radius: 50px;
       font-family: 'Courier New', monospace;
-      width:150px;
+      width:250px;
       height:30px;
       font-size: 105%;
       text-align: center;
@@ -70,7 +78,7 @@
       margin-top:7px;
       border-radius: 50px;
       font-family: 'Courier New', monospace;
-      width:150px;
+      width:250px;
       text-align: center;
       font-size: 105%;
       height:30px;
