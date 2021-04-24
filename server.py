@@ -69,6 +69,9 @@ def check_auth(hyperlink):
 
 
 def initiate_host():
+    logger = getLogger('initiate_host')
+    logger.info('Initiating Server Host')
+    print('Initiating Server Host')
     try:
         TCPServer((gethostbyname('localhost'), port), NetworkManager).serve_forever()
     except OSError as os_error:
@@ -89,6 +92,12 @@ def initiate_host():
             remove(LOG_FILENAME)
         else:
             print(f'Failed to initiate server with the error: {os_error}')
+    except KeyboardInterrupt:
+        logger.info('Stopping Server Host')
+        print('Stopping server host')
+        import os
+        # noinspection PyUnresolvedReferences,PyProtectedMember
+        os._exit(1)
 
 
 if __name__ == '__main__':
