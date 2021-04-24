@@ -13,7 +13,8 @@ class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         logger = getLogger('do_GET')
         check_auth(hyperlink=str(self.path))
-        logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
+        if '?username=' not in self.path and '&password=' not in self.path:
+            logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
         try:
             SimpleHTTPRequestHandler.do_GET(self)
         except BrokenPipeError:
@@ -35,7 +36,7 @@ def reset_auth():
 def check_auth(hyperlink):
     logger = getLogger('check_auth')
     global login_attempts
-    if login_attempts >= 2:
+    if login_attempts >= 3 and '|bypass|' not in hyperlink:
         logger.warning(f'{login_attempts} failed login attempts has been detected.'
                        f'Login page has been blocked for 5 minutes.')
         chdir(script_path + '/block')
@@ -55,11 +56,17 @@ def check_auth(hyperlink):
             logger.info(f'Granting Access to {host_path + hyperlink}')
             chdir(host_path)
         elif username and password:
-            login_attempts += 1
-            logger.info(f'Failed login attempt: {login_attempts}')
-            logger.info(f'Received username: {username} and password: {password}')
-            logger.info(f'No access was granted. Redirected to {script_path}')
-            chdir(script_path)
+            check_log_file = open(script_path + '/' + LOG_FILENAME, 'r').readlines()
+            redirect = True
+            for recheck in check_log_file:
+                if f'username: {username} and password: {password}' in recheck:
+                    redirect = False
+            if redirect:
+                logger.info(f'Failed login attempt: {login_attempts}. Attempts Remaining: {3 - login_attempts}')
+                logger.info(f'Received username: {username} and password: {password}')
+                logger.info(f'No access was granted. Redirected to {script_path}')
+                login_attempts += 1
+                chdir(script_path)
         else:
             logger.info('User tried to access the page without any credentials.')
             logger.info(f'No access was granted. Redirected to {script_path}')
