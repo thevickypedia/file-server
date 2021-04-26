@@ -78,9 +78,9 @@ def check_auth(hyperlink):
 def initiate_host():
     logger = getLogger('initiate_host')
     logger.info('Initiating Server Host')
-    print('Initiating Server Host')
+    print(f'Initiating Server Host at http://{host_ip}:{port}')
     try:
-        TCPServer((gethostbyname('localhost'), port), NetworkManager).serve_forever()
+        TCPServer((host_ip, port), NetworkManager).serve_forever()
     except OSError as os_error:
         if str(os_error) == '[Errno 48] Address already in use':
             busy = check_output(f'netstat -vanp tcp | grep {port}', shell=True).decode('utf-8').split('\n')[0]
@@ -94,7 +94,7 @@ def initiate_host():
             elif action == 'LISTEN':
                 print(f"An active listener is in progress.\n"
                       f"PID: {pid}\n"
-                      f"Usage: http://{gethostbyname('localhost')}:{port}\n"
+                      f"Usage: http://{host_ip}:{port}\n"
                       f"You can kill the process with 'kill -9 {pid}' if you wish to start a new session.")
             remove(LOG_FILENAME)
         else:
@@ -116,6 +116,7 @@ if __name__ == '__main__':
 
         login_attempts, thread = 0, False
 
+        host_ip = gethostbyname('localhost')
         host_path = path.expanduser('~')  # path that will be hosted
         script_path = getcwd()  # current path of the script
         initiate_host()
