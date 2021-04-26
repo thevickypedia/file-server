@@ -12,6 +12,8 @@
       <meta name="author" content="Vignesh Sivanandha Rao">
       <meta name="image" property="og:image" content="https://thevickypedia.com/img/apple-touch-icon.jpg">
       <meta content="width=device-width, initial-scale=1" name="viewport">
+      <script src="index.js">function success()</script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <link href="https://thevickypedia.com/img/apple-touch-icon.jpg" rel="apple-touch-icon">
    </head>
    <body oncontextmenu="return false" onload="doRequest()">
@@ -35,7 +37,7 @@
    <script>
       /* window.location.reload(true) reloads the page from server */
       function doRequest() {
-         window.location.reload(true)
+         setTimeout(function () { window.location.reload(true); }, 2000)
       }
    </script>
    <script>
@@ -121,13 +123,4 @@
       text-align: center;
       }
    </style>
-   <script type="text/javascript">
-      function success() {
-      if((document.getElementById("username").value==="") || (document.getElementById("password").value==="")) {
-         document.getElementById('auth').disabled = true;
-      } else {
-         document.getElementById('auth').disabled = false;
-      }
-      }
-   </script>
 </html>
