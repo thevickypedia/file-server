@@ -100,11 +100,11 @@ def initiate_host():
         else:
             print(f'Failed to initiate server with the error: {os_error}')
     except KeyboardInterrupt:
-        logger.info('Stopping Server Host')
+        if vol_host:
+            from volume import Volume
+            Volume(label=vol_name).stop_usage()
+        logger.info('Stopping server host')
         print('Stopping server host')
-        import os
-        # noinspection PyUnresolvedReferences,PyProtectedMember
-        os._exit(1)
 
 
 if __name__ == '__main__':
@@ -114,11 +114,17 @@ if __name__ == '__main__':
         basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(funcName)s %(message)s',
                     datefmt='%b-%d-%Y %H:%M:%S')  # setup config
 
-        login_attempts, thread = 0, False
+        login_attempts, thread, vol_host = 0, False, False
 
-        host_ip = gethostbyname('localhost')
-        host_path = path.expanduser('~')  # path that will be hosted
         script_path = getcwd()  # current path of the script
+        host_ip = gethostbyname('localhost')
+
+        if vol_name := environ.get('volume_name'):
+            host_path = f'/Volumes/{vol_name}/'
+            vol_host = True
+        else:
+            host_path = path.expanduser('~')  # path that will be hosted
+
         initiate_host()
     else:
         print('Please add the environment variables for USERNAME, PASSWORD and desired PORT')
