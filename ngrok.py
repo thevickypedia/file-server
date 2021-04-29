@@ -3,7 +3,7 @@ from os import environ
 from pathlib import Path
 from socket import socket, AF_INET, SOCK_STREAM, gethostbyname
 
-from pyngrok.ngrok import connect
+from pyngrok.ngrok import connect, kill
 
 basicConfig(level=INFO)
 getLogger(name='pyngrok').propagate = False  # disable module level logging
@@ -34,3 +34,6 @@ while True:
         if connection:
             connection.close()
         break
+
+kill(pyngrok_config=None)  # uses default config when None is passed
+sock.close()
