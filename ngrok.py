@@ -1,5 +1,5 @@
 from logging import getLogger, basicConfig, INFO
-from os import environ
+from os import environ, listdir, remove
 from pathlib import Path
 from socket import socket, AF_INET, SOCK_STREAM, gethostbyname
 
@@ -21,6 +21,14 @@ sock.listen(1)
 
 public_url = connect(port, "tcp", options={"remote_addr": f"{host}:{port}"})  # Open a ngrok tunnel to the socket
 url = str(public_url).split()[1].replace('"', '').replace('tcp://', 'http://')
+
+if 'url' in listdir():
+    remove(url)
+with open('url', 'w') as url_file:
+    url_file.write(url)
+    url_file.close()
+
+logger.info(f'Hosting to the public URL: {url}')
 
 connection = None
 while True:
