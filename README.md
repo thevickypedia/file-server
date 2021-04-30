@@ -22,15 +22,23 @@ Another important variable:<br>
 > Note: Hosts the entire home page by default.
 
 ### Steps to host on the internet:
+#### Setup ngrok:
 - Download, Install and Setup [ngrok](https://ngrok.com/)
 - Set the [environment variables](https://github.com/thevickypedia/personal_cloud/blob/main/README.md#environment-variables-required)
 - Make sure `host_path` variable is set to the path that needs to be hosted.
 - Check if the port env var is set properly by running `echo $PORT`
+#### Initialize ngrok:
+#### Option 1:
 - Initiate the server by running `python3 server.py`
 - Open a new terminal tab/window and run `ngrok tcp $PORT`
 - Once the `Session Status` shows `Online` and turns green, copy the `Forwarding` endpoint.
 - Replace the `tcp` with `http` and start browsing your local content from anywhere on the internet.
    - Example: `tcp://37.tcp.ngrok.io:12345` &#8594; `http://37.tcp.ngrok.io:12345`
+#### Option 2:
+- Install the requirements to initiate ngrok using python `pip3 install -r requirements.txt`
+- Trigger the ngrok script to trigger ngrok and listen for connections `python3 ngrok.py`
+- Logger information will print the endpoint to access the origin.
+  - Example: `http://37.tcp.ngrok.io:12345`
 
 ### Webpage Functionalities:
 - Enter the Username and Password that was set in [environment variables](https://github.com/thevickypedia/personal_cloud/blob/main/README.md#environment-variables-required)
