@@ -2,6 +2,7 @@ from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 from logging import basicConfig, getLogger, INFO
 from os import path, chdir, getcwd, environ, listdir, makedirs, remove
+from pathlib import PurePath
 from socket import gethostbyname
 from socketserver import TCPServer
 from subprocess import check_output
@@ -11,18 +12,16 @@ from time import sleep
 
 class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
-        logger = getLogger('do_GET')
         check_auth(hyperlink=str(self.path))
         if '?username=' not in self.path and '&password=' not in self.path:
             logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
         try:
             SimpleHTTPRequestHandler.do_GET(self)
-        except BrokenPipeError:
-            pass
+        except (BrokenPipeError, OSError) as error:
+            logger.error(error)
 
 
 def reset_auth():
-    logger = getLogger('reset_auth')
     global login_attempts, thread
     thread = True
     logger.info('Started sleep timer for 5 Minutes.')
@@ -34,7 +33,6 @@ def reset_auth():
 
 
 def check_auth(hyperlink):
-    logger = getLogger('check_auth')
     global login_attempts
     if login_attempts >= 3 and '|bypass|' not in hyperlink:
         logger.warning(f'{login_attempts} failed login attempts has been detected.'
@@ -76,9 +74,8 @@ def check_auth(hyperlink):
 
 
 def initiate_host():
-    logger = getLogger('initiate_host')
     logger.info('Initiating Server Host')
-    print(f'Initiating Server Host at http://{host_ip}:{port}')
+    print(f'Initiating Server Host at http://{host_ip}:{port} to serve {host_path}')
     try:
         TCPServer((host_ip, port), NetworkManager).serve_forever()
     except OSError as os_error:
@@ -108,11 +105,16 @@ def initiate_host():
 
 
 if __name__ == '__main__':
+    from volume import Volume
     if (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')) and (port := int(environ.get('PORT'))):
         makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
         LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log')  # set log file name
-        basicConfig(filename=LOG_FILENAME, level=INFO, format='%(asctime)s %(funcName)s %(message)s',
-                    datefmt='%b-%d-%Y %H:%M:%S')  # setup config
+        basicConfig(
+            filename=LOG_FILENAME, level=INFO,
+            format='%(asctime)s - %(levelname)s - %(funcName)s - Line: %(lineno)d - %(message)s',
+            datefmt='%b-%d-%Y %H:%M:%S'
+        )
+        logger = getLogger(PurePath(__file__).stem)  # gets current file name
 
         login_attempts, thread, vol_host = 0, False, False
 
@@ -120,7 +122,7 @@ if __name__ == '__main__':
         host_ip = gethostbyname('localhost')
 
         if vol_name := environ.get('volume_name'):
-            host_path = f'/Volumes/{vol_name}/'
+            host_path = f"/Volumes/{vol_name}/"
             vol_host = True
         else:
             host_path = path.expanduser('~')  # path that will be hosted
