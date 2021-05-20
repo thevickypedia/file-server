@@ -121,7 +121,7 @@ if __name__ == '__main__':
         script_path = getcwd()  # current path of the script
         host_ip = gethostbyname('localhost')
 
-        if vol_name := environ.get('volume_name'):
+        if (vol_name := environ.get('volume_name')) and (vol_name != 'None'):
             host_path = f"/Volumes/{vol_name}/"
             vol_host = True
         else:

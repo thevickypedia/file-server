@@ -23,7 +23,7 @@ public_url = connect(port, "tcp", options={"remote_addr": f"{host}:{port}"})  # 
 url = str(public_url).split()[1].replace('"', '').replace('tcp://', 'http://')
 
 if 'url' in listdir():
-    remove(url)
+    remove('url')
 with open('url', 'w') as url_file:
     url_file.write(url)
     url_file.close()
