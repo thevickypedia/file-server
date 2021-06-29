@@ -8,17 +8,21 @@ from socketserver import TCPServer
 from subprocess import check_output
 from threading import Thread
 from time import sleep
+from urllib.parse import urlparse, parse_qs
 
 
 class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
-        check_auth(hyperlink=str(self.path))
+        check_auth(hyperlink=self.path)
         if '?username=' not in self.path and '&password=' not in self.path:
             logger.info(f'Currently Accessing: {host_path + self.path}')  # self.path = current directory
         try:
             SimpleHTTPRequestHandler.do_GET(self)
         except (BrokenPipeError, OSError) as error:
             logger.error(error)
+
+    def log_message(self, format_, *args) -> None:
+        pass
 
 
 def reset_auth():
@@ -32,6 +36,7 @@ def reset_auth():
     return
 
 
+# noinspection PyTypeChecker
 def check_auth(hyperlink):
     global login_attempts
     if login_attempts >= 3 and '|bypass|' not in hyperlink:
@@ -41,11 +46,10 @@ def check_auth(hyperlink):
         if not thread:
             Thread(target=reset_auth).start()
         return
-    if "username=" in hyperlink and "password=" in hyperlink:
-        result = hyperlink.split('=')
-        username = result[1].split('&')[0]
-        password = result[-1]
-        if username and password and username == environ.get('USERNAME') and password == environ.get('PASSWORD'):
+    if query_components := parse_qs(urlparse(hyperlink).query):
+        username = query_components.get('username')[0]
+        password = query_components.get('password')[0]
+        if username == environ.get('USERNAME') and password == environ.get('PASSWORD'):
             if login_attempts:
                 logger.info(f'User {username} successfully logged in after {login_attempts} attempts. '
                             f'Resetting login attempts to 0.')
@@ -106,6 +110,7 @@ def initiate_host():
 
 if __name__ == '__main__':
     from volume import Volume
+
     if (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')) and (port := int(environ.get('PORT'))):
         makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
         LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log')  # set log file name
