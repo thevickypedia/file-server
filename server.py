@@ -10,6 +10,8 @@ from threading import Thread
 from time import sleep
 from urllib.parse import urlparse, parse_qs
 
+from volume import Volume
+
 
 class NetworkManager(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
@@ -102,15 +104,12 @@ def initiate_host():
             print(f'Failed to initiate server with the error: {os_error}')
     except KeyboardInterrupt:
         if vol_host:
-            from volume import Volume
             Volume(label=vol_name).stop_usage()
         logger.info('Stopping server host')
         print('Stopping server host')
 
 
 if __name__ == '__main__':
-    from volume import Volume
-
     if (user_ := environ.get('USERNAME')) and (pass_ := environ.get('PASSWORD')) and (port := int(environ.get('PORT'))):
         makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
         LOG_FILENAME = datetime.now().strftime('logs/private_cloud_%H:%M:%S_%d-%m-%Y.log')  # set log file name
