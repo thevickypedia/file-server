@@ -59,6 +59,13 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
+        if 'Cache-Control' in self.headers.keys():
+            self.headers.replace_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
+        else:
+            self.headers.add_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
+        self.headers.add_header(_name='Pragma', _value='no-cache')
+        self.headers.add_header(_name='Expires', _value='0')
+        self.headers.add_header(_name='Clear-Site-Data', _value='"cache", "cookies", "storage", "executionContexts"')
         if not self.headers.get("Authorization"):
             logger.warning('No authentication was received.')
             self.do_AUTHHEAD()
