@@ -24,9 +24,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             *args: Socket generated using IP address and Port.
             **kwargs: Dictionary with key-value pairs of username, password and directory to serve.
         """
-        username = kwargs.pop("username")
-        password = kwargs.pop("password")
-        self._auth = b64encode(f"{username}:{password}".encode()).decode()
+        self._auth = b64encode(f"{kwargs.pop('username')}:{kwargs.pop('password')}".encode()).decode()
         super().__init__(*args, **kwargs)
 
     def log_message(self, format_: str, *args: tuple) -> None:
@@ -37,9 +35,13 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             *args: Logs from SimpleHTTPRequestHandler displaying request method type and HTTP status code.
 
         """
-        method, status_code, ignore = args  # ignore always returns `-`
-        method = str(method).split('/')[0].strip()
-        logger.info(f'Received {status_code} while accessing a {method} method to reach {self.path}')
+        if 'HTTPStatus.NOT_FOUND' not in str(args):
+            method, status_code, ignore = args  # ignore always returns `-`
+            method = str(method).split('/')[0].strip()
+            if int(str(status_code).strip()) == 200:
+                logger.info(f'Received {status_code} while accessing a {method} method to reach {self.path}')
+            else:
+                logger.error(f'Received {status_code} while accessing a {method} method to reach {self.path}')
 
     def do_HEAD(self) -> None:
         """Sends 200 response and sends headers when authentication is successful."""
@@ -76,12 +78,12 @@ def serve_https() -> None:
     logger.info('Initiating HTTPS server.')
     handler_class = partial(
         AuthHTTPRequestHandler,
-        username=environ.get('username'),
-        password=environ.get('password'),
+        username=username,
+        password=password,
         directory=path.expanduser('~')
     )
-    https = HTTPServer(server_address=('localhost', int(environ.get('port'))), RequestHandlerClass=handler_class)
-    https.socket = wrap_socket(sock=https.socket, server_side=True, certfile=CERT_FILE, keyfile=KEY_FILE)
+    https = HTTPServer(server_address=('localhost', int(environ.get('port', 4443))), RequestHandlerClass=handler_class)
+    https.socket = wrap_socket(sock=https.socket, server_side=True, certfile=cert_file, keyfile=key_file)
     print(f"{line_number()} - Serving at: https://{gethostbyname('localhost')}:{https.server_port}")
     try:
         https.serve_forever()
@@ -96,12 +98,16 @@ def line_number():
 
 
 if __name__ == "__main__":
-    ssh_path = path.expanduser('~/.ssh')
-    CERT_FILE = path.expanduser(f"{ssh_path}/cert.pem")
-    KEY_FILE = path.expanduser(f"{ssh_path}/key.pem")
-    if 'cert.pem' not in listdir(ssh_path) or 'key.pem' not in listdir(ssh_path):
-        exit("Run the following command in your terminal to create a private certificate.\n\n"
-             f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {KEY_FILE} -out {CERT_FILE}")
+    if not (username := environ.get('username')) or not (password := environ.get('password')):
+        exit('Add username and password in local ENV VARS to proceed.')
+
+    ssh_dir = path.expanduser('~/.ssh')
+    makedirs(ssh_dir) if '.ssh' not in listdir(path.expanduser('~')) else None
+    cert_file = path.expanduser(f"{ssh_dir}/cert.pem")
+    key_file = path.expanduser(f"{ssh_dir}/key.pem")
+    if 'cert.pem' not in listdir(ssh_dir) or 'key.pem' not in listdir(ssh_dir):
+        exit(f"{line_number()} - Run the following command in a terminal {ssh_dir} to create a private certificate.\n\n"
+             f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}")
 
     makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
     LOG_FILENAME = datetime.now().strftime('logs/auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
