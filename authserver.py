@@ -1,12 +1,13 @@
 from base64 import b64encode, b64decode
 from datetime import datetime
 from functools import partial
-# noinspection PyUnresolvedReferences
-from http.server import SimpleHTTPRequestHandler, test
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+from inspect import currentframe
 from logging import getLogger, basicConfig, INFO
 from os import environ, path, getcwd, listdir, makedirs
 from pathlib import PurePath
 from socket import gethostbyname
+from ssl import wrap_socket
 
 
 class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
@@ -23,7 +24,6 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             *args: Socket generated using IP address and Port.
             **kwargs: Dictionary with key-value pairs of username, password and directory to serve.
         """
-        self.allow_reuse_address = True
         username = kwargs.pop("username")
         password = kwargs.pop("password")
         self._auth = b64encode(f"{username}:{password}".encode()).decode()
@@ -71,7 +71,38 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             self.wfile.write(b"Not authenticated")
 
 
+def serve_https() -> None:
+    """Uses local certificate from ~/.ssh to serve the page as https"""
+    logger.info('Initiating HTTPS server.')
+    handler_class = partial(
+        AuthHTTPRequestHandler,
+        username=environ.get('username'),
+        password=environ.get('password'),
+        directory=path.expanduser('~')
+    )
+    https = HTTPServer(server_address=('localhost', int(environ.get('port'))), RequestHandlerClass=handler_class)
+    https.socket = wrap_socket(sock=https.socket, server_side=True, certfile=CERT_FILE, keyfile=KEY_FILE)
+    print(f"{line_number()} - Serving at: https://{gethostbyname('localhost')}:{https.server_port}")
+    try:
+        https.serve_forever()
+    except KeyboardInterrupt:
+        https.shutdown()
+        print(f"{line_number()} - File server has been terminated.")
+
+
+def line_number():
+    """Returns the line number of where this function is called."""
+    return currentframe().f_back.f_lineno
+
+
 if __name__ == "__main__":
+    ssh_path = path.expanduser('~/.ssh')
+    CERT_FILE = path.expanduser(f"{ssh_path}/cert.pem")
+    KEY_FILE = path.expanduser(f"{ssh_path}/key.pem")
+    if 'cert.pem' not in listdir(ssh_path) or 'key.pem' not in listdir(ssh_path):
+        exit("Run the following command in your terminal to create a private certificate.\n\n"
+             f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {KEY_FILE} -out {CERT_FILE}")
+
     makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
     LOG_FILENAME = datetime.now().strftime('logs/auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
     basicConfig(
@@ -80,11 +111,4 @@ if __name__ == "__main__":
         datefmt='%b-%d-%Y %H:%M:%S'
     )
     logger = getLogger(PurePath(__file__).stem)  # gets current file name
-    handler_class = partial(
-        AuthHTTPRequestHandler,
-        username=environ.get('username'),
-        password=environ.get('password'),
-        directory=path.expanduser('~')
-    )
-    logger.info('Starting Auth Server.')
-    test(HandlerClass=handler_class, port=environ.get('port', 1234), bind=gethostbyname('localhost'))
+    serve_https()
