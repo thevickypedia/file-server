@@ -8,6 +8,7 @@ from os import environ, path, getcwd, listdir, makedirs
 from pathlib import PurePath
 from socket import gethostbyname
 from ssl import wrap_socket
+from time import time
 
 
 class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
@@ -59,13 +60,9 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
-        if 'Cache-Control' in self.headers.keys():
-            self.headers.replace_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
-        else:
-            self.headers.add_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
-        self.headers.add_header(_name='Pragma', _value='no-cache')
-        self.headers.add_header(_name='Expires', _value='0')
-        self.headers.add_header(_name='Clear-Site-Data', _value='"cache", "cookies", "storage", "executionContexts"')
+        if reset_auth() and 'Authorization' in self.headers.keys():
+            self.headers.replace_header('Authorization', None)
+            self.disable_cache()
         if not self.headers.get("Authorization"):
             logger.warning('No authentication was received.')
             self.do_AUTHHEAD()
@@ -78,6 +75,37 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             self.do_AUTHHEAD()
             self.wfile.write(self.headers.get("Authorization").encode())
             self.wfile.write(b"Not authenticated")
+
+    def disable_cache(self) -> None:
+        if 'Cache-Control' in self.headers.keys():
+            self.headers.replace_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
+        else:
+            self.headers.add_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
+        self.headers.add_header(_name='Pragma', _value='no-cache')
+        self.headers.add_header(_name='Expires', _value='0')
+        self.headers.add_header(_name='Clear-Site-Data', _value='"cache", "cookies", "storage", "executionContexts"')
+
+
+def reset_auth():
+    """Tells whether or not to reset the authentication header and clear the cache.
+
+    Notes:
+        Note that if an authentication is done at the end of 15 minutes, there will be a re-auth prompted.
+
+    Returns:
+        - True when it has been more than 15 minutes since the first/previous expiry.
+        - False when not.
+
+    """
+    global start_time, first_run
+    if first_run:
+        first_run = False
+        return True
+    elif time() - start_time > 900:
+        start_time = time()
+        return True
+    else:
+        return False
 
 
 def serve_https() -> None:
@@ -124,4 +152,8 @@ if __name__ == "__main__":
         datefmt='%b-%d-%Y %H:%M:%S'
     )
     logger = getLogger(PurePath(__file__).stem)  # gets current file name
+
+    start_time = time()  # set to the current time to reset the auth headers when timeout is reached
+    first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
+
     serve_https()
