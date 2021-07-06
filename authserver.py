@@ -1,4 +1,5 @@
 from base64 import b64encode, b64decode
+from binascii import Error
 from datetime import datetime
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, HTTPServer
@@ -60,21 +61,31 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
+        global authenticated
         if reset_auth() and 'Authorization' in self.headers.keys():
+            logger.error('Authorized from stored cookies. However the session has expired, so headers have been reset.')
             self.headers.replace_header('Authorization', None)
             self.disable_cache()
-        if not self.headers.get("Authorization"):
-            logger.warning('No authentication was received.')
+
+        if not (auth_header := self.headers.get("Authorization")):
             self.do_AUTHHEAD()
-            self.wfile.write(b"No auth header received")
-        elif self.headers.get("Authorization") == "Basic " + self._auth:
+            if not authenticated:
+                logger.warning('No authentication was received.')
+                self.wfile.write(b"No auth header received")
+            else:
+                self.wfile.write(b"Session Expired")
+        elif auth_header == "Basic " + self._auth:
+            authenticated = True
             SimpleHTTPRequestHandler.do_GET(self)
         else:
-            auth = b64decode(self.headers.get('Authorization').strip('Basic ')).decode().split(':')
-            logger.info(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
             self.do_AUTHHEAD()
-            self.wfile.write(self.headers.get("Authorization").encode())
-            self.wfile.write(b"Not authenticated")
+            auth = auth_header.strip('Basic ')
+            try:
+                auth = b64decode(auth).decode().split(':')
+                logger.error(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
+            except Error:
+                logger.error(f'Authentication Blocked: Encoded: {auth}')
+            self.wfile.write(b"Not authenticated") if not authenticated else self.wfile.write(b"Session Expired")
 
     def disable_cache(self) -> None:
         if 'Cache-Control' in self.headers.keys():
@@ -87,14 +98,14 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
 
 def reset_auth():
-    """Tells whether or not to reset the authentication header and clear the cache.
+    """Tells if the authentication header has to be reset and cache to be cleared.
 
     Notes:
         Note that if an authentication is done at the end of 15 minutes, there will be a re-auth prompted.
 
     Returns:
         - True when it has been more than 15 minutes since the first/previous expiry.
-        - False when not.
+        - None when not.
 
     """
     global start_time, first_run
@@ -104,8 +115,6 @@ def reset_auth():
     elif time() - start_time > 900:
         start_time = time()
         return True
-    else:
-        return False
 
 
 def serve_https() -> None:
@@ -155,5 +164,6 @@ if __name__ == "__main__":
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
+    authenticated = False
 
     serve_https()
