@@ -127,7 +127,7 @@ def serve_https(flag: bool) -> None:
         flag: Whether or not to wrap the socket with the certificate.
 
     """
-    logger.info('Initiating HTTPS server.')
+    logger.info('Initiating file server.')
     handler_class = partial(
         AuthHTTPRequestHandler,
         username=username,
@@ -146,6 +146,7 @@ def serve_https(flag: bool) -> None:
     try:
         server.serve_forever()
     except KeyboardInterrupt:
+        logger.info('Terminating file server.')
         server.server_close()
         server.shutdown()
         print(f"{line_number()} - File server has been terminated.")
@@ -161,7 +162,7 @@ if __name__ == "__main__":
         exit('Add username and password in local ENV VARS to proceed.')
 
     makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
-    LOG_FILENAME = datetime.now().strftime(f'logs{path.sep}auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
+    LOG_FILENAME = datetime.now().strftime('logs' + path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
     basicConfig(
         filename=LOG_FILENAME, level=INFO,
         format='%(asctime)s - %(levelname)s - %(funcName)s - Line: %(lineno)d - %(message)s',
@@ -175,8 +176,8 @@ if __name__ == "__main__":
 
     ssh_dir = path.expanduser('~') + path.sep + path.join('.ssh')
     makedirs(ssh_dir) if '.ssh' not in listdir(path.expanduser('~')) else None
-    cert_file = path.expanduser(f"{ssh_dir}{path.sep}cert.pem")
-    key_file = path.expanduser(f"{ssh_dir}{path.sep}key.pem")
+    cert_file = path.expanduser(ssh_dir) + path.sep + "cert.pem"
+    key_file = path.expanduser(ssh_dir) + path.sep + "key.pem"
 
     if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
         serve_https(flag=True)
