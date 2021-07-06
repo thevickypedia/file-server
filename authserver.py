@@ -37,7 +37,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             *args: Logs from SimpleHTTPRequestHandler displaying request method type and HTTP status code.
 
         """
-        if 'HTTPStatus.NOT_FOUND' not in str(args):
+        if len(args) == 3:  # We don't have to care about NOT FOUND items because they are mostly hidden/protected.
             method, status_code, ignore = args  # ignore always returns `-`
             method = str(method).split('/')[0].strip()
             if int(str(status_code).strip()) == 200:
@@ -76,7 +76,10 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(b"Session Expired")
         elif auth_header == "Basic " + self._auth:
             authenticated = True
-            SimpleHTTPRequestHandler.do_GET(self)
+            try:
+                SimpleHTTPRequestHandler.do_GET(self)
+            except BrokenPipeError:
+                logger.error(f'Received BrokenPipeError while reaching {self.path}')
         else:
             self.do_AUTHHEAD()
             auth = auth_header.strip('Basic ')
@@ -117,8 +120,13 @@ def reset_auth():
         return True
 
 
-def serve_https() -> None:
-    """Uses local certificate from ~/.ssh to serve the page as https"""
+def serve_https(flag: bool) -> None:
+    """Uses local certificate from ~.ssh to serve the page as https if flag is set to True.
+
+    Args:
+        flag: Whether or not to wrap the socket with the certificate.
+
+    """
     logger.info('Initiating HTTPS server.')
     handler_class = partial(
         AuthHTTPRequestHandler,
@@ -126,17 +134,24 @@ def serve_https() -> None:
         password=password,
         directory=path.expanduser('~')
     )
-    https = HTTPServer(server_address=('localhost', int(environ.get('port', 4443))), RequestHandlerClass=handler_class)
-    https.socket = wrap_socket(sock=https.socket, server_side=True, certfile=cert_file, keyfile=key_file)
-    print(f"{line_number()} - Serving at: https://{gethostbyname('localhost')}:{https.server_port}")
+    server = HTTPServer(server_address=('localhost', int(environ.get('port', 4443))), RequestHandlerClass=handler_class)
+
+    if flag:
+        server.socket = wrap_socket(sock=server.socket, server_side=True, certfile=cert_file, keyfile=key_file)
+        endpoint = f"https://{gethostbyname('localhost')}:{server.server_port}"
+    else:
+        endpoint = f"http://{gethostbyname('localhost')}:{server.server_port}"
+    print(f"{line_number()} - Serving at: {endpoint}")
+
     try:
-        https.serve_forever()
+        server.serve_forever()
     except KeyboardInterrupt:
-        https.shutdown()
+        server.server_close()
+        server.shutdown()
         print(f"{line_number()} - File server has been terminated.")
 
 
-def line_number():
+def line_number() -> int:
     """Returns the line number of where this function is called."""
     return currentframe().f_back.f_lineno
 
@@ -145,16 +160,8 @@ if __name__ == "__main__":
     if not (username := environ.get('username')) or not (password := environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
 
-    ssh_dir = path.expanduser('~/.ssh')
-    makedirs(ssh_dir) if '.ssh' not in listdir(path.expanduser('~')) else None
-    cert_file = path.expanduser(f"{ssh_dir}/cert.pem")
-    key_file = path.expanduser(f"{ssh_dir}/key.pem")
-    if 'cert.pem' not in listdir(ssh_dir) or 'key.pem' not in listdir(ssh_dir):
-        exit(f"{line_number()} - Run the following command in a terminal {ssh_dir} to create a private certificate.\n\n"
-             f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}")
-
     makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
-    LOG_FILENAME = datetime.now().strftime('logs/auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
+    LOG_FILENAME = datetime.now().strftime(f'logs{path.sep}auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
     basicConfig(
         filename=LOG_FILENAME, level=INFO,
         format='%(asctime)s - %(levelname)s - %(funcName)s - Line: %(lineno)d - %(message)s',
@@ -164,6 +171,20 @@ if __name__ == "__main__":
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
-    authenticated = False
+    authenticated = False  # set to False to write the appropriate message in the HTML file
 
-    serve_https()
+    ssh_dir = path.expanduser('~') + path.sep + path.join('.ssh')
+    makedirs(ssh_dir) if '.ssh' not in listdir(path.expanduser('~')) else None
+    cert_file = path.expanduser(f"{ssh_dir}{path.sep}cert.pem")
+    key_file = path.expanduser(f"{ssh_dir}{path.sep}key.pem")
+
+    if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
+        serve_https(flag=True)
+    else:
+        logger.warning(
+            f"{line_number()} - Run the following command in a terminal at {ssh_dir} to create a private certificate."
+            f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
+            f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}"
+            f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
+        )
+        serve_https(flag=False)
