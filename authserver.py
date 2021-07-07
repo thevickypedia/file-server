@@ -5,7 +5,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
 from logging import getLogger, basicConfig, INFO
-from os import environ, path, getcwd, listdir, makedirs
+from os import environ, path, getcwd, listdir, makedirs, system
 from pathlib import PurePath
 from socket import gethostbyname
 from ssl import wrap_socket
@@ -74,11 +74,14 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(session_expiry.encode(encoding='UTF-8'))
         elif auth_header == "Basic " + self._auth:
-            authenticated = True
             try:
+                if self.path == '/' and not authenticated:
+                    system(f'cp auth_server.html {home_dir}')  # copies welcome page to the hosting directory's root
+                    self.path = '/auth_server.html'  # serves a welcome page for the first time only
                 SimpleHTTPRequestHandler.do_GET(self)
             except BrokenPipeError:
                 logger.error(f'Received BrokenPipeError while reaching {self.path}')
+            authenticated = True
         else:
             self.do_AUTHHEAD()
             auth = auth_header.strip('Basic ')
@@ -119,10 +122,11 @@ def reset_auth():
         return True
 
 
-def serve_https(flag: bool) -> None:
+def server_function(flag: bool, host_dir: classmethod = lambda: home_dir) -> None:
     """Uses local certificate from ~.ssh to serve the page as https if flag is set to True.
 
     Args:
+        host_dir: Directory desired to be hosted.
         flag: Whether or not to wrap the socket with the certificate.
 
     """
@@ -131,7 +135,7 @@ def serve_https(flag: bool) -> None:
         AuthHTTPRequestHandler,
         username=username,
         password=password,
-        directory=path.expanduser('~')
+        directory=host_dir()
     )
     server = HTTPServer(server_address=('localhost', int(environ.get('port', 4443))), RequestHandlerClass=handler_class)
 
@@ -181,13 +185,14 @@ if __name__ == "__main__":
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
     authenticated = False  # set to False to write the appropriate message in the HTML file
 
-    ssh_dir = path.expanduser('~') + path.sep + path.join('.ssh')
-    makedirs(ssh_dir) if '.ssh' not in listdir(path.expanduser('~')) else None
+    home_dir = path.expanduser('~')
+    ssh_dir = home_dir + path.sep + path.join('.ssh')
+    makedirs(ssh_dir) if '.ssh' not in listdir(home_dir) else None
     cert_file = path.expanduser(ssh_dir) + path.sep + "cert.pem"
     key_file = path.expanduser(ssh_dir) + path.sep + "key.pem"
 
     if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
-        serve_https(flag=True)
+        server_function(flag=True)
     else:
         logger.warning(
             f"{line_number()} - Run the following command in a terminal at {ssh_dir} to create a private certificate."
@@ -195,4 +200,4 @@ if __name__ == "__main__":
             f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}"
             f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
         )
-        serve_https(flag=False)
+        server_function(flag=False)
