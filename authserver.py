@@ -70,23 +70,9 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         if not (auth_header := self.headers.get("Authorization")):
             self.do_AUTHHEAD()
             if not authenticated:
-                logger.warning('No authentication was received.')
-                self.wfile.write(
-                    b"""<!DOCTYPE html><html><head><style>img {display: block;margin-left: auto;margin-right: auto;}
-                    </style></head><body><h2 style="text-align:center">LOGIN FAILED</h2><h4 style="text-align:center">
-                    User error - Replace user</h4><p>
-                    <img border="0"src="https://vigneshrao.com/error_img/Preloader_3.gif" width="200" height="200"
-                    alt="loader"class="center"></p></body></html>"""
-                )
+                self.wfile.write(login_failed.encode(encoding='UTF-8'))
             else:
-                logger.warning('Session has expired.')
-                self.wfile.write(
-                    """<!DOCTYPE html><html><head><style>img {display: block;margin-left: auto;margin-right: auto;}
-                    </style></head><body><h2 style="text-align:center">SESSION EXPIRED</h2><h4 style="text-align:center"
-                    >Authentication doesn't last forever.</h4><p>
-                    <img border="0"src="https://vigneshrao.com/error_img/Preloader_3.gif" width="200" height="200"
-                    alt="loader"class="center"></p></body></html>""".encode()
-                )
+                self.wfile.write(session_expiry.encode(encoding='UTF-8'))
         elif auth_header == "Basic " + self._auth:
             authenticated = True
             try:
@@ -101,9 +87,9 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 logger.error(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
             except Error:
                 logger.error(f'Authentication Blocked: Encoded: {auth}')
-            self.wfile.write(b"Not authenticated") if not authenticated else self.wfile.write(b"Session Expired")
 
     def disable_cache(self) -> None:
+        """Headers to force no-cache and site-data to expire."""
         if 'Cache-Control' in self.headers.keys():
             self.headers.replace_header(_name='Cache-Control', _value='no-cache, no-store, must-revalidate')
         else:
@@ -182,6 +168,14 @@ if __name__ == "__main__":
         datefmt='%b-%d-%Y %H:%M:%S'
     )
     logger = getLogger(PurePath(__file__).stem)  # gets current file name
+
+    with open('session.html', 'r') as file:
+        session_expiry = file.read()
+        file.close()
+
+    with open('no_auth.html', 'r') as file:
+        login_failed = file.read()
+        file.close()
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
