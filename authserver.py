@@ -5,7 +5,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
 from logging import getLogger, basicConfig, INFO
-from os import environ, path, getcwd, listdir, makedirs, system
+from os import environ, path, getcwd, listdir, makedirs
 from pathlib import PurePath
 from socket import gethostbyname
 from ssl import wrap_socket
@@ -76,8 +76,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         elif auth_header == "Basic " + self._auth:
             try:
                 if self.path == '/' and not authenticated:
-                    system(f'cp auth_server.html {host_dir}')  # copies welcome page to the hosting directory's root
-                    self.path = '/auth_server.html'  # serves a welcome page for the first time only
+                    self.path = getcwd().replace(host_dir, "") + path.sep + 'auth_server.html'
                 SimpleHTTPRequestHandler.do_GET(self)
             except BrokenPipeError:
                 logger.error(f'Received BrokenPipeError while reaching {self.path}')
