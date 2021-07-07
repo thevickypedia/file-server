@@ -71,9 +71,22 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             self.do_AUTHHEAD()
             if not authenticated:
                 logger.warning('No authentication was received.')
-                self.wfile.write(b"No auth header received")
+                self.wfile.write(
+                    b"""<!DOCTYPE html><html><head><style>img {display: block;margin-left: auto;margin-right: auto;}
+                    </style></head><body><h2 style="text-align:center">LOGIN FAILED</h2><h4 style="text-align:center">
+                    User error - Replace user</h4><p>
+                    <img border="0"src="https://vigneshrao.com/error_img/Preloader_3.gif" width="200" height="200"
+                    alt="loader"class="center"></p></body></html>"""
+                )
             else:
-                self.wfile.write(b"Session Expired")
+                logger.warning('Session has expired.')
+                self.wfile.write(
+                    """<!DOCTYPE html><html><head><style>img {display: block;margin-left: auto;margin-right: auto;}
+                    </style></head><body><h2 style="text-align:center">SESSION EXPIRED</h2><h4 style="text-align:center"
+                    >Authentication doesn't last forever.</h4><p>
+                    <img border="0"src="https://vigneshrao.com/error_img/Preloader_3.gif" width="200" height="200"
+                    alt="loader"class="center"></p></body></html>""".encode()
+                )
         elif auth_header == "Basic " + self._auth:
             authenticated = True
             try:
