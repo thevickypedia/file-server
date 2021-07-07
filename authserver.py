@@ -76,7 +76,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         elif auth_header == "Basic " + self._auth:
             try:
                 if self.path == '/' and not authenticated:
-                    system(f'cp auth_server.html {home_dir}')  # copies welcome page to the hosting directory's root
+                    system(f'cp auth_server.html {host_dir}')  # copies welcome page to the hosting directory's root
                     self.path = '/auth_server.html'  # serves a welcome page for the first time only
                 SimpleHTTPRequestHandler.do_GET(self)
             except BrokenPipeError:
@@ -122,11 +122,10 @@ def reset_auth():
         return True
 
 
-def server_function(flag: bool, host_dir: classmethod = lambda: home_dir) -> None:
+def server_function(flag: bool) -> None:
     """Uses local certificate from ~.ssh to serve the page as https if flag is set to True.
 
     Args:
-        host_dir: Directory desired to be hosted.
         flag: Whether or not to wrap the socket with the certificate.
 
     """
@@ -135,7 +134,7 @@ def server_function(flag: bool, host_dir: classmethod = lambda: home_dir) -> Non
         AuthHTTPRequestHandler,
         username=username,
         password=password,
-        directory=host_dir()
+        directory=host_dir
     )
     server = HTTPServer(server_address=('localhost', int(environ.get('port', 4443))), RequestHandlerClass=handler_class)
 
@@ -186,6 +185,9 @@ if __name__ == "__main__":
     authenticated = False  # set to False to write the appropriate message in the HTML file
 
     home_dir = path.expanduser('~')
+    if not (host_dir := environ.get('directory')):
+        host_dir = home_dir
+
     ssh_dir = home_dir + path.sep + path.join('.ssh')
     makedirs(ssh_dir) if '.ssh' not in listdir(home_dir) else None
     cert_file = path.expanduser(ssh_dir) + path.sep + "cert.pem"
