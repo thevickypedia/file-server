@@ -75,7 +75,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 self.wfile.write(session_expiry.encode(encoding='UTF-8'))
         elif auth_header == "Basic " + self._auth:
             target_path = host_dir + self.path
-            if not target_path.endswith('html') and 'index.html' in listdir(target_path):
+            if path.isdir(target_path) and 'index.html' in listdir(target_path):
                 old_name = target_path + 'index.html'
                 new_name = target_path + 'index_TEMP.html'
                 logger.critical(f'Renaming {old_name} to {new_name}')
