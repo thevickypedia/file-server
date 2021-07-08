@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
-from logging import getLogger, basicConfig, INFO
+from logging import getLogger, FileHandler, INFO, Formatter, StreamHandler
 from os import environ, path, getcwd, listdir, makedirs, rename
 from pathlib import PurePath
 from socket import gethostbyname
@@ -41,9 +41,9 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             method, status_code, ignore = args  # ignore always returns `-`
             method = str(method).split('/')[0].strip()
             if int(str(status_code).strip()) == 200:
-                logger.info(f'Received {status_code} while accessing a {method} method to reach {self.path}')
+                fileLogger.info(f'Received {status_code} while accessing a {method} method to reach {self.path}')
             else:
-                logger.error(f'Received {status_code} while accessing a {method} method to reach {self.path}')
+                fileLogger.error(f'Received {status_code} while accessing a {method} method to reach {self.path}')
 
     def do_HEAD(self) -> None:
         """Sends 200 response and sends headers when authentication is successful."""
@@ -63,7 +63,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         """Serve a front end with user authentication."""
         global authenticated
         if reset_auth() and 'Authorization' in self.headers.keys():
-            logger.error('Authorized from stored cookies. However the session has expired, so headers have been reset.')
+            consoleLogger.warning('Authorized via stored cookies. However session expired, so headers have been reset.')
             self.headers.replace_header('Authorization', None)
             self.disable_cache()
 
@@ -78,7 +78,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             if path.isdir(target_path) and 'index.html' in listdir(target_path):
                 old_name = target_path + 'index.html'
                 new_name = target_path + 'index_TEMP.html'
-                logger.critical(f'Renaming {old_name} to {new_name}')
+                consoleLogger.critical(f'Renaming {old_name} to {new_name}')
                 rename(old_name, new_name)
                 renamed.append({old_name: new_name})
             if not authenticated and self.path == '/':
@@ -86,16 +86,16 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             try:
                 SimpleHTTPRequestHandler.do_GET(self)
             except BrokenPipeError:
-                logger.error(f'Received BrokenPipeError while reaching {self.path}')
+                consoleLogger.error(f'Received BrokenPipeError while reaching {self.path}')
             authenticated = True
         else:
             self.do_AUTHHEAD()
             auth = auth_header.strip('Basic ')
             try:
                 auth = b64decode(auth).decode().split(':')
-                logger.error(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
+                consoleLogger.error(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
             except Error:
-                logger.error(f'Authentication Blocked: Encoded: {auth}')
+                consoleLogger.error(f'Authentication Blocked: Encoded: {auth}')
 
     def disable_cache(self) -> None:
         """Headers to force no-cache and site-data to expire."""
@@ -135,7 +135,7 @@ def server_function(flag: bool) -> None:
         flag: Whether or not to wrap the socket with the certificate.
 
     """
-    logger.info('Initiating file server.')
+    rootLogger.info('Initiating file server.')
     handler_class = partial(
         AuthHTTPRequestHandler,
         username=username,
@@ -154,31 +154,67 @@ def server_function(flag: bool) -> None:
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        [(rename(new_name, old_name), logger.critical(f'Reverting {new_name} to {old_name}')) for each in renamed
+        [(rename(new_name, old_name), consoleLogger.critical(f'Reverted {new_name} to {old_name}')) for each in renamed
          for old_name, new_name in each.items() if renamed]  # cheat to two operations within list comprehension = tuple
-        logger.info('Terminating file server.')
+        rootLogger.info('Terminating file server.')
         server.server_close()
         server.shutdown()
         print(f"{line_number()} - File server has been terminated.")
 
 
 def line_number() -> int:
-    """Returns the line number of where this function is called."""
+    """Uses the inspect module to fetch the line number from current frame.
+
+    Returns:
+        Line number of where this function is called.
+
+    """
     return currentframe().f_back.f_lineno
+
+
+def logging_wrapper() -> tuple:
+    """Wraps logging module to create multiple handlers for different purposes.
+
+    Notes:
+        - fileLogger: Writes the log information only to the log file.
+        - consoleLogger: Writes the log information only in stdout.
+        - rootLogger: Logs the entry in both stdout and log file.
+
+    Returns:
+        A tuple of classes logging.Logger for file, console and root logging.
+
+    """
+    makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
+    log_file = datetime.now().strftime('logs' + path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
+    log_formatter = Formatter(
+        fmt="%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s - Line: %(lineno)d - %(message)s",
+        datefmt='%b-%d-%Y %H:%M:%S'
+    )
+
+    file_logger = getLogger('FILE')
+    console_logger = getLogger('CONSOLE')
+    root_logger = getLogger(PurePath(__file__).stem)
+
+    file_handler = FileHandler(filename=log_file)
+    file_handler.setFormatter(fmt=log_formatter)
+    file_logger.setLevel(level=INFO)
+    file_logger.addHandler(hdlr=file_handler)
+
+    console_handler = StreamHandler()
+    console_handler.setFormatter(fmt=log_formatter)
+    console_logger.setLevel(level=INFO)
+    console_logger.addHandler(hdlr=console_handler)
+
+    root_logger.addHandler(hdlr=file_handler)
+    root_logger.addHandler(hdlr=console_handler)
+    return file_logger, console_logger, root_logger
 
 
 if __name__ == "__main__":
     if not (username := environ.get('username')) or not (password := environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
 
-    makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
-    LOG_FILENAME = datetime.now().strftime('logs' + path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
-    basicConfig(
-        filename=LOG_FILENAME, level=INFO,
-        format='%(asctime)s - %(levelname)s - %(funcName)s - Line: %(lineno)d - %(message)s',
-        datefmt='%b-%d-%Y %H:%M:%S'
-    )
-    logger = getLogger(PurePath(__file__).stem)  # gets current file name
+    fileLogger, consoleLogger, rootLogger = logging_wrapper()
 
     with open('session.html', 'r') as file:
         session_expiry = file.read()
@@ -205,8 +241,8 @@ if __name__ == "__main__":
     if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
         server_function(flag=True)
     else:
-        logger.warning(
-            f"{line_number()} - Run the following command in a terminal at {ssh_dir} to create a private certificate."
+        rootLogger.warning(
+            f"Run the following command in a terminal at {ssh_dir} to create a private certificate."
             f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
             f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}"
             f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
