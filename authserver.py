@@ -5,7 +5,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
 from logging import getLogger, basicConfig, INFO
-from os import environ, path, getcwd, listdir, makedirs
+from os import environ, path, getcwd, listdir, makedirs, rename
 from pathlib import PurePath
 from socket import gethostbyname
 from ssl import wrap_socket
@@ -74,9 +74,16 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(session_expiry.encode(encoding='UTF-8'))
         elif auth_header == "Basic " + self._auth:
+            target_path = host_dir + self.path
+            if not target_path.endswith('html') and 'index.html' in listdir(target_path):
+                old_name = target_path + 'index.html'
+                new_name = target_path + 'index_TEMP.html'
+                logger.critical(f'Renaming {old_name} to {new_name}')
+                rename(old_name, new_name)
+                renamed.append({old_name: new_name})
+            if not authenticated and self.path == '/':
+                self.path = getcwd().replace(host_dir, "") + path.sep + 'auth_server.html'
             try:
-                if self.path == '/' and not authenticated:
-                    self.path = getcwd().replace(host_dir, "") + path.sep + 'auth_server.html'
                 SimpleHTTPRequestHandler.do_GET(self)
             except BrokenPipeError:
                 logger.error(f'Received BrokenPipeError while reaching {self.path}')
@@ -147,6 +154,8 @@ def server_function(flag: bool) -> None:
     try:
         server.serve_forever()
     except KeyboardInterrupt:
+        [(rename(new_name, old_name), logger.critical(f'Reverting {new_name} to {old_name}')) for each in renamed
+         for old_name, new_name in each.items() if renamed]  # cheat to two operations within list comprehension = tuple
         logger.info('Terminating file server.')
         server.server_close()
         server.shutdown()
@@ -182,6 +191,7 @@ if __name__ == "__main__":
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
     authenticated = False  # set to False to write the appropriate message in the HTML file
+    renamed = []  # set to empty list to append dictionaries with re-namings done for index.html
 
     home_dir = path.expanduser('~')
     if not (host_dir := environ.get('directory')):
