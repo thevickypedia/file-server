@@ -12,6 +12,7 @@ from ssl import wrap_socket
 from time import time
 
 from yaml import load, dump, FullLoader
+from emailer import Emailer
 
 
 # noinspection PyPep8Naming
@@ -103,16 +104,37 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self) -> None:
         """Handles POST request and writes the received data into a yaml file."""
+        global endpoint
+        now = datetime.now()
+        client_file = 'client_info.yaml'
         length = int(self.headers.get('content-length'))
         peanut = self.rfile.read(length)
         butter = peanut.decode(encoding='UTF-8').split('&')[0]
         client_info = load(butter, Loader=FullLoader)
         rootLogger.fatal(str(client_info).replace("'", "").lstrip('{').rstrip('}'))
-        current_time = f"Server Datetime: {(datetime.now()).strftime('%B %d, %Y %I:%M %p')}"
+        current_time = f"Server Datetime: {now.strftime('%B %d, %Y %I:%M %p')}"
         hashes = ''.join(['#' for _ in range(74)])
-        with open('client_info.yaml', 'w') as client:
+        with open(client_file, 'w') as client:
             client.write(f"{hashes}\n#\t\t\t\t{current_time}\n{hashes}\n")
             dump(client_info, client, indent=4)
+
+        if not notify:
+            return
+
+        if not (status := client_info.get('_html_ref')):
+            status = 'An undefined login attempt'
+
+        endpoint = f"http://{':'.join(map(str, self.connection.getsockname()))}" if not endpoint else endpoint
+
+        rootLogger.critical(Emailer(
+            gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
+            subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
+            body=f"A connection with status `{status}` has been made to your personal cloud serving at "
+                 f"{endpoint}\n\nDetails of the client are attached. If this was you, you may disregard this email. "
+                 f"Otherwise stop the server immediately and rotate your credentials before restarting."
+                 f"\n\n\n\n\n\n\n\n\n\n"
+                 f"Explore logs: {endpoint}/{(str(base_file).strip(base_file.name) + log_file).strip(host_dir)}"
+        ).send_email())
 
     def disable_cache(self) -> None:
         """Headers to force no-cache and site-data to expire."""
@@ -132,8 +154,7 @@ def reset_auth():
         Note that if an authentication is done at the end of 15 minutes, there will be a re-auth prompted.
 
     Returns:
-        - True when it has been more than 15 minutes since the first/previous expiry.
-        - None when not.
+        - True if it is the first login attempt or it has been more than 15 minutes since the first/previous expiry.
 
     """
     global start_time, first_run
@@ -152,6 +173,7 @@ def server_function(flag: bool) -> None:
         flag: Whether or not to wrap the socket with the certificate.
 
     """
+    global endpoint
     rootLogger.info('Initiating file server.')
     handler_class = partial(
         AuthHTTPRequestHandler,
@@ -202,7 +224,6 @@ def logging_wrapper() -> tuple:
 
     """
     makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
-    log_file = datetime.now().strftime('logs' + path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
     log_formatter = Formatter(
         fmt="%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s - Line: %(lineno)d - %(message)s",
         datefmt='%b-%d-%Y %H:%M:%S'
@@ -210,7 +231,7 @@ def logging_wrapper() -> tuple:
 
     file_logger = getLogger('FILE')
     console_logger = getLogger('CONSOLE')
-    root_logger = getLogger(PurePath(__file__).stem)
+    root_logger = getLogger(base_file.stem)
 
     file_handler = FileHandler(filename=log_file)
     file_handler.setFormatter(fmt=log_formatter)
@@ -231,18 +252,37 @@ if __name__ == "__main__":
     if not (username := environ.get('username')) or not (password := environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
 
+    start_time = time()  # set to the current time to reset the auth headers when timeout is reached
+    first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
+    authenticated = False  # set to False to write the appropriate message in the HTML file
+    renamed = []  # set to empty list to append dictionaries with re-namings done for index.html
+    notify = True  # notify is set to true by default unless the env vars are not present
+    endpoint = None  # endpoint is set to None to make it a global variable
+
+    makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
+    log_file = datetime.now().strftime('logs' + path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
+    base_file = PurePath(__file__)  # PurePath(__file__).stem strips the extension/suffixes of the file
+
     fileLogger, consoleLogger, rootLogger = logging_wrapper()
+
+    if (not (gmail_user := environ.get('gmail_user')) or not
+            (gmail_pass := environ.get('gmail_pass')) or not
+            (recipient := environ.get('recipient'))):
+        notify = False
+        rootLogger.warning(
+            f"Consider storing the following env vars to receive an email notification when PersonalCloud is accessed"
+            f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
+            "gmail_user='xxx@gmail.com'\n"
+            "gmail_pass='*************'\n"
+            "recipient='yyy@zzz.com'\n\n"
+            f"{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
+        )
 
     with open('session.html', 'r') as file:
         session_expiry = file.read()
 
     with open('no_auth.html', 'r') as file:
         login_failed = file.read()
-
-    start_time = time()  # set to the current time to reset the auth headers when timeout is reached
-    first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
-    authenticated = False  # set to False to write the appropriate message in the HTML file
-    renamed = []  # set to empty list to append dictionaries with re-namings done for index.html
 
     home_dir = path.expanduser('~')
     if not (host_dir := environ.get('directory')):
