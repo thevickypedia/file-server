@@ -5,13 +5,14 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
 from logging import getLogger, FileHandler, INFO, Formatter, StreamHandler
-from os import environ, path, getcwd, listdir, makedirs, rename
+from os import environ, path, getcwd, stat, listdir, makedirs, rename
 from pathlib import PurePath
 from socket import gethostbyname
 from ssl import wrap_socket
 from time import time
 
 from yaml import load, dump, FullLoader
+
 from emailer import Emailer
 
 
@@ -112,6 +113,18 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         butter = peanut.decode(encoding='UTF-8').split('&')[0]
         client_info = load(butter, Loader=FullLoader)
         rootLogger.fatal(str(client_info).replace("'", "").lstrip('{').rstrip('}'))
+
+        if path.isfile(client_file):
+            with open(client_file, 'r') as client:
+                exist = load(''.join([nut for nut in client.readlines() if not nut.startswith('#')]), Loader=FullLoader)
+
+            # avoids duplicate notification for repeated trials in less than 2 minutes
+            if int(now.timestamp()) - int(stat(client_file).st_mtime) < 120 and \
+                    client_info.get('_html_ref') == exist.get('_html_ref') and \
+                    client_info.get('ip') == exist.get('ip'):
+                rootLogger.critical(f"{exist.get('ip')} performed {exist.get('_html_ref')} once again within 2 minutes")
+                return
+
         current_time = f"Server Datetime: {now.strftime('%B %d, %Y %I:%M %p')}"
         hashes = ''.join(['#' for _ in range(74)])
         with open(client_file, 'w') as client:
