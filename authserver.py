@@ -11,7 +11,10 @@ from socket import gethostbyname
 from ssl import wrap_socket
 from time import time
 
+from yaml import load, dump, FullLoader
 
+
+# noinspection PyPep8Naming
 class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
     """Main class to present webpages and authentication.
 
@@ -32,6 +35,8 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
     def log_message(self, format_: str, *args: tuple) -> None:
         """Suppresses logs from http.server by holding the args.
 
+        Overwrites the base method: `BaseHTTPRequestHandler.log_message()`
+
         Args:
             format_: String operator %s
             *args: Logs from SimpleHTTPRequestHandler displaying request method type and HTTP status code.
@@ -51,14 +56,6 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-    # noinspection PyPep8Naming,SpellCheckingInspection
-    def do_AUTHHEAD(self) -> None:
-        """Sends 401 response and sends headers when authentication wasn't done or unsuccessful."""
-        self.send_response(401)
-        self.send_header("WWW-Authenticate", 'Basic realm="Test"')
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
         global authenticated
@@ -68,7 +65,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             self.disable_cache()
 
         if not (auth_header := self.headers.get("Authorization")):
-            self.do_AUTHHEAD()
+            self.do_AUTH()
             if not authenticated:
                 self.wfile.write(login_failed.encode(encoding='UTF-8'))
             else:
@@ -89,13 +86,33 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 consoleLogger.error(f'Received BrokenPipeError while reaching {self.path}')
             authenticated = True
         else:
-            self.do_AUTHHEAD()
+            self.do_AUTH()
             auth = auth_header.strip('Basic ')
             try:
                 auth = b64decode(auth).decode().split(':')
                 consoleLogger.error(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
             except Error:
                 consoleLogger.error(f'Authentication Blocked: Encoded: {auth}')
+
+    def do_AUTH(self) -> None:
+        """Sends headers to authenticate the requester."""
+        self.send_response(401)
+        self.send_header("WWW-Authenticate", 'Basic realm="Test"')
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+
+    def do_POST(self) -> None:
+        """Handles POST request and writes the received data into a yaml file."""
+        length = int(self.headers.get('content-length'))
+        peanut = self.rfile.read(length)
+        butter = peanut.decode(encoding='UTF-8').split('&')[0]
+        client_info = load(butter, Loader=FullLoader)
+        rootLogger.fatal(str(client_info).replace("'", "").lstrip('{').rstrip('}'))
+        current_time = f"Server Datetime: {(datetime.now()).strftime('%B %d, %Y %I:%M %p')}"
+        hashes = ''.join(['#' for _ in range(74)])
+        with open('client_info.yaml', 'w') as client:
+            client.write(f"{hashes}\n#\t\t\t\t{current_time}\n{hashes}\n")
+            dump(client_info, client, indent=4)
 
     def disable_cache(self) -> None:
         """Headers to force no-cache and site-data to expire."""
@@ -218,11 +235,9 @@ if __name__ == "__main__":
 
     with open('session.html', 'r') as file:
         session_expiry = file.read()
-        file.close()
 
     with open('no_auth.html', 'r') as file:
         login_failed = file.read()
-        file.close()
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies

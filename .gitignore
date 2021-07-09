@@ -1,7 +1,18 @@
+# python generated
 venv
 .idea
-node_modules
+__pycache__
+
+# logs for both authserver.py and server.py (legacy) - will be decommissioned
 logs
-package-lock.json
-package.json
+
+# writes url to a file when ngrok generates an url (Jarvis uses it)
 url
+
+# stores connecting client's information in yaml file
+client_info.yaml
+
+# test files
+hash.js
+ip.html
+submitapi.js
