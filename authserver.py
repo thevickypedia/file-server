@@ -340,7 +340,7 @@ if __name__ == "__main__":
     auth_success, login_failed, session_expiry = [Path(f'html/{file}').read_text() for file in listdir('html')]
 
     home_dir = path.expanduser('~')
-    if not (host_dir := environ.get('directory')):
+    if not (host_dir := environ.get('volume_name')) or host_dir == 'None':
         host_dir = home_dir
 
     ssh_dir = home_dir + path.sep + path.join('.ssh')
