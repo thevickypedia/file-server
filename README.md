@@ -3,19 +3,13 @@ Set up a personal cloud to access files in local machine from anywhere on the in
 
 ## Run Book:
 ### Environment Variables Required:
-`USERNAME` Username which will be required to access the server.
+`username` Username which will be required to access the server.
 <br>
-`PASSWORD` Password to confirm identity.
+`password` Password to confirm identity.
 <br>
-`PORT` Port number using which the endpoint is to be accessed.
+`port` Port number using which the endpoint is to be accessed.
 > Note: Uses the port number `4443` by default.
 
-Example:
-```
-export USERNAME=IronMan
-export PASSWORD=Jarvis
-export PORT=0502
-```
 > Tip:bulb: &nbsp; Save the env vars (specifically, `PORT`) in `.bashrc`/`.zshrc` or `.bash_profile`/`.zsh_profile` so that, the vars are set during launch and can be accessed across multiple terminal sessions.
 
 Another important variable:<br>
