@@ -39,6 +39,13 @@ Ngrok Gatherer
    :members:
    :undoc-members:
 
+Ngrok Restart
+=============
+
+.. automodule:: helper_functions.restart
+   :members:
+   :undoc-members:
+
 Volume
 ======
 
