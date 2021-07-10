@@ -1,5 +1,5 @@
 from logging import INFO, basicConfig, getLogger
-from os import environ
+from os import environ, listdir, remove
 from pathlib import Path
 from socket import AF_INET, SOCK_STREAM, gethostbyname, socket
 
@@ -41,10 +41,15 @@ def tunnel() -> None:
 
     public_url = None
     try:
-        public_url = connect(port, "http",
-                             options={"remote_addr": f"{host}:{port}"})  # Open a ngrok tunnel to the socket
+        endpoint = connect(port, "http", options={"remote_addr": f"{host}:{port}"})  # Open a ngrok tunnel to the socket
+        public_url = endpoint.public_url
     except PyngrokError as err:
         exit(err)
+
+    if 'url' in listdir():
+        remove('url')
+    with open('url', 'w') as url_file:
+        url_file.write(public_url)
 
     logger.info(f'Hosting to the public URL: {public_url}')
 

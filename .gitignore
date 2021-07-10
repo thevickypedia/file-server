@@ -6,6 +6,9 @@ __pycache__
 # logs for both authserver.py and server.py (legacy) - will be decommissioned
 logs
 
+# writes url to a file when ngrok generates an url (Jarvis uses it)
+url
+
 # sphinx docs builder within doc_generator
 _build
 
