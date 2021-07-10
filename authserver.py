@@ -6,7 +6,7 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
 from logging import getLogger, FileHandler, INFO, Formatter, StreamHandler
 from os import environ, path, getcwd, stat, listdir, makedirs, rename
-from pathlib import PurePath
+from pathlib import Path, PurePath
 from ssl import wrap_socket
 from time import time
 
@@ -60,6 +60,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
+        print(self.connection)
         global authenticated
         if reset_auth() and 'Authorization' in self.headers.keys():
             consoleLogger.warning('Authorized via stored cookies. However session expired, so headers have been reset.')
@@ -80,14 +81,15 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 consoleLogger.critical(f'Renaming {old_name} to {new_name}')
                 rename(old_name, new_name)
                 renamed.append({old_name: new_name})
-            if not authenticated and self.path == '/':
-                # todo: research on self.wfile instead of auth_server.html so the setup can be replicated for ext Volume
-                self.path = getcwd().replace(host_dir, "") + path.sep + 'auth_server.html'
+            if not authenticated:
+                self.do_HEAD()
+                self.wfile.write(auth_success.encode(encoding='UTF-8'))
+                authenticated = True
+                return
             try:
                 SimpleHTTPRequestHandler.do_GET(self)
             except BrokenPipeError:
                 consoleLogger.error(f'Received BrokenPipeError while reaching {self.path}')
-            authenticated = True
         else:
             self.do_AUTH()
             auth = auth_header.strip('Basic ')
@@ -298,11 +300,7 @@ if __name__ == "__main__":
             f"{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
         )
 
-    with open('templates/session.html', 'r') as file:
-        session_expiry = file.read()
-
-    with open('templates/no_auth.html', 'r') as file:
-        login_failed = file.read()
+    auth_success, login_failed, session_expiry = [Path(f'html/{file}').read_text() for file in listdir('html')]
 
     home_dir = path.expanduser('~')
     if not (host_dir := environ.get('directory')):
