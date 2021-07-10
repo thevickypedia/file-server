@@ -243,10 +243,14 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.ngrok.restart">
 <span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">restart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.ngrok.restart" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restart kills any active sessions of ngrok and triggers <cite>restart.py</cite> which in turn starts ngrok after 5 seconds.</p>
+<dd><p>Restarts <a class="reference external" href="https://git.io/JchBu">ngrok.py</a>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Note that only the <cite>ngrok</cite> processID will be terminated and not the terminal/session that is tunneling it.</p>
+<ul class="simple">
+<li><p>Restart kills any active sessions of ngrok.</p></li>
+<li><p>Once done, it triggers <a class="reference external" href="https://git.io/JchB1">restart.py</a> which in turn starts ngrok after 5 seconds.</p></li>
+<li><p>Note that only the <cite>ngrok</cite> processID will be terminated and not the terminal/session that is tunneling it.</p></li>
+</ul>
 </div>
 </dd></dl>
 

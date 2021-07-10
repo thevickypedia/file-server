@@ -17,7 +17,7 @@ def writer(url) -> None:
     """Writes the received url into a file named `url`.
 
     Notes:
-        - This is to support Jarvis.
+        - This is to support `Jarvis <https://github.com/thevickypedia/Jarvis>`__
         - Jarvis scans the url file to fetch the public_url and sends it to the end user.
 
     Args:
@@ -31,10 +31,12 @@ def writer(url) -> None:
 
 
 def restart() -> None:
-    """Restart kills any active sessions of ngrok and triggers `restart.py` which in turn starts ngrok after 5 seconds.
+    """Restarts `ngrok.py <https://git.io/JchBu>`__.
 
     See Also:
-        Note that only the `ngrok` processID will be terminated and not the terminal/session that is tunneling it.
+        - Restart kills any active sessions of ngrok.
+        - Once done, it triggers `restart.py <https://git.io/JchB1>`__ which in turn starts ngrok after 5 seconds.
+        - Note that only the `ngrok` processID will be terminated and not the terminal/session that is tunneling it.
 
     """
     pid_check = check_output("ps -ef | grep ngrok", shell=True)
