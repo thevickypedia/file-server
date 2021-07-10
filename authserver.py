@@ -12,8 +12,8 @@ from time import time
 
 from yaml import load, dump, FullLoader
 
-from emailer import Emailer
-from ngrok_fetcher import get_ngrok
+from helper_functions.emailer import Emailer
+from helper_functions.ngrok_fetcher import get_ngrok
 
 
 # noinspection PyPep8Naming
@@ -298,10 +298,10 @@ if __name__ == "__main__":
             f"{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
         )
 
-    with open('session.html', 'r') as file:
+    with open('templates/session.html', 'r') as file:
         session_expiry = file.read()
 
-    with open('no_auth.html', 'r') as file:
+    with open('templates/no_auth.html', 'r') as file:
         login_failed = file.read()
 
     home_dir = path.expanduser('~')
