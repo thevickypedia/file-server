@@ -1,8 +1,9 @@
 from logging import getLogger, basicConfig, INFO
-from os import environ, listdir, remove
+from os import environ
 from pathlib import Path
 from socket import socket, AF_INET, SOCK_STREAM, gethostbyname
 
+from pyngrok.exception import PyngrokError
 from pyngrok.ngrok import connect, kill
 
 basicConfig(level=INFO)
@@ -11,7 +12,7 @@ logger = getLogger(Path(__file__).stem)
 port = environ.get('PORT')
 host = gethostbyname('localhost')
 
-sock = socket(AF_INET, SOCK_STREAM)  # Create a TCP socket
+sock = socket(AF_INET, SOCK_STREAM)
 
 # # Uncomment bind to create a whole new connection to the port
 # server_address = (host, port)  # Bind a local socket to the port
@@ -19,16 +20,13 @@ sock = socket(AF_INET, SOCK_STREAM)  # Create a TCP socket
 
 sock.listen(1)
 
-public_url = connect(port, "tcp", options={"remote_addr": f"{host}:{port}"})  # Open a ngrok tunnel to the socket
-url = str(public_url).split()[1].replace('"', '').replace('tcp://', 'http://')
+public_url = None
+try:
+    public_url = connect(port, "http", options={"remote_addr": f"{host}:{port}"})  # Open a ngrok tunnel to the socket
+except PyngrokError as err:
+    exit(err)
 
-if 'url' in listdir():
-    remove('url')
-with open('url', 'w') as url_file:
-    url_file.write(url)
-    url_file.close()
-
-logger.info(f'Hosting to the public URL: {url}')
+logger.info(f'Hosting to the public URL: {public_url}')
 
 connection = None
 while True:
