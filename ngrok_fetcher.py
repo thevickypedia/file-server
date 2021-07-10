@@ -5,7 +5,6 @@ Notes:
 """
 
 from os import environ
-from logging import log, ERROR, INFO, WARNING
 from socket import gethostbyname
 from subprocess import check_output
 
@@ -27,27 +26,19 @@ def get_port():
                         if row and index > 1 and each_id in row.split() and row.split()[3].startswith(ip)])
 
 
-if validate := get_port():
-    port = validate.split('.')[-1]
-    log(level=INFO, msg=f'Ngrok is running on PORT: {port}')
-else:
-    if not (port := environ.get('PORT')):
-        log(level=WARNING,
-            msg=f'Ngrok might not be running, and there is no PORT number specified in env var to run a manual check.')
-        exit()
+def get_ngrok():
+    if validate := get_port():
+        port = validate.split('.')[-1]
     else:
-        log(level=WARNING,
-            msg=f'Ngrok might not be running, but since an env var is set to {port} lets check against it.')
+        if not (port := environ.get('PORT')):
+            return
 
-response = None
-try:
-    response = get(f'http://{ip}:{port}/api/tunnels')
-except InvalidURL:
-    log(level=ERROR, msg=f'Invalid URL. The port number: {port} mentioned in env var is invalid.')
-    exit('Invalid URL')
-except ConnectionError:
-    log(level=ERROR, msg=f'Connection Error. Ngrok is not running with the specified port {port}')
-    exit('ConnectionError')
+    try:
+        response = get(f'http://{ip}:{port}/api/tunnels')
+    except InvalidURL:
+        return
+    except ConnectionError:
+        return
 
-tunnel = load(response.content.decode(), Loader=FullLoader)['tunnels']
-print(tunnel[0].get('public_url'))
+    tunnel = load(response.content.decode(), Loader=FullLoader)['tunnels']
+    return tunnel[0].get('public_url')

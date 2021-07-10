@@ -13,6 +13,7 @@ from time import time
 from yaml import load, dump, FullLoader
 
 from emailer import Emailer
+from ngrok_fetcher import get_ngrok
 
 
 # noinspection PyPep8Naming
@@ -80,6 +81,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 rename(old_name, new_name)
                 renamed.append({old_name: new_name})
             if not authenticated and self.path == '/':
+                # todo: research on self.wfile instead of auth_server.html so the setup can be replicated for ext Volume
                 self.path = getcwd().replace(host_dir, "") + path.sep + 'auth_server.html'
             try:
                 SimpleHTTPRequestHandler.do_GET(self)
@@ -117,8 +119,8 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
             with open(client_file, 'r') as client:
                 exist = load(''.join([nut for nut in client.readlines() if not nut.startswith('#')]), Loader=FullLoader)
 
-            # avoids duplicate notification for repeated trials in less than 2 minutes
-            if int(now.timestamp()) - int(stat(client_file).st_mtime) < 120 and \
+            # avoids duplicate notification for repeated trials in less than 5 minutes
+            if int(now.timestamp()) - int(stat(client_file).st_mtime) < 300 and \
                     client_info.get('_html_ref') == exist.get('_html_ref') and \
                     client_info.get('ip') == exist.get('ip'):
                 rootLogger.critical(f"{exist.get('ip')} performed {exist.get('_html_ref')} once again within 2 minutes")
@@ -136,7 +138,10 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         if not (status := client_info.get('_html_ref')):
             status = 'An undefined login attempt'
 
-        endpoint = f"http://{':'.join(map(str, self.connection.getsockname()))}" if not endpoint else endpoint
+        if global_endpoint := get_ngrok():
+            endpoint = global_endpoint
+        else:
+            endpoint = endpoint or f"http://{':'.join(map(str, self.connection.getsockname()))}"
 
         rootLogger.critical(Emailer(
             gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,

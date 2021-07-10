@@ -9,7 +9,7 @@ from pyngrok.ngrok import connect, kill
 basicConfig(level=INFO)
 getLogger(name='pyngrok').propagate = False  # disable module level logging
 logger = getLogger(Path(__file__).stem)
-port = environ.get('PORT')
+port = environ.get('PORT', 4443)
 host = gethostbyname('localhost')
 
 sock = socket(AF_INET, SOCK_STREAM)
