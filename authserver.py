@@ -1,17 +1,17 @@
-from base64 import b64encode, b64decode
+from base64 import b64decode, b64encode
 from binascii import Error
 from datetime import datetime
 from functools import partial
-from http.server import SimpleHTTPRequestHandler, HTTPServer
+from http.server import HTTPServer, SimpleHTTPRequestHandler
 from inspect import currentframe
-from logging import getLogger, FileHandler, INFO, Formatter, StreamHandler
-from os import environ, path, getcwd, stat, listdir, makedirs, rename
-from pathlib import PurePath, Path
+from logging import INFO, FileHandler, Formatter, StreamHandler, getLogger
+from os import environ, getcwd, listdir, makedirs, path, rename, stat
+from pathlib import Path, PurePath
 from ssl import wrap_socket
 from time import time
 from urllib.request import urlopen
 
-from yaml import load, dump, FullLoader
+from yaml import FullLoader, dump, load
 
 from helper_functions.emailer import Emailer
 from helper_functions.ngrok_fetcher import get_ngrok
@@ -172,7 +172,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 def reset_auth():
     """Tells if the authentication header has to be reset and cache to be cleared.
 
-    Notes:
+    See Also:
         Note that if an authentication is done at the end of 15 minutes, there will be a re-auth prompted.
 
     Returns:
@@ -238,7 +238,9 @@ def file_gatherer() -> list:
 
     Notes:
         Actual way of doing this is to open and read the file individually. But I'm a fan of list comprehensions.
+
         `auth_success_, login_failed_, session_expiry_ = [open(f'html/{file}').read() for file in listdir('html')]`
+
         But opening a file in list comprehension leaves the file open through out the code execution.
         This can be verified using `psutil.Process().open_files()`
 
@@ -252,7 +254,7 @@ def file_gatherer() -> list:
 def logging_wrapper() -> tuple:
     """Wraps logging module to create multiple handlers for different purposes.
 
-    Notes:
+    See Also:
         - fileLogger: Writes the log information only to the log file.
         - consoleLogger: Writes the log information only in stdout.
         - rootLogger: Logs the entry in both stdout and log file.

@@ -4,11 +4,15 @@ from smtplib import SMTP, SMTPAuthenticationError, SMTPConnectError
 
 
 class Emailer:
+    """Initiates Emailer object to send an email to defined recipient from a defined sender with or without attachments.
+
+    >>> Emailer
+
+    """
+
     def __init__(self, gmail_user: str, gmail_pass: str, recipient: str, subject: str, attachment: str, body: str,
                  sender: str = None):
-        """Initiates Emailer object to send an email with or without attachments.
-
-        >>> Emailer
+        """Gathers all the necessary parameters to send an email.
 
         Args:
             gmail_user: Username to login to TLS.

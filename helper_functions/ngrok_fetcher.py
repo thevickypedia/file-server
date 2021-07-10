@@ -1,22 +1,25 @@
-"""
-Notes:
-    This is an ultimate guide to check if ngrok is already running in the background.
-    Ngrok might be running on auto generated port? No problem, we can still track it.
-"""
-
 from os import environ
 from socket import gethostbyname
 from subprocess import check_output
 
 from requests import get
-from requests.exceptions import InvalidURL, ConnectionError
-from yaml import load, FullLoader
+from requests.exceptions import ConnectionError, InvalidURL
+from yaml import FullLoader, load
 
 ip = gethostbyname('localhost')
 
 
-def get_port():
-    """Alternate is to run `echo {root_password} | sudo -S lsof -PiTCP -sTCP:LISTEN | grep ngrok`"""
+def get_port() -> str:
+    """Looks for ngrok processID. If found, scans the PID in `netstat` for an `activeListener` to skim the port number.
+
+    Notes:
+        Alternate is to run `echo {root_password} | sudo -S lsof -PiTCP -sTCP:LISTEN | grep ngrok`
+
+    Returns:
+        str:
+        Local IP address and port number on which ngrok is tunnelling.
+
+    """
     pid_check = check_output("ps -ef | grep ngrok", shell=True)
     pid_list = pid_check.decode('utf-8').split('\n')
     extract = [id_.split()[1] for id_ in pid_list if id_ and '/bin/sh' not in id_ and 'grep ngrok' not in id_]
@@ -26,7 +29,19 @@ def get_port():
                         if row and index > 1 and each_id in row.split() and row.split()[3].startswith(ip)])
 
 
-def get_ngrok():
+def get_ngrok() -> str or None:
+    """Sends a `GET` request to api/tunnels to get the `ngrok` public url.
+
+    See Also:
+        Checks for output from get_port function. If nothing, then `ngrok` isn't running.
+        However as a sanity check, the script uses port number stored in env var to make a `GET` request.
+
+    Returns:
+        str or None:
+        - On success, returns the `ngrok` public URL.
+        - On failure, returns None to exit function.
+
+    """
     if validate := get_port():
         port = validate.split('.')[-1]
     else:

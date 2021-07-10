@@ -6,6 +6,9 @@ __pycache__
 # logs for both authserver.py and server.py (legacy) - will be decommissioned
 logs
 
+# sphinx docs builder within doc_generator
+_build
+
 # stores connecting client's information in yaml file
 client_info.yaml
 
