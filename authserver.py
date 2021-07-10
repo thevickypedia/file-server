@@ -6,9 +6,10 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 from inspect import currentframe
 from logging import getLogger, FileHandler, INFO, Formatter, StreamHandler
 from os import environ, path, getcwd, stat, listdir, makedirs, rename
-from pathlib import Path, PurePath
+from pathlib import PurePath, Path
 from ssl import wrap_socket
 from time import time
+from urllib.request import urlopen
 
 from yaml import load, dump, FullLoader
 
@@ -60,7 +61,6 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
-        print(self.connection)
         global authenticated
         if reset_auth() and 'Authorization' in self.headers.keys():
             consoleLogger.warning('Authorized via stored cookies. However session expired, so headers have been reset.')
@@ -115,6 +115,8 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         peanut = self.rfile.read(length)
         butter = peanut.decode(encoding='UTF-8').split('&')[0]
         client_info = load(butter, Loader=FullLoader)
+        if client_info.get('ip') == load(urlopen('https://ipapi.co/json/'), Loader=FullLoader).get('ip'):
+            return
         rootLogger.fatal(str(client_info).replace("'", "").lstrip('{').rstrip('}'))
 
         if path.isfile(client_file):
@@ -228,6 +230,22 @@ def line_number() -> int:
 
     """
     return currentframe().f_back.f_lineno
+
+
+def file_gatherer() -> list:
+    """Uses `pathlib.Path(file).read_text()` to read the files.
+
+    Notes:
+        Actual way of doing this is to open and read the file individually. But I'm a fan of list comprehensions.
+        `auth_success_, login_failed_, session_expiry_ = [open(f'html/{file}').read() for file in listdir('html')]`
+        But opening a file in list comprehension leaves the file open through out the code execution.
+        This can be verified using `psutil.Process().open_files()`
+
+    Returns:
+        Returns the data in each file within the html directory.
+
+    """
+    return [Path(f'html/{file}').read_text() for file in listdir('html')]
 
 
 def logging_wrapper() -> tuple:
