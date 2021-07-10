@@ -116,6 +116,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         butter = peanut.decode(encoding='UTF-8').split('&')[0]
         client_info = load(butter, Loader=FullLoader)
         if client_info.get('ip') == load(urlopen('https://ipapi.co/json/'), Loader=FullLoader).get('ip'):
+            consoleLogger.info(f"Internal connection request received. Response: {client_info.get('_html_ref')}")
             return
         rootLogger.fatal(str(client_info).replace("'", "").lstrip('{').rstrip('}'))
 
