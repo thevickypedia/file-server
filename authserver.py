@@ -7,7 +7,6 @@ from inspect import currentframe
 from logging import getLogger, FileHandler, INFO, Formatter, StreamHandler
 from os import environ, path, getcwd, stat, listdir, makedirs, rename
 from pathlib import PurePath
-from socket import gethostbyname
 from ssl import wrap_socket
 from time import time
 
@@ -194,13 +193,13 @@ def server_function(flag: bool) -> None:
         password=password,
         directory=host_dir
     )
-    server = HTTPServer(server_address=('localhost', int(environ.get('port', 4443))), RequestHandlerClass=handler_class)
+    server = HTTPServer(server_address=('localhost', port), RequestHandlerClass=handler_class)
 
     if flag:
         server.socket = wrap_socket(sock=server.socket, server_side=True, certfile=cert_file, keyfile=key_file)
-        endpoint = f"https://{gethostbyname('localhost')}:{server.server_port}"
+        endpoint = f"https://{':'.join(map(str, server.server_address))}"
     else:
-        endpoint = f"http://{gethostbyname('localhost')}:{server.server_port}"
+        endpoint = f"http://{':'.join(map(str, server.server_address))}"
     print(f"{line_number()} - Serving at: {endpoint}")
 
     try:
@@ -264,6 +263,9 @@ def logging_wrapper() -> tuple:
 if __name__ == "__main__":
     if not (username := environ.get('username')) or not (password := environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
+
+    default_port = 4443
+    port = int(environ.get('port', default_port))
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
