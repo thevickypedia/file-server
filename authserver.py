@@ -18,10 +18,22 @@ from helper_functions.ngrok_fetcher import get_ngrok
 
 
 # noinspection PyPep8Naming
-class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
+class Authenticator(SimpleHTTPRequestHandler):
     """Main class to present webpages and authentication.
 
-    >>> AuthHTTPRequestHandler
+    >>> Authenticator
+
+    Notes:
+        `Authenticator` uses `SimpleHTTPRequestHandler` which serves files from the directory `directory` and below.
+        Since the class allows the user to only retrieve data and not post it to the server.
+        Because of this limitation, it only implements the HTTP GET and HEAD methods via `do_GET()` and `do_HEAD()` as
+        a lot of the work, such as parsing the request, is done by the base class `BaseHTTPRequestHandler`.
+
+    See Also:
+        To perform the authentication, a `do_AUTH()` is implemented sending 401 and WWW-Authenticate header in response.
+        To handle `POST` requests, a `do_POST()` has been implemented, which reads `content-length` header using
+        `rfile.read` ready to read from the start of the optional input data. To write data on the server, `wfile.write`
+        is used which contains the output stream for writing a response back to the client.
 
     """
 
@@ -176,6 +188,7 @@ def reset_auth():
         Note that if an authentication is done at the end of 15 minutes, there will be a re-auth prompted.
 
     Returns:
+        bool:
         - True if it is the first login attempt or it has been more than 15 minutes since the first/previous expiry.
 
     """
@@ -198,7 +211,7 @@ def server_function(flag: bool) -> None:
     global endpoint
     rootLogger.info('Initiating file server.')
     handler_class = partial(
-        AuthHTTPRequestHandler,
+        Authenticator,
         username=username,
         password=password,
         directory=host_dir
@@ -227,6 +240,7 @@ def line_number() -> int:
     """Uses the inspect module to fetch the line number from current frame.
 
     Returns:
+        int:
         Line number of where this function is called.
 
     """
@@ -239,12 +253,13 @@ def file_gatherer() -> list:
     Notes:
         Actual way of doing this is to open and read the file individually. But I'm a fan of list comprehensions.
 
-        `auth_success_, login_failed_, session_expiry_ = [open(f'html/{file}').read() for file in listdir('html')]`
+        `auth_success, login_failed, session_expiry = [open(f'html/{file}').read() for file in listdir('html')]`
 
         But opening a file in list comprehension leaves the file open through out the code execution.
         This can be verified using `psutil.Process().open_files()`
 
     Returns:
+        list:
         Returns the data in each file within the html directory.
 
     """
@@ -260,6 +275,7 @@ def logging_wrapper() -> tuple:
         - rootLogger: Logs the entry in both stdout and log file.
 
     Returns:
+        tuple:
         A tuple of classes logging.Logger for file, console and root logging.
 
     """

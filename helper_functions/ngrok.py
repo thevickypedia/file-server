@@ -7,7 +7,7 @@ from pyngrok.exception import PyngrokError
 from pyngrok.ngrok import connect, kill
 
 
-def tunnel():
+def tunnel() -> None:
     """Creates an HTTP socket and uses `pyngrok` module to bind the socket.
 
     Once the socket is bound, the listener is activated and runs in a forever loop accepting connections.

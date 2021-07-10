@@ -35,6 +35,7 @@ class Emailer:
         """Creates a multipart message with the subject, body, from and to address, and attachment if passed.
 
         Returns:
+            multipart.MIMEMultipart:
             MIMEMultipart version of the created message.
 
         """
@@ -55,7 +56,13 @@ class Emailer:
         return msg
 
     def send_email(self) -> str:
-        """Initiates a TLS connection and sends the email."""
+        """Initiates a TLS connection and sends the email.
+
+        Returns:
+            str:
+            Status of the email message.
+
+        """
         server = SMTP('smtp.gmail.com')
         server.starttls()
         try:
