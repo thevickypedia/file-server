@@ -169,14 +169,18 @@ class Authenticator(SimpleHTTPRequestHandler):
         with open(client_file, 'r') as client:
             attachment_info = client.read()
 
+        email_body = f"A connection with status `{status}` has been made to your personal cloud serving at " \
+                     f"{endpoint}\n\nDetails of the client are below. If this was you, you may disregard this email. " \
+                     f"Otherwise stop the server immediately and rotate your credentials before restarting." \
+                     f"\n\n\n{attachment_info}\n\n"
+
+        if host_dir == home_dir:
+            email_body += f"\n\n\nLogs: {endpoint}/{(str(base_file).strip(base_file.name) + log_file).strip(host_dir)}"
+
         rootLogger.critical(Emailer(
             gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
             subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
-            body=f"A connection with status `{status}` has been made to your personal cloud serving at "
-                 f"{endpoint}\n\nDetails of the client are below. If this was you, you may disregard this email. "
-                 f"Otherwise stop the server immediately and rotate your credentials before restarting."
-                 f"\n\n\n{attachment_info}\n\n\n\n\n\n"
-                 f"Explore logs: {endpoint}/{(str(base_file).strip(base_file.name) + log_file).strip(host_dir)}"
+            body=email_body
         ).send_email())
 
     def disable_cache(self) -> None:
@@ -349,7 +353,7 @@ if __name__ == "__main__":
     auth_success, login_failed, session_expiry = [Path(f'html/{file}').read_text() for file in listdir('html')]
 
     home_dir = path.expanduser('~')
-    if not (host_dir := environ.get('host_path')) or host_dir == 'None':
+    if not (host_dir := environ.get('host_path')) or not path.isdir(host_dir):
         host_dir = home_dir
 
     ssh_dir = home_dir + path.sep + path.join('.ssh')
