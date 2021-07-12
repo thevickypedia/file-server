@@ -128,6 +128,7 @@ class Authenticator(SimpleHTTPRequestHandler):
         peanut = self.rfile.read(length)
         butter = peanut.decode(encoding='UTF-8').split('&')[0]
         if butter == 'LOGOUT':
+            rootLogger.critical("Logout has been requested. Resetting auth headers to False.")
             first_run = True  # to reset and give a fresh start
             authenticated = False  # to show Login Success screen the next time
             return
@@ -165,13 +166,16 @@ class Authenticator(SimpleHTTPRequestHandler):
         else:
             endpoint = endpoint or f"http://{':'.join(map(str, self.connection.getsockname()))}"
 
+        with open(client_file, 'r') as client:
+            attachment_info = client.read()
+
         rootLogger.critical(Emailer(
             gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
             subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
             body=f"A connection with status `{status}` has been made to your personal cloud serving at "
-                 f"{endpoint}\n\nDetails of the client are attached. If this was you, you may disregard this email. "
+                 f"{endpoint}\n\nDetails of the client are below. If this was you, you may disregard this email. "
                  f"Otherwise stop the server immediately and rotate your credentials before restarting."
-                 f"\n\n\n\n\n\n\n\n\n\n"
+                 f"\n\n\n{attachment_info}\n\n\n\n\n\n"
                  f"Explore logs: {endpoint}/{(str(base_file).strip(base_file.name) + log_file).strip(host_dir)}"
         ).send_email())
 
