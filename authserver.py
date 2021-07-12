@@ -24,10 +24,11 @@ class Authenticator(SimpleHTTPRequestHandler):
     >>> Authenticator
 
     Notes:
-        `Authenticator` uses `SimpleHTTPRequestHandler` which serves files from the directory `directory` and below.
-        Since the class allows the user to only retrieve data and not post it to the server.
-        Because of this limitation, it only implements the HTTP GET and HEAD methods via `do_GET()` and `do_HEAD()` as
-        a lot of the work, such as parsing the request, is done by the base class `BaseHTTPRequestHandler`.
+        - `Authenticator` uses encrypted server side header authentication.
+        - Browser's default pop up will be shown prompting the user to enter the username and password.
+        - Enter the Username and Password that was set in `environment variables <https://git.io/JCfzq>`__
+        - The username and password are set as encoded auth headers, which are matched against the encoded env vars.
+        - Upon successful authentication, a welcome page loads. Click on proceed to access the PersonalCloud.
 
     See Also:
         To perform the authentication, a `do_AUTH()` is implemented sending 401 and WWW-Authenticate header in response.
@@ -120,12 +121,16 @@ class Authenticator(SimpleHTTPRequestHandler):
 
     def do_POST(self) -> None:
         """Handles POST request and writes the received data into a yaml file."""
-        global endpoint
+        global endpoint, authenticated, first_run
         now = datetime.now()
         client_file = 'client_info.yaml'
         length = int(self.headers.get('content-length'))
         peanut = self.rfile.read(length)
         butter = peanut.decode(encoding='UTF-8').split('&')[0]
+        if butter == 'LOGOUT':
+            first_run = True  # to reset and give a fresh start
+            authenticated = False  # to show Login Success screen the next time
+            return
         client_info = load(butter, Loader=FullLoader)
         if client_info.get('ip') == load(urlopen('https://ipapi.co/json/'), Loader=FullLoader).get('ip'):
             consoleLogger.info(f"Internal connection request received. Response: {client_info.get('_html_ref')}")
@@ -340,7 +345,7 @@ if __name__ == "__main__":
     auth_success, login_failed, session_expiry = [Path(f'html/{file}').read_text() for file in listdir('html')]
 
     home_dir = path.expanduser('~')
-    if not (host_dir := environ.get('volume_name')) or host_dir == 'None':
+    if not (host_dir := environ.get('host_path')) or host_dir == 'None':
         host_dir = home_dir
 
     ssh_dir = home_dir + path.sep + path.join('.ssh')

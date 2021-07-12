@@ -28,7 +28,7 @@ class Volume:
     def stop_usage(self) -> None:
         """Kills all the background processes utilizing the volume to stop the disk usage."""
         if self.volume_label not in listdir('/Volumes'):
-            exit(f'{self.volume_label} is not connected to/mounted on your {Helper.device_model()}.')
+            exit(f'{self.volume_label} is not connected to/mounted on your {device_model()}.')
         if not self.password:
             exit("Add 'PASSWORD={YOUR SYSTEM PASSWORD}' as env variable to stop disk usage.")
         pid_check = check_output(f"echo {self.password} | sudo -S lsof '/Volumes/{self.volume_label}' 2>&1;",
@@ -54,7 +54,7 @@ class Volume:
                     self.mount_uuid = unmount_uuid
                     system(f'diskutil unmountDisk {unmount_uuid} > /dev/null 2>&1;')
                     self.logger.info(f'Disk {unmount_uuid} with Name {self.volume_label} has been unmounted from your '
-                                     f'{Helper.device_model()}')
+                                     f'{device_model()}')
                     break
 
     def mount_disk_by_uuid(self) -> None:
@@ -72,42 +72,34 @@ class Volume:
         """Uses a terminal command to mount the disk using the volume name."""
         system(f'diskutil mount "{self.volume_label}" > /dev/null 2>&1;')  # mount using disk label
         if self.volume_label in listdir('/Volumes'):
-            self.logger.info(f'Disk {self.volume_label} has been mounted on your {Helper.device_model()}')
+            self.logger.info(f'Disk {self.volume_label} has been mounted on your {device_model()}')
         else:
-            self.logger.info(f'{self.volume_label} is not connected or mounted on your {Helper.device_model()}.')
+            self.logger.info(f'{self.volume_label} is not connected or mounted on your {device_model()}.')
 
 
-class Helper:
-    """Helper functions to get model of the device, and check if volume has been mounted.
+def extract_str(input_) -> str:
+    """Extracts strings from the received input.
 
-    >>> Helper
+    Args:
+        input_: Un-formatted string.
+
+    Returns:
+        str:
+        A perfect string.
 
     """
+    return ''.join([i for i in input_ if not i.isdigit() and i not in [',', '.', '?', '-', ';', '!', ':']])
 
-    @staticmethod
-    def extract_str(input_) -> str:
-        """Extracts strings from the received input.
 
-        Args:
-            input_: Un-formatted string.
+def device_model() -> str:
+    """Uses `sysctl` command to get the device model and version information.
 
-        Returns:
-            str:
-            A perfect string.
+    Returns:
+        str:
+        Model of the parent device.
 
-        """
-        return ''.join([i for i in input_ if not i.isdigit() and i not in [',', '.', '?', '-', ';', '!', ':']])
-
-    @staticmethod
-    def device_model() -> str:
-        """Uses `sysctl` command to get the device model and version information.
-
-        Returns:
-            str:
-            Model of the parent device.
-
-        """
-        device = (check_output("sysctl hw.model", shell=True)).decode('utf-8').split('\n')  # gets model info
-        result = list(filter(None, device))[0]  # removes empty string ('\n')
-        model = Helper.extract_str(result).replace('hwmodel', '').strip()
-        return model
+    """
+    device = (check_output("sysctl hw.model", shell=True)).decode('utf-8').split('\n')  # gets model info
+    result = list(filter(None, device))[0]  # removes empty string ('\n')
+    model = extract_str(result).replace('hwmodel', '').strip()
+    return model

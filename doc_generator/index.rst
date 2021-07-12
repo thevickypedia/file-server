@@ -1,9 +1,9 @@
-.. personal_cloud documentation master file, created by
+.. PersonalCloud documentation master file, created by
    sphinx-quickstart on Sat Jul 10 03:11:52 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to personal_cloud's documentation!
+Welcome to PersonalCloud's documentation!
 ==========================================
 
 .. toctree::
