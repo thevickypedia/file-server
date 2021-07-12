@@ -80,7 +80,7 @@ def tunnel() -> None:
     public_url = None
     try:
         endpoint = connect(port, "http", options={"remote_addr": f"{host}:{port}"})  # Open a ngrok tunnel to the socket
-        public_url = endpoint.public_url
+        public_url = endpoint.public_url.replace('http', 'https')
         writer(public_url)
     except PyngrokError as err:
         logger.error(err)

@@ -43,13 +43,22 @@ Another important variable:<br>
 
 ### Environment Variables Optional:
 ###### To host on a custom port:<br>
-```text
-Well-Known ports: 0 to 1023
-Registered ports: 1024 to 49151
-Dynamically available: 49152 to 65535
-```
-Command to check current port usage:<br>
-`netstat -anvp tcp | awk 'NR<3 || /LISTEN/'`
+
+<details>
+  <summary>Tips on choosing port numbers.</summary>
+<br>
+
+  > :bulb: &nbsp; Categories of port numbers.
+
+    Well-Known ports: 0 to 1023
+    Registered ports: 1024 to 49151
+    Dynamically available: 49152 to 65535
+
+  > :bulb: &nbsp; Command to check current port usage.
+
+  `netstat -anvp tcp | awk 'NR<3 || /LISTEN/'`
+
+</details>
 
 `port` - Choose a port number that's available.
 
@@ -61,7 +70,7 @@ Command to check current port usage:<br>
 `recipient` Recipient email address to whom the notification has to be sent.
 
 <details>
-  <summary>LOGOUT button and its functionality work after making some changes to SimpleHTTPRequestHandler</summary>
+  <summary>LOGOUT button and its functionality requires some changes to SimpleHTTPRequestHandler</summary>
 
   ###### [http > server.py > SimpleHTTPRequestHandler > list_directory()](https://docs.python.org/3/library/http.server.html#http.server.SimpleHTTPRequestHandler.do_GET)
 ```text
@@ -69,6 +78,7 @@ Command to check current port usage:<br>
 2. Create a script that does a POST call to the source endpoint.
 3. Add a message in the POST call to read 'LOGOUT'
 ```
+> :bulb: &nbsp; You can add more custom buttons by including JS, CSS in the HTML part in `list_directory()`
 </details>
 
 ### Steps to host on the internet:
@@ -78,9 +88,13 @@ Command to check current port usage:<br>
 #### Initialize ngrok:
 #### Option 1:
 - `ngrok http $port`
+
+  > Uses a random port number if [env var for port](https://github.com/thevickypedia/personal_cloud#environment-variables-optional) is not set.
+
 #### Option 2:
 - `python3 ngrok.py`
-  > Note: Uses the port number `4443` by default.
+
+  > Uses the port number `4443` by default if [env var for port](https://github.com/thevickypedia/personal_cloud#environment-variables-optional) is not set.
 
 ### Run-book:
 https://thevickypedia.github.io/personal_cloud/
@@ -96,11 +110,7 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 ### Pre-Commit
 `pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](gen_docs.sh) 
 to update the [runbook](#Run-book)
-> Command: `pre-commit run --all-files`
-
-#### Usage:
-<h6>Manual: <code>cd doc_generator && make html</code><h6>
-<h6>Auto: The autodoc generation will run as part of <code>pre-commit</code></h6>
+> `pre-commit run --all-files`
 
 ## License & copyright
 
