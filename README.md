@@ -72,7 +72,7 @@ Another important variable:<br>
 <details>
   <summary>LOGOUT button and its functionality requires some changes to SimpleHTTPRequestHandler</summary>
 
-  ###### [http > server.py > SimpleHTTPRequestHandler > list_directory()](https://docs.python.org/3/library/http.server.html#http.server.SimpleHTTPRequestHandler.do_GET)
+###### [http > server.py > SimpleHTTPRequestHandler > list_directory()](https://docs.python.org/3/library/http.server.html#http.server.SimpleHTTPRequestHandler.do_GET)
 ```text
 1. Create a button within the html body.
 2. Create a script that does a POST call to the source endpoint.

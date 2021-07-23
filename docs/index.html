@@ -68,37 +68,37 @@ is used which contains the output stream for writing a response back to the clie
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.disable_cache">
-<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.Authenticator.disable_cache" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.disable_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers to force no-cache and site-data to expire.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.do_AUTH">
-<span class="sig-name descname"><span class="pre">do_AUTH</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.Authenticator.do_AUTH" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_AUTH</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.do_AUTH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends headers to authenticate the requester.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.do_GET">
-<span class="sig-name descname"><span class="pre">do_GET</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.Authenticator.do_GET" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_GET</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.do_GET" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serve a front end with user authentication.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.do_HEAD">
-<span class="sig-name descname"><span class="pre">do_HEAD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.Authenticator.do_HEAD" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_HEAD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.do_HEAD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends 200 response and sends headers when authentication is successful.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.do_POST">
-<span class="sig-name descname"><span class="pre">do_POST</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.Authenticator.do_POST" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_POST</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.do_POST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles POST request and writes the received data into a yaml file.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.log_message">
-<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.Authenticator.log_message" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.log_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppresses logs from http.server by holding the args.</p>
 <p>Overwrites the base method: <cite>BaseHTTPRequestHandler.log_message()</cite></p>
 <dl class="field-list simple">
@@ -115,7 +115,7 @@ is used which contains the output stream for writing a response back to the clie
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.file_gatherer">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">file_gatherer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">list</span><a class="headerlink" href="#authserver.file_gatherer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">file_gatherer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#authserver.file_gatherer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses <cite>pathlib.Path(file).read_text()</cite> to read the files.</p>
 <p class="rubric">Notes</p>
 <p>Actual way of doing this is to open and read the file individually. But I’m a fan of list comprehensions.</p>
@@ -134,7 +134,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.line_number">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">line_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#authserver.line_number" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">line_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#authserver.line_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses the inspect module to fetch the line number from current frame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -148,7 +148,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.logging_wrapper">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">logging_wrapper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">tuple</span><a class="headerlink" href="#authserver.logging_wrapper" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">logging_wrapper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#authserver.logging_wrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps logging module to create multiple handlers for different purposes.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -170,7 +170,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.reset_auth">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">reset_auth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#authserver.reset_auth" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">reset_auth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#authserver.reset_auth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tells if the authentication header has to be reset and cache to be cleared.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -191,7 +191,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.server_function">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#authserver.server_function" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.server_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses local certificate from ~.ssh to serve the page as https if flag is set to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -201,51 +201,11 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 </dd></dl>
 
 </section>
-<section id="module-helper_functions.emailer">
-<span id="emailer"></span><h1>Emailer<a class="headerlink" href="#module-helper_functions.emailer" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="helper_functions.emailer.Emailer">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">helper_functions.emailer.</span></span><span class="sig-name descname"><span class="pre">Emailer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gmail_user</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_pass</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipient</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attachment</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">body</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#helper_functions.emailer.Emailer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates Emailer object to send an email to defined recipient from a defined sender with or without attachments.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Emailer</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="helper_functions.emailer.Emailer.multipart_message">
-<span class="sig-name descname"><span class="pre">multipart_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">email.mime.multipart.MIMEMultipart</span><a class="headerlink" href="#helper_functions.emailer.Emailer.multipart_message" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a multipart message with the subject, body, from and to address, and attachment if passed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>MIMEMultipart version of the created message.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>multipart.MIMEMultipart</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="helper_functions.emailer.Emailer.send_email">
-<span class="sig-name descname"><span class="pre">send_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#helper_functions.emailer.Emailer.send_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates a TLS connection and sends the email.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Status of the email message.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</section>
 <section id="module-helper_functions.ngrok">
 <span id="ngrok-main-module"></span><h1>Ngrok - Main Module<a class="headerlink" href="#module-helper_functions.ngrok" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.ngrok.restart">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">restart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.ngrok.restart" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">restart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.ngrok.restart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restarts <a class="reference external" href="https://git.io/JchBu">ngrok.py</a>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -259,7 +219,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.ngrok.tunnel">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">tunnel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.ngrok.tunnel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">tunnel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.ngrok.tunnel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an HTTP socket and uses <cite>pyngrok</cite> module to bind the socket.</p>
 <p>Once the socket is bound, the listener is activated and runs in a forever loop accepting connections.</p>
 <div class="admonition seealso">
@@ -274,7 +234,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.ngrok.writer">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.ngrok.writer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.ngrok.writer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the received url into a file named <cite>url</cite>.</p>
 <p class="rubric">Notes</p>
 <ul class="simple">
@@ -293,7 +253,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 <span id="ngrok-gatherer"></span><h1>Ngrok Gatherer<a class="headerlink" href="#module-helper_functions.ngrok_fetcher" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.ngrok_fetcher.get_ngrok">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok_fetcher.</span></span><span class="sig-name descname"><span class="pre">get_ngrok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#helper_functions.ngrok_fetcher.get_ngrok" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok_fetcher.</span></span><span class="sig-name descname"><span class="pre">get_ngrok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#helper_functions.ngrok_fetcher.get_ngrok" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends a <cite>GET</cite> request to api/tunnels to get the <cite>ngrok</cite> public url.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -316,7 +276,7 @@ However as a sanity check, the script uses port number stored in env var to make
 
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.ngrok_fetcher.get_port">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok_fetcher.</span></span><span class="sig-name descname"><span class="pre">get_port</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#helper_functions.ngrok_fetcher.get_port" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok_fetcher.</span></span><span class="sig-name descname"><span class="pre">get_port</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#helper_functions.ngrok_fetcher.get_port" title="Permalink to this definition">¶</a></dt>
 <dd><p>Looks for ngrok processID. If found, scans the PID in <cite>netstat</cite> for an <cite>activeListener</cite> to skim the port number.</p>
 <p class="rubric">Notes</p>
 <p>Alternate is to run <cite>echo {root_password} | sudo -S lsof -PiTCP -sTCP:LISTEN | grep ngrok</cite></p>
@@ -346,26 +306,26 @@ However as a sanity check, the script uses port number stored in env var to make
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="helper_functions.volume.Volume.mount_disk_by_label">
-<span class="sig-name descname"><span class="pre">mount_disk_by_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.volume.Volume.mount_disk_by_label" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mount_disk_by_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.volume.Volume.mount_disk_by_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a terminal command to mount the disk using the volume name.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="helper_functions.volume.Volume.mount_disk_by_uuid">
-<span class="sig-name descname"><span class="pre">mount_disk_by_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.volume.Volume.mount_disk_by_uuid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mount_disk_by_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.volume.Volume.mount_disk_by_uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tries to mount the disk using UUID which is updated by the <cite>unmount_disk</cite> function.</p>
 <p>Calls <cite>mount_disk_by_label</cite> if UUID is None.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="helper_functions.volume.Volume.stop_usage">
-<span class="sig-name descname"><span class="pre">stop_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.volume.Volume.stop_usage" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">stop_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.volume.Volume.stop_usage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Kills all the background processes utilizing the volume to stop the disk usage.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="helper_functions.volume.Volume.unmount_disk">
-<span class="sig-name descname"><span class="pre">unmount_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#helper_functions.volume.Volume.unmount_disk" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">unmount_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.volume.Volume.unmount_disk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ejects the disk from parent device.</p>
 </dd></dl>
 
@@ -373,7 +333,7 @@ However as a sanity check, the script uses port number stored in env var to make
 
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.volume.device_model">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.volume.</span></span><span class="sig-name descname"><span class="pre">device_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#helper_functions.volume.device_model" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.volume.</span></span><span class="sig-name descname"><span class="pre">device_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#helper_functions.volume.device_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses <cite>sysctl</cite> command to get the device model and version information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -387,7 +347,7 @@ However as a sanity check, the script uses port number stored in env var to make
 
 <dl class="py function">
 <dt class="sig sig-object py" id="helper_functions.volume.extract_str">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.volume.</span></span><span class="sig-name descname"><span class="pre">extract_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#helper_functions.volume.extract_str" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">helper_functions.volume.</span></span><span class="sig-name descname"><span class="pre">extract_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#helper_functions.volume.extract_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts strings from the received input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -423,7 +383,6 @@ However as a sanity check, the script uses port number stored in env var to make
   <ul>
 <li><a class="reference internal" href="#">Welcome to PersonalCloud’s documentation!</a></li>
 <li><a class="reference internal" href="#module-authserver">PersonalCloud - Main Module</a></li>
-<li><a class="reference internal" href="#module-helper_functions.emailer">Emailer</a></li>
 <li><a class="reference internal" href="#module-helper_functions.ngrok">Ngrok - Main Module</a></li>
 <li><a class="reference internal" href="#module-helper_functions.ngrok_fetcher">Ngrok Gatherer</a></li>
 <li><a class="reference internal" href="#module-helper_functions.restart">Ngrok Restart</a></li>
@@ -442,7 +401,7 @@ However as a sanity check, the script uses port number stored in env var to make
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -467,7 +426,7 @@ However as a sanity check, the script uses port number stored in env var to make
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Vignesh Sivanandha Rao.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.1.0.
     </div>
   </body>
 </html>

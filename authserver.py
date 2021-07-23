@@ -1,19 +1,20 @@
+import logging
 from base64 import b64decode, b64encode
 from binascii import Error
 from datetime import datetime
 from functools import partial
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from importlib import reload
 from inspect import currentframe
-from logging import INFO, FileHandler, Formatter, StreamHandler, getLogger
 from os import environ, getcwd, listdir, makedirs, path, rename, stat
 from pathlib import Path, PurePath
 from ssl import wrap_socket
 from time import time
 from urllib.request import urlopen
 
+from gmailconnector.send_email import SendEmail
 from yaml import FullLoader, dump, load
 
-from helper_functions.emailer import Emailer
 from helper_functions.ngrok_fetcher import get_ngrok
 
 
@@ -136,7 +137,7 @@ class Authenticator(SimpleHTTPRequestHandler):
         if client_info.get('ip') == load(urlopen('https://ipapi.co/json/'), Loader=FullLoader).get('ip'):
             consoleLogger.info(f"Internal connection request received. Response: {client_info.get('_html_ref')}")
             return
-        rootLogger.fatal(str(client_info).replace("'", "").lstrip('{').rstrip('}'))
+        rootLogger.fatal(str(client_info).strip("{}").replace("'", ""))
 
         if path.isfile(client_file):
             with open(client_file, 'r') as client:
@@ -146,7 +147,7 @@ class Authenticator(SimpleHTTPRequestHandler):
             if int(now.timestamp()) - int(stat(client_file).st_mtime) < 300 and \
                     client_info.get('_html_ref') == exist.get('_html_ref') and \
                     client_info.get('ip') == exist.get('ip'):
-                rootLogger.critical(f"{exist.get('ip')} performed {exist.get('_html_ref')} once again within 2 minutes")
+                rootLogger.critical(f"{exist.get('ip')} performed {exist.get('_html_ref')} once again within 5 minutes")
                 return
 
         current_time = f"Server Datetime: {now.strftime('%B %d, %Y %I:%M %p')}"
@@ -177,11 +178,9 @@ class Authenticator(SimpleHTTPRequestHandler):
         if host_dir == home_dir:
             email_body += f"\n\n\nLogs: {endpoint}/{(str(base_file).strip(base_file.name) + log_file).strip(host_dir)}"
 
-        rootLogger.critical(Emailer(
-            gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
-            subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
-            body=email_body
-        ).send_email())
+        SendEmail(gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
+                  subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
+                  body=email_body).send_email()
 
     def disable_cache(self) -> None:
         """Headers to force no-cache and site-data to expire."""
@@ -194,7 +193,7 @@ class Authenticator(SimpleHTTPRequestHandler):
         self.headers.add_header(_name='Clear-Site-Data', _value='"cache", "cookies", "storage", "executionContexts"')
 
 
-def reset_auth():
+def reset_auth() -> bool:
     """Tells if the authentication header has to be reset and cache to be cleared.
 
     See Also:
@@ -292,24 +291,25 @@ def logging_wrapper() -> tuple:
         A tuple of classes logging.Logger for file, console and root logging.
 
     """
+    reload(logging)  # since the gmail-connector module uses logging, it is better to reload logging module before start
     makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
-    log_formatter = Formatter(
+    log_formatter = logging.Formatter(
         fmt="%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s - Line: %(lineno)d - %(message)s",
         datefmt='%b-%d-%Y %H:%M:%S'
     )
 
-    file_logger = getLogger('FILE')
-    console_logger = getLogger('CONSOLE')
-    root_logger = getLogger(base_file.stem)
+    file_logger = logging.getLogger('FILE')
+    console_logger = logging.getLogger('CONSOLE')
+    root_logger = logging.getLogger(base_file.stem)
 
-    file_handler = FileHandler(filename=log_file)
+    file_handler = logging.FileHandler(filename=log_file)
     file_handler.setFormatter(fmt=log_formatter)
-    file_logger.setLevel(level=INFO)
+    file_logger.setLevel(level=logging.INFO)
     file_logger.addHandler(hdlr=file_handler)
 
-    console_handler = StreamHandler()
+    console_handler = logging.StreamHandler()
     console_handler.setFormatter(fmt=log_formatter)
-    console_logger.setLevel(level=INFO)
+    console_logger.setLevel(level=logging.INFO)
     console_logger.addHandler(hdlr=console_handler)
 
     root_logger.addHandler(hdlr=file_handler)
