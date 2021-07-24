@@ -8,8 +8,9 @@ Welcome to PersonalCloud's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Read Me:
 
+   README
 
 PersonalCloud - Main Module
 ===========================
