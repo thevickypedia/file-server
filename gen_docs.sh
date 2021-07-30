@@ -4,5 +4,6 @@
 set -e
 rm -rf docs
 mkdir docs
+python3 -m pip install --no-cache --upgrade sphinx
 cp README.md doc_generator && cd doc_generator && make clean html && mv _build/html/* ../docs && rm README.md
 touch ../docs/.nojekyll
