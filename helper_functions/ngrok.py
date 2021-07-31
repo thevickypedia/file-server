@@ -57,14 +57,20 @@ def tunnel() -> None:
     See Also:
         Run the following code to setup.
 
-        `from os import environ`
+        .. code-block:: python
+            :emphasize-lines: 4,7,10
 
-        `from pyngrok import conf`
+            from pyngrok.conf import PyngrokConfig, get_default
+            from pyngrok.ngrok import set_auth_token
 
-        `conf.get_default().config_path = "/opt/ngrok/ngrok.yml"`
+            # Sets auth token only during run time without modifying global config.
+            PyngrokConfig.auth_token = '<NGROK_AUTH_TOKEN>'
 
-        `ngrok.set_auth_token(environ.get("NGROK_AUTH_TOKEN"))`
+            # Uses auth token from the specified file without modifying global config.
+            get_default().config_path = "/path/to/config.yml"
 
+            # Changes auth token at $HOME/.ngrok2/ngrok.yml
+            set_auth_token('<NGROK_AUTH_TOKEN>')
     """
     port = environ.get('port', 4443)
     host = gethostbyname('localhost')

@@ -7,7 +7,7 @@
 ![Code coverage](https://img.shields.io/github/languages/top/thevickypedia/personal_cloud)
 
 ###### Repo Stats
-[![GitHub](https://img.shields.io/github/license/thevickypedia/personal_cloud)](LICENSE)
+[![GitHub](https://img.shields.io/github/license/thevickypedia/personal_cloud)](https://github.com/thevickypedia/personal_cloud/blob/main/LICENSE)
 [![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
 [![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
 [![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
@@ -108,7 +108,7 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 [`isort`](https://pycqa.github.io/isort/)
 
 ### Pre-Commit
-`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](gen_docs.sh) 
+`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/personal_cloud/blob/main/gen_docs.sh) 
 to update the [runbook](#Run-book)
 > `pre-commit run --all-files`
 
@@ -116,4 +116,4 @@ to update the [runbook](#Run-book)
 
 &copy; Vignesh Sivanandha Rao
 
-Licensed under the [MIT License](LICENSE)
+Licensed under the [MIT License](https://github.com/thevickypedia/personal_cloud/blob/main/LICENSE)

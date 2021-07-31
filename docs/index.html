@@ -79,10 +79,12 @@
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>To perform the authentication, a <cite>do_AUTH()</cite> is implemented sending 401 and WWW-Authenticate header in response.
-To handle <cite>POST</cite> requests, a <cite>do_POST()</cite> has been implemented, which reads <cite>content-length</cite> header using
-<cite>rfile.read</cite> ready to read from the start of the optional input data. To write data on the server, <cite>wfile.write</cite>
-is used which contains the output stream for writing a response back to the client.</p>
+<ul class="simple">
+<li><p>To perform authentication, a <cite>do_AUTH()</cite> is implemented sending 401 and WWW-Authenticate header in response.</p></li>
+<li><p>To handle <cite>POST</cite> requests, a <cite>do_POST()</cite> has been implemented, which reads <cite>content-length</cite> header.</p></li>
+<li><p>Headers are read using <cite>rfile.read</cite> from the start of the optional input data.</p></li>
+<li><p>Data is sent to server using, <cite>wfile.write</cite> which contains the output stream to write response to the client.</p></li>
+</ul>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.disable_cache">
@@ -243,10 +245,19 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Run the following code to setup.</p>
-<p><cite>from os import environ</cite></p>
-<p><cite>from pyngrok import conf</cite></p>
-<p><cite>conf.get_default().config_path = “/opt/ngrok/ngrok.yml”</cite></p>
-<p><cite>ngrok.set_auth_token(environ.get(“NGROK_AUTH_TOKEN”))</cite></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyngrok.conf</span> <span class="kn">import</span> <span class="n">PyngrokConfig</span><span class="p">,</span> <span class="n">get_default</span>
+<span class="kn">from</span> <span class="nn">pyngrok.ngrok</span> <span class="kn">import</span> <span class="n">set_auth_token</span>
+
+<span class="hll"><span class="c1"># Sets auth token only during run time without modifying global config.</span>
+</span><span class="n">PyngrokConfig</span><span class="o">.</span><span class="n">auth_token</span> <span class="o">=</span> <span class="s1">&#39;&lt;NGROK_AUTH_TOKEN&gt;&#39;</span>
+
+<span class="hll"><span class="c1"># Uses auth token from the specified file without modifying global config.</span>
+</span><span class="n">get_default</span><span class="p">()</span><span class="o">.</span><span class="n">config_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/config.yml&quot;</span>
+
+<span class="hll"><span class="c1"># Changes auth token at $HOME/.ngrok2/ngrok.yml</span>
+</span><span class="n">set_auth_token</span><span class="p">(</span><span class="s1">&#39;&lt;NGROK_AUTH_TOKEN&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </dd></dl>
 

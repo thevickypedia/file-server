@@ -32,10 +32,10 @@ class Authenticator(SimpleHTTPRequestHandler):
         - Upon successful authentication, a welcome page loads. Click on proceed to access the PersonalCloud.
 
     See Also:
-        To perform the authentication, a `do_AUTH()` is implemented sending 401 and WWW-Authenticate header in response.
-        To handle `POST` requests, a `do_POST()` has been implemented, which reads `content-length` header using
-        `rfile.read` ready to read from the start of the optional input data. To write data on the server, `wfile.write`
-        is used which contains the output stream for writing a response back to the client.
+        - To perform authentication, a `do_AUTH()` is implemented sending 401 and WWW-Authenticate header in response.
+        - To handle `POST` requests, a `do_POST()` has been implemented, which reads `content-length` header.
+        - Headers are read using `rfile.read` from the start of the optional input data.
+        - Data is sent to server using, `wfile.write` which contains the output stream to write response to the client.
 
     """
 
