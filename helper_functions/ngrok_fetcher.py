@@ -1,3 +1,5 @@
+"""Identifies if an existing ngrok tunnel."""
+
 from os import environ
 from socket import gethostbyname
 from subprocess import check_output
@@ -18,7 +20,6 @@ def get_port() -> str:
     Returns:
         str:
         Local IP address and port number on which ngrok is tunnelling.
-
     """
     pid_check = check_output("ps -ef | grep ngrok", shell=True)
     pid_list = pid_check.decode('utf-8').split('\n')
@@ -40,7 +41,6 @@ def get_ngrok() -> str or None:
         str or None:
         - On success, returns the `ngrok` public URL.
         - On failure, returns None to exit function.
-
     """
     if validate := get_port():
         port = validate.split('.')[-1]
@@ -57,3 +57,7 @@ def get_ngrok() -> str or None:
 
     tunnel = load(response.content.decode(), Loader=FullLoader)['tunnels']
     return tunnel[0].get('public_url')
+
+
+if __name__ == '__main__':
+    print(get_ngrok())

@@ -110,6 +110,9 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 ### Pre-Commit
 `pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/personal_cloud/blob/main/gen_docs.sh) 
 to update the [runbook](#Run-book)
+
+> `pip install --no-cache --upgrade sphinx pre-commit recommonmark`
+
 > `pre-commit run --all-files`
 
 ## License & copyright

@@ -15,6 +15,7 @@ from urllib.request import urlopen
 from gmailconnector.send_email import SendEmail
 from yaml import FullLoader, dump, load
 
+from helper_functions.ngrok import checker
 from helper_functions.ngrok_fetcher import get_ngrok
 
 
@@ -361,13 +362,16 @@ if __name__ == "__main__":
     cert_file = path.expanduser(ssh_dir) + path.sep + "cert.pem"
     key_file = path.expanduser(ssh_dir) + path.sep + "key.pem"
 
-    if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
-        server_function(flag=True)
-    else:
-        rootLogger.warning(
-            f"Run the following command in a terminal at {ssh_dir} to create a private certificate."
-            f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
-            f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}"
-            f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
-        )
+    if checker():
         server_function(flag=False)
+    else:
+        if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
+            server_function(flag=True)
+        else:
+            rootLogger.warning(
+                f"Run the following command in a terminal at {ssh_dir} to create a self-signed certificate."
+                f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
+                f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}"
+                f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
+            )
+            server_function(flag=False)

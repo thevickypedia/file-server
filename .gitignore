@@ -12,6 +12,12 @@ url
 # sphinx docs builder within doc_generator
 _build
 
+# Ngrok auth token
+ngrok.yml
+
+# File to load env vars
+.env
+
 # stores connecting client's information in yaml file
 client_info.yaml
 
