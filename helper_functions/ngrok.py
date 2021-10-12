@@ -1,7 +1,7 @@
 from logging import INFO, basicConfig, getLogger
 from os import environ, listdir, path, remove, system
 from pathlib import Path
-from socket import AF_INET, SOCK_STREAM, gethostbyname, socket
+from socket import AF_INET, SOCK_DGRAM, SOCK_STREAM, gethostbyname, socket
 from subprocess import check_output
 
 from pyngrok.conf import get_default
@@ -12,6 +12,13 @@ basicConfig(format="%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s - Li
             level=INFO)
 getLogger(name='pyngrok').propagate = False  # disable module level logging
 logger = getLogger(Path(__file__).stem)
+
+ip_socket = socket(AF_INET, SOCK_DGRAM)
+ip_socket.connect(("8.8.8.8", 80))
+if not (host := ip_socket.getsockname()[0]):
+    host = gethostbyname('localhost')
+ip_socket.close()
+port = environ.get('port', 4443)
 
 
 def writer(url) -> None:
@@ -82,9 +89,6 @@ def tunnel() -> None:
             # Changes auth token at $HOME/.ngrok2/ngrok.yml
             set_auth_token('<NGROK_AUTH_TOKEN>')
     """
-    port = environ.get('port', 4443)
-    host = gethostbyname('localhost')
-
     sock = socket(AF_INET, SOCK_STREAM)
 
     # # Uncomment bind to create a whole new connection to the port

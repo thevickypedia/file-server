@@ -15,7 +15,7 @@ from urllib.request import urlopen
 from gmailconnector.send_email import SendEmail
 from yaml import FullLoader, dump, load
 
-from helper_functions.ngrok import checker
+from helper_functions.ngrok import checker, host, port
 from helper_functions.ngrok_fetcher import get_ngrok
 
 
@@ -229,7 +229,7 @@ def server_function(flag: bool) -> None:
         password=password,
         directory=host_dir
     )
-    server = HTTPServer(server_address=('localhost', port), RequestHandlerClass=handler_class)
+    server = HTTPServer(server_address=(host, port), RequestHandlerClass=handler_class)
 
     if flag:
         server.socket = wrap_socket(sock=server.socket, server_side=True, certfile=cert_file, keyfile=key_file)
@@ -321,9 +321,6 @@ def logging_wrapper() -> tuple:
 if __name__ == "__main__":
     if not (username := environ.get('username')) or not (password := environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
-
-    default_port = 4443
-    port = int(environ.get('port', default_port))
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
