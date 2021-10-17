@@ -8,6 +8,7 @@ from importlib import reload
 from inspect import currentframe
 from os import environ, getcwd, listdir, makedirs, path, rename, stat
 from pathlib import Path, PurePath
+from socket import AF_INET, SOCK_DGRAM, gethostbyname, socket
 from ssl import wrap_socket
 from time import time
 from urllib.request import urlopen
@@ -15,7 +16,7 @@ from urllib.request import urlopen
 from gmailconnector.send_email import SendEmail
 from yaml import FullLoader, dump, load
 
-from helper_functions.ngrok import checker, host, port
+from helper_functions.ngrok import checker, ngrok_host, ngrok_port
 from helper_functions.ngrok_fetcher import get_ngrok
 
 
@@ -157,11 +158,11 @@ class Authenticator(SimpleHTTPRequestHandler):
             client.write(f"{hashes}\n#\t\t\t\t{current_time}\n{hashes}\n")
             dump(client_info, client, indent=4)
 
-        if not notify:
-            return
-
         if not (status := client_info.get('_html_ref')):
             status = 'An undefined login attempt'
+
+        if not notify or status not in ['LOGIN SUCCESS', 'An undefined login attempt']:
+            return
 
         if global_endpoint := get_ngrok():
             endpoint = global_endpoint
@@ -359,9 +360,16 @@ if __name__ == "__main__":
     cert_file = path.expanduser(ssh_dir) + path.sep + "cert.pem"
     key_file = path.expanduser(ssh_dir) + path.sep + "key.pem"
 
+    port = ngrok_port
     if checker():
+        host = ngrok_host
         server_function(flag=False)
     else:
+        ip_socket = socket(AF_INET, SOCK_DGRAM)
+        ip_socket.connect(("8.8.8.8", 80))
+        if not (host := ip_socket.getsockname()[0]):
+            host = gethostbyname('localhost')
+        ip_socket.close()
         if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
             server_function(flag=True)
         else:
