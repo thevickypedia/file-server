@@ -64,7 +64,7 @@
 <span id="personalcloud-main-module"></span><h1>PersonalCloud - Main Module<a class="headerlink" href="#module-authserver" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="authserver.Authenticator">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">Authenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authserver.Authenticator" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">Authenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#authserver.Authenticator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main class to present webpages and authentication.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Authenticator</span>
 </pre></div>
@@ -118,7 +118,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="authserver.Authenticator.log_message">
-<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.log_message" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.Authenticator.log_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppresses logs from http.server by holding the args.</p>
 <p>Overwrites the base method: <cite>BaseHTTPRequestHandler.log_message()</cite></p>
 <dl class="field-list simple">
@@ -211,7 +211,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.server_function">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.server_function" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.server_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses local certificate from ~.ssh to serve the page as https if flag is set to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -343,7 +343,7 @@ However as a sanity check, the script uses port number stored in env var to make
 <span id="volume"></span><h1>Volume<a class="headerlink" href="#module-helper_functions.volume" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="helper_functions.volume.Volume">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">helper_functions.volume.</span></span><span class="sig-name descname"><span class="pre">Volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#helper_functions.volume.Volume" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">helper_functions.volume.</span></span><span class="sig-name descname"><span class="pre">Volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#helper_functions.volume.Volume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates Volume object to mount, unmount and stop the disk usage.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Volume</span>
 </pre></div>
@@ -476,7 +476,7 @@ However as a sanity check, the script uses port number stored in env var to make
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Vignesh Sivanandha Rao.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.2.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
     </div>
   </body>
 </html>

@@ -180,9 +180,13 @@ class Authenticator(SimpleHTTPRequestHandler):
         if host_dir == home_dir:
             email_body += f"\n\n\nLogs: {endpoint}/{(str(base_file).strip(base_file.name) + log_file).strip(host_dir)}"
 
-        SendEmail(gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
-                  subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
-                  body=email_body).send_email()
+        response = SendEmail(gmail_user=gmail_user, gmail_pass=gmail_pass, recipient=recipient,
+                             subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
+                             body=email_body).send_email()
+        if response.ok:
+            rootLogger.info('Email has been sent successfully.')
+        else:
+            rootLogger.error(response.body)
 
     def disable_cache(self) -> None:
         """Headers to force no-cache and site-data to expire."""
