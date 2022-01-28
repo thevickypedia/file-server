@@ -14,7 +14,7 @@ getLogger(name='pyngrok').propagate = False  # disable module level logging
 logger = getLogger(Path(__file__).stem)
 
 host = ngrok_host = gethostbyname('localhost')
-port = ngrok_port = environ.get('port', 4443)
+port = ngrok_port = int(environ.get('port', 4443))
 
 
 def writer(url) -> None:

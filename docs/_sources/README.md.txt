@@ -20,7 +20,7 @@
 [![Docs](https://img.shields.io/docsrs/docs/latest)](https://thevickypedia.github.io/personal_cloud/)
 
 ###### Activity
-![Maintained](https://img.shields.io/maintenance/yes/2021)
+![Maintained](https://img.shields.io/maintenance/yes/2022)
 [![GitHub Repo created](https://img.shields.io/date/1618966420)](https://api.github.com/repos/thevickypedia/personal_cloud)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
 [![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
@@ -28,7 +28,7 @@
 # Personal Cloud with basic authentication
 Set up a personal cloud to access files in local machine from anywhere on the internet.
 
-## Setup:
+## Setup
 ### Environment Variables Required:
 `username` Username which will be required to access the server.
 <br>

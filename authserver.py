@@ -324,7 +324,7 @@ def logging_wrapper() -> tuple:
 
 
 if __name__ == "__main__":
-    if not (username := environ.get('username')) or not (password := environ.get('password')):
+    if not (username := environ.get('username', environ.get('USER'))) or not (password := environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
