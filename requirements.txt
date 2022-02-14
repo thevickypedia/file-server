@@ -3,3 +3,4 @@ PyYAML==5.4.1
 requests==2.25.1
 gmail-connector>=0.3.6
 recommonmark
+pyOpenSSL

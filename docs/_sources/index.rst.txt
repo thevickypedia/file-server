@@ -19,6 +19,13 @@ PersonalCloud - Main Module
    :members:
    :undoc-members:
 
+Open SSL
+========
+
+.. automodule:: helper_functions.cert
+   :members:
+   :undoc-members:
+
 Ngrok - Main Module
 ===================
 
@@ -30,13 +37,6 @@ Ngrok Gatherer
 ==============
 
 .. automodule:: helper_functions.ngrok_fetcher
-   :members:
-   :undoc-members:
-
-Ngrok Restart
-=============
-
-.. automodule:: helper_functions.restart
    :members:
    :undoc-members:
 

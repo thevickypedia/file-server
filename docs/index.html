@@ -139,7 +139,7 @@
 <dd><p>Uses <cite>pathlib.Path(file).read_text()</cite> to read the files.</p>
 <p class="rubric">Notes</p>
 <p>Actual way of doing this is to open and read the file individually. But I’m a fan of list comprehensions.</p>
-<p><cite>auth_success, login_failed, session_expiry = [open(f’html/{file}’).read() for file in listdir(‘html’)]</cite></p>
+<p><cite>auth_success, login_failed, session_expiry = [open(f’html/{file}’).read() for file in os.listdir(‘html’)]</cite></p>
 <p>But opening a file in list comprehension leaves the file open through out the code execution.
 This can be verified using <cite>psutil.Process().open_files()</cite></p>
 <dl class="field-list simple">
@@ -198,10 +198,7 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p>True if it is the first login attempt or it has been more than 15 minutes since the first/previous expiry.</p></li>
-</ul>
-</p>
+<dd class="field-odd"><p>True if it is the first login attempt, or it has been more than 15 minutes since the first/previous expiry.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>bool</p>
@@ -211,11 +208,50 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="authserver.server_function">
-<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.server_function" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">authserver.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ssl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#authserver.server_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses local certificate from ~.ssh to serve the page as https if flag is set to True.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>flag</strong> – Whether or not to wrap the socket with the certificate.</p>
+<dd class="field-odd"><p><strong>ssl</strong> – Whether to wrap the socket with the certificate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-helper_functions.cert">
+<span id="open-ssl"></span><h1>Open SSL<a class="headerlink" href="#module-helper_functions.cert" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="helper_functions.cert.generate_cert">
+<span class="sig-prename descclassname"><span class="pre">helper_functions.cert.</span></span><span class="sig-name descname"><span class="pre">generate_cert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">common_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'US'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locality_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Springfield'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_or_province_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Missouri'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization_unit_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Information</span> <span class="pre">Technology'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validity_start_in_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validity_end_in_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">315360000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'key.pem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cert.pem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#helper_functions.cert.generate_cert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a private/self-signed certificate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>common_name</strong> – DNS name of the origin.</p></li>
+<li><p><strong>email_address</strong> – Contact email address for the cert. Defaults to <code class="docutils literal notranslate"><span class="pre">USER&#64;expose-localhost.com</span></code></p></li>
+<li><p><strong>country_name</strong> – Name of the country. Defaults to <code class="docutils literal notranslate"><span class="pre">US</span></code></p></li>
+<li><p><strong>locality_name</strong> – Name of the city. Defaults to <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">York</span></code></p></li>
+<li><p><strong>state_or_province_name</strong> – Name of the state/province. Defaults to <code class="docutils literal notranslate"><span class="pre">New</span> <span class="pre">York</span></code></p></li>
+<li><p><strong>organization_name</strong> – Name of the organization. Defaults to <code class="docutils literal notranslate"><span class="pre">common_name</span></code></p></li>
+<li><p><strong>organization_unit_name</strong> – Name of the organization unit. Defaults to <code class="docutils literal notranslate"><span class="pre">Information</span> <span class="pre">Technology</span></code></p></li>
+<li><p><strong>validity_start_in_seconds</strong> – From when the cert validity begins. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><strong>validity_end_in_seconds</strong> – Expiration duration of the cert. Defaults to <code class="docutils literal notranslate"><span class="pre">10</span> <span class="pre">years</span></code></p></li>
+<li><p><strong>key_file</strong> – Name of the key file.</p></li>
+<li><p><strong>cert_file</strong> – Name of the certificate.</p></li>
+<li><p><strong>key_size</strong> – Size of the public key. Defaults to 4096.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">x509</span> <span class="pre">-inform</span> <span class="pre">pem</span> <span class="pre">-in</span> <span class="pre">cert.crt</span> <span class="pre">-noout</span> <span class="pre">-text</span></code> to look at the generated cert using openssl.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Boolean flag to indicate whether <code class="docutils literal notranslate"><span class="pre">cert.pem</span></code> and <code class="docutils literal notranslate"><span class="pre">key.pem</span></code> files are empty.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -235,20 +271,6 @@ This can be verified using <cite>psutil.Process().open_files()</cite></p>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="helper_functions.ngrok.restart">
-<span class="sig-prename descclassname"><span class="pre">helper_functions.ngrok.</span></span><span class="sig-name descname"><span class="pre">restart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#helper_functions.ngrok.restart" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restarts <a class="reference external" href="https://git.io/JchBu">ngrok.py</a>.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p>Restart kills any active sessions of ngrok.</p></li>
-<li><p>Once done, it triggers <a class="reference external" href="https://git.io/JchB1">restart.py</a> which in turn starts ngrok after 5 seconds.</p></li>
-<li><p>Note that only the <cite>ngrok</cite> processID will be terminated and not the terminal/session that is tunneling it.</p></li>
-</ul>
-</div>
 </dd></dl>
 
 <dl class="py function">
@@ -334,10 +356,6 @@ However as a sanity check, the script uses port number stored in env var to make
 </dl>
 </dd></dl>
 
-</section>
-<section id="module-helper_functions.restart">
-<span id="ngrok-restart"></span><h1>Ngrok Restart<a class="headerlink" href="#module-helper_functions.restart" title="Permalink to this headline">¶</a></h1>
-<p>This is a basic query to start Ngrok after 5 seconds triggered by the restart() function in main module.</p>
 </section>
 <section id="module-helper_functions.volume">
 <span id="volume"></span><h1>Volume<a class="headerlink" href="#module-helper_functions.volume" title="Permalink to this headline">¶</a></h1>
@@ -428,9 +446,9 @@ However as a sanity check, the script uses port number stored in env var to make
     <ul>
 <li><a class="reference internal" href="#">Welcome to PersonalCloud’s documentation!</a></li>
 <li><a class="reference internal" href="#module-authserver">PersonalCloud - Main Module</a></li>
+<li><a class="reference internal" href="#module-helper_functions.cert">Open SSL</a></li>
 <li><a class="reference internal" href="#module-helper_functions.ngrok">Ngrok - Main Module</a></li>
 <li><a class="reference internal" href="#module-helper_functions.ngrok_fetcher">Ngrok Gatherer</a></li>
-<li><a class="reference internal" href="#module-helper_functions.restart">Ngrok Restart</a></li>
 <li><a class="reference internal" href="#module-helper_functions.volume">Volume</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>

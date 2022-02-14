@@ -1,4 +1,5 @@
 import logging
+import os
 from base64 import b64decode, b64encode
 from binascii import Error
 from datetime import datetime
@@ -6,7 +7,6 @@ from functools import partial
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from importlib import reload
 from inspect import currentframe
-from os import environ, getcwd, listdir, makedirs, path, rename, stat
 from pathlib import Path, PurePath
 from socket import AF_INET, SOCK_DGRAM, gethostbyname, socket
 from ssl import wrap_socket
@@ -16,7 +16,10 @@ from urllib.request import urlopen
 from gmailconnector.send_email import SendEmail
 from yaml import FullLoader, dump, load
 
-from helper_functions.ngrok import checker, ngrok_host, ngrok_port
+from helper_functions.cert import generate_cert
+from helper_functions.ngrok import checker
+from helper_functions.ngrok import host as optional_host
+from helper_functions.ngrok import port
 from helper_functions.ngrok_fetcher import get_ngrok
 
 
@@ -38,7 +41,6 @@ class Authenticator(SimpleHTTPRequestHandler):
         - To handle `POST` requests, a `do_POST()` has been implemented, which reads `content-length` header.
         - Headers are read using `rfile.read` from the start of the optional input data.
         - Data is sent to server using, `wfile.write` which contains the output stream to write response to the client.
-
     """
 
     def __init__(self, *args: tuple, **kwargs: dict):
@@ -59,7 +61,6 @@ class Authenticator(SimpleHTTPRequestHandler):
         Args:
             format_: String operator %s
             *args: Logs from SimpleHTTPRequestHandler displaying request method type and HTTP status code.
-
         """
         if len(args) == 3:  # We don't have to care about NOT FOUND items because they are mostly hidden/protected.
             method, status_code, ignore = args  # ignore always returns `-`
@@ -91,11 +92,11 @@ class Authenticator(SimpleHTTPRequestHandler):
                 self.wfile.write(session_expiry.encode(encoding='UTF-8'))
         elif auth_header == "Basic " + self._auth:
             target_path = host_dir + self.path
-            if path.isdir(target_path) and 'index.html' in listdir(target_path):
+            if os.path.isdir(target_path) and 'index.html' in os.listdir(target_path):
                 old_name = target_path + 'index.html'
                 new_name = target_path + 'index_TEMP.html'
                 consoleLogger.critical(f'Renaming {old_name} to {new_name}')
-                rename(old_name, new_name)
+                os.rename(old_name, new_name)
                 renamed.append({old_name: new_name})
             if not authenticated:
                 self.do_HEAD()
@@ -141,12 +142,12 @@ class Authenticator(SimpleHTTPRequestHandler):
             return
         rootLogger.fatal(str(client_info).strip("{}").replace("'", ""))
 
-        if path.isfile(client_file):
+        if os.path.isfile(client_file):
             with open(client_file, 'r') as client:
                 exist = load(''.join([nut for nut in client.readlines() if not nut.startswith('#')]), Loader=FullLoader)
 
             # avoids duplicate notification for repeated trials in less than 5 minutes
-            if int(now.timestamp()) - int(stat(client_file).st_mtime) < 300 and \
+            if int(now.timestamp()) - int(os.stat(client_file).st_mtime) < 300 and \
                     client_info.get('_html_ref') == exist.get('_html_ref') and \
                     client_info.get('ip') == exist.get('ip'):
                 rootLogger.critical(f"{exist.get('ip')} performed {exist.get('_html_ref')} once again within 5 minutes")
@@ -207,8 +208,7 @@ def reset_auth() -> bool:
 
     Returns:
         bool:
-        - True if it is the first login attempt or it has been more than 15 minutes since the first/previous expiry.
-
+        True if it is the first login attempt, or it has been more than 15 minutes since the first/previous expiry.
     """
     global start_time, first_run
     if first_run:
@@ -219,12 +219,11 @@ def reset_auth() -> bool:
         return True
 
 
-def server_function(flag: bool) -> None:
+def server_function(ssl: bool) -> None:
     """Uses local certificate from ~.ssh to serve the page as https if flag is set to True.
 
     Args:
-        flag: Whether or not to wrap the socket with the certificate.
-
+        ssl: Whether to wrap the socket with the certificate.
     """
     global endpoint
     rootLogger.info('Initiating file server.')
@@ -236,7 +235,7 @@ def server_function(flag: bool) -> None:
     )
     server = HTTPServer(server_address=(host, port), RequestHandlerClass=handler_class)
 
-    if flag:
+    if ssl:
         server.socket = wrap_socket(sock=server.socket, server_side=True, certfile=cert_file, keyfile=key_file)
         endpoint = f"https://{':'.join(map(str, server.server_address))}"
     else:
@@ -246,8 +245,8 @@ def server_function(flag: bool) -> None:
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        [(rename(new_name, old_name), consoleLogger.critical(f'Reverted {new_name} to {old_name}')) for each in renamed
-         for old_name, new_name in each.items() if renamed]  # cheat to two operations within list comprehension = tuple
+        [(os.rename(new_name, old_name), consoleLogger.critical(f'Reverted {new_name} to {old_name}'))
+         for each in renamed for old_name, new_name in each.items() if renamed]
         rootLogger.info('Terminating file server.')
         server.server_close()
         server.shutdown()
@@ -260,7 +259,6 @@ def line_number() -> int:
     Returns:
         int:
         Line number of where this function is called.
-
     """
     return currentframe().f_back.f_lineno
 
@@ -271,7 +269,7 @@ def file_gatherer() -> list:
     Notes:
         Actual way of doing this is to open and read the file individually. But I'm a fan of list comprehensions.
 
-        `auth_success, login_failed, session_expiry = [open(f'html/{file}').read() for file in listdir('html')]`
+        `auth_success, login_failed, session_expiry = [open(f'html/{file}').read() for file in os.listdir('html')]`
 
         But opening a file in list comprehension leaves the file open through out the code execution.
         This can be verified using `psutil.Process().open_files()`
@@ -279,9 +277,8 @@ def file_gatherer() -> list:
     Returns:
         list:
         Returns the data in each file within the html directory.
-
     """
-    return [Path(f'html/{file}').read_text() for file in listdir('html')]
+    return [Path(f'html/{file}').read_text() for file in os.listdir('html')]
 
 
 def logging_wrapper() -> tuple:
@@ -295,10 +292,9 @@ def logging_wrapper() -> tuple:
     Returns:
         tuple:
         A tuple of classes logging.Logger for file, console and root logging.
-
     """
     reload(logging)  # since the gmail-connector module uses logging, it is better to reload logging module before start
-    makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
+    os.makedirs('logs') if 'logs' not in os.listdir(os.getcwd()) else None  # create logs directory if not found
     log_formatter = logging.Formatter(
         fmt="%(asctime)s - [%(levelname)s] - %(name)s - %(funcName)s - Line: %(lineno)d - %(message)s",
         datefmt='%b-%d-%Y %H:%M:%S'
@@ -324,25 +320,26 @@ def logging_wrapper() -> tuple:
 
 
 if __name__ == "__main__":
-    if not (username := environ.get('username', environ.get('USER'))) or not (password := environ.get('password')):
+    if not (username := os.environ.get('username', os.environ.get('USER'))) or \
+            not (password := os.environ.get('password')):
         exit('Add username and password in local ENV VARS to proceed.')
 
     start_time = time()  # set to the current time to reset the auth headers when timeout is reached
     first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
-    authenticated = False  # set to False to write the appropriate message in the HTML file
+    authenticated = False  # set to False for the appropriate message to be written in the HTML file
     renamed = []  # set to empty list to append dictionaries with re-namings done for index.html
     notify = True  # notify is set to true by default unless the env vars are not present
     endpoint = None  # endpoint is set to None to make it a global variable
 
-    makedirs('logs') if 'logs' not in listdir(getcwd()) else None  # create logs directory if not found
-    log_file = datetime.now().strftime('logs' + path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
+    os.makedirs('logs') if 'logs' not in os.listdir(os.getcwd()) else None  # create logs directory if not found
+    log_file = datetime.now().strftime('logs' + os.path.sep + 'auth_server_%H:%M:%S_%d-%m-%Y.log')  # set log file name
     base_file = PurePath(__file__)  # PurePath(__file__).stem strips the extension/suffixes of the file
 
     fileLogger, consoleLogger, rootLogger = logging_wrapper()
 
-    if (not (gmail_user := environ.get('gmail_user')) or not
-            (gmail_pass := environ.get('gmail_pass')) or not
-            (recipient := environ.get('recipient'))):
+    if (not (gmail_user := os.environ.get('gmail_user')) or not
+            (gmail_pass := os.environ.get('gmail_pass')) or not
+            (recipient := os.environ.get('recipient'))):
         notify = False
         rootLogger.warning(
             f"Consider storing the following env vars to receive an email notification when PersonalCloud is accessed"
@@ -353,34 +350,28 @@ if __name__ == "__main__":
             f"{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
         )
 
-    auth_success, login_failed, session_expiry = [Path(f'html/{file}').read_text() for file in listdir('html')]
+    auth_success, login_failed, session_expiry = [Path(f'html/{file}').read_text() for file in os.listdir('html')]
 
-    home_dir = path.expanduser('~')
-    if not (host_dir := environ.get('host_path')) or not path.isdir(host_dir):
+    home_dir = os.path.expanduser('~')
+    if not (host_dir := os.environ.get('host_path')) or not os.path.isdir(host_dir):
         host_dir = home_dir
 
-    ssh_dir = home_dir + path.sep + path.join('.ssh')
-    makedirs(ssh_dir) if '.ssh' not in listdir(home_dir) else None
-    cert_file = path.expanduser(ssh_dir) + path.sep + "cert.pem"
-    key_file = path.expanduser(ssh_dir) + path.sep + "key.pem"
+    ssh_dir = home_dir + os.path.sep + os.path.join('.ssh')
+    cert_file = os.path.expanduser(ssh_dir) + os.path.sep + "cert.pem"
+    key_file = os.path.expanduser(ssh_dir) + os.path.sep + "key.pem"
 
-    port = ngrok_port
     if checker():
-        host = ngrok_host
-        server_function(flag=False)
+        host = optional_host
+        server_function(ssl=False)  # ngrok uses its own SSL cert for https connection
     else:
         ip_socket = socket(AF_INET, SOCK_DGRAM)
         ip_socket.connect(("8.8.8.8", 80))
         if not (host := ip_socket.getsockname()[0]):
             host = gethostbyname('localhost')
         ip_socket.close()
-        if 'cert.pem' in listdir(ssh_dir) and 'key.pem' in listdir(ssh_dir):
-            server_function(flag=True)
+        if os.path.isfile(cert_file) and os.path.isfile(key_file):
+            server_function(ssl=True)
+        elif generate_cert(common_name='*.ngrok.com', cert_file=cert_file, key_file=key_file):
+            server_function(ssl=True)
         else:
-            rootLogger.warning(
-                f"Run the following command in a terminal at {ssh_dir} to create a self-signed certificate."
-                f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
-                f"openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout {key_file} -out {cert_file}"
-                f"\n{''.join(['*' for _ in range(120)])}\n"  # PEP 8 default: 120 columns
-            )
-            server_function(flag=False)
+            server_function(ssl=False)
