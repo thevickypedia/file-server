@@ -35,7 +35,7 @@ def get_ngrok() -> str or None:
 
     See Also:
         Checks for output from get_port function. If nothing, then `ngrok` isn't running.
-        However as a sanity check, the script uses port number stored in env var to make a `GET` request.
+        However, as a sanity check, the script uses port number stored in env var to make a `GET` request.
 
     Returns:
         str or None:

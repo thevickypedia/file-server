@@ -3,27 +3,27 @@
 [![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-391/)
 
 ###### Language Stats
-![Language count](https://img.shields.io/github/languages/count/thevickypedia/personal_cloud)
-![Code coverage](https://img.shields.io/github/languages/top/thevickypedia/personal_cloud)
+![Language count](https://img.shields.io/github/languages/count/thevickypedia/personal-cloud)
+![Code coverage](https://img.shields.io/github/languages/top/thevickypedia/personal-cloud)
 
 ###### Repo Stats
-[![GitHub](https://img.shields.io/github/license/thevickypedia/personal_cloud)](https://github.com/thevickypedia/personal_cloud/blob/main/LICENSE)
-[![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
-[![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
-[![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
+[![GitHub](https://img.shields.io/github/license/thevickypedia/personal-cloud)](https://github.com/thevickypedia/personal-cloud/blob/main/LICENSE)
+[![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
+[![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
+[![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
 
 ###### Code Stats
-![Modules](https://img.shields.io/github/search/thevickypedia/personal_cloud/module)
-![Python](https://img.shields.io/github/search/thevickypedia/personal_cloud/.py)
+![Modules](https://img.shields.io/github/search/thevickypedia/personal-cloud/module)
+![Python](https://img.shields.io/github/search/thevickypedia/personal-cloud/.py)
 
 ###### Deployments
-[![Docs](https://img.shields.io/docsrs/docs/latest)](https://thevickypedia.github.io/personal_cloud/)
+[![Docs](https://img.shields.io/docsrs/docs/latest)](https://thevickypedia.github.io/personal-cloud/)
 
 ###### Activity
 ![Maintained](https://img.shields.io/maintenance/yes/2022)
-[![GitHub Repo created](https://img.shields.io/date/1618966420)](https://api.github.com/repos/thevickypedia/personal_cloud)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
-[![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/personal_cloud)](https://api.github.com/repos/thevickypedia/personal_cloud)
+[![GitHub Repo created](https://img.shields.io/date/1618966420)](https://api.github.com/repos/thevickypedia/personal-cloud)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
+[![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
 
 # Personal Cloud with basic authentication
 Set up a personal cloud to access files in local machine from anywhere on the internet.
@@ -89,15 +89,15 @@ Another important variable:<br>
 #### Option 1:
 - `ngrok http $port`
 
-  > Uses a random port number if [env var for port](https://github.com/thevickypedia/personal_cloud#environment-variables-optional) is not set.
+  > Uses a random port number if [env var for port](https://github.com/thevickypedia/personal-cloud#environment-variables-optional) is not set.
 
 #### Option 2:
 - `python3 ngrok.py`
 
-  > Uses the port number `4443` by default if [env var for port](https://github.com/thevickypedia/personal_cloud#environment-variables-optional) is not set.
+  > Uses the port number `4443` by default if [env var for port](https://github.com/thevickypedia/personal-cloud#environment-variables-optional) is not set.
 
 ### Run-book:
-https://thevickypedia.github.io/personal_cloud/
+https://thevickypedia.github.io/personal-cloud/
 
 > Generated using [`sphinx-autogen`](https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html)
 
@@ -108,7 +108,7 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 [`isort`](https://pycqa.github.io/isort/)
 
 ### Pre-Commit
-`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/personal_cloud/blob/main/gen_docs.sh) 
+`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/personal-cloud/blob/main/gen_docs.sh) 
 to update the [runbook](#Run-book)
 
 > `pip install --no-cache --upgrade sphinx pre-commit recommonmark`
@@ -119,4 +119,4 @@ to update the [runbook](#Run-book)
 
 &copy; Vignesh Sivanandha Rao
 
-Licensed under the [MIT License](https://github.com/thevickypedia/personal_cloud/blob/main/LICENSE)
+Licensed under the [MIT License](https://github.com/thevickypedia/personal-cloud/blob/main/LICENSE)
