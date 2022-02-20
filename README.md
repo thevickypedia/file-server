@@ -2,25 +2,25 @@
 ![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
 
 ###### Language Stats
-![Language count](https://img.shields.io/github/languages/count/thevickypedia/personal-cloud)
-![Code coverage](https://img.shields.io/github/languages/top/thevickypedia/personal-cloud)
+![Language count](https://img.shields.io/github/languages/count/thevickypedia/fileware)
+![Code coverage](https://img.shields.io/github/languages/top/thevickypedia/fileware)
 
 ###### Repo Stats
-[![GitHub](https://img.shields.io/github/license/thevickypedia/personal-cloud)](https://github.com/thevickypedia/personal-cloud/blob/main/LICENSE)
-[![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
-[![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
-[![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
+[![GitHub](https://img.shields.io/github/license/thevickypedia/fileware)](https://github.com/thevickypedia/fileware/blob/main/LICENSE)
+[![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
+[![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
+[![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
 
 ###### Code Stats
-![Modules](https://img.shields.io/github/search/thevickypedia/personal-cloud/module)
-![Python](https://img.shields.io/github/search/thevickypedia/personal-cloud/.py)
+![Modules](https://img.shields.io/github/search/thevickypedia/fileware/module)
+![Python](https://img.shields.io/github/search/thevickypedia/fileware/.py)
 
 ###### Activity
-[![GitHub Repo created](https://img.shields.io/date/1618966420)](https://api.github.com/repos/thevickypedia/personal-cloud)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
-[![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
+[![GitHub Repo created](https://img.shields.io/date/1618966420)](https://api.github.com/repos/thevickypedia/fileware)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
+[![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
 
-# File Server
+# FileWare
 Set up a file server to access files in local machine from anywhere on the internet.
 
 ## Setup
@@ -72,7 +72,7 @@ Another important variable:<br>
   > Uses the port number `4443` by default if env var for port.
 
 ### Run-book:
-https://thevickypedia.github.io/personal-cloud/
+https://thevickypedia.github.io/fileware/
 
 > Generated using [`sphinx-autogen`](https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html)
 
@@ -83,7 +83,7 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 [`isort`](https://pycqa.github.io/isort/)
 
 ### Pre-Commit
-`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/personal-cloud/blob/main/gen_docs.sh) 
+`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/fileware/blob/main/gen_docs.sh) 
 to update the [runbook](#Run-book)
 
 > `pip install --no-cache --upgrade sphinx pre-commit recommonmark`
@@ -94,4 +94,4 @@ to update the [runbook](#Run-book)
 
 &copy; Vignesh Sivanandha Rao
 
-Licensed under the [MIT License](https://github.com/thevickypedia/personal-cloud/blob/main/LICENSE)
+Licensed under the [MIT License](https://github.com/thevickypedia/fileware/blob/main/LICENSE)

@@ -9,8 +9,8 @@ from pyngrok import conf, ngrok
 from pyngrok.exception import PyngrokError
 from requests.exceptions import ConnectionError, InvalidURL
 
-from fileserver import env
-from fileserver.models import LogConfig
+from fileware import env
+from fileware.models import LogConfig
 
 os.makedirs('logs') if not os.path.isdir('logs') else None
 
@@ -84,8 +84,10 @@ def connect(new_connection: bool = False):
     sock.listen(1)
 
     if env.ngrok_auth:
+        logger.info('Using env var to set ngrok auth.')
         ngrok.set_auth_token(env.ngrok_auth)
     elif os.path.isfile('ngrok.yml'):
+        logger.info('Using config file for ngrok auth')
         conf.get_default().config_path = 'ngrok.yml'
     else:
         return None, 'Tunneling is unavailable since ngrok config file is missing.'
@@ -120,7 +122,3 @@ def tunnel(sock: socket) -> None:
 
     ngrok.kill(pyngrok_config=None)  # uses default config when None is passed
     sock.close()
-
-
-if __name__ == '__main__':
-    print(get_ngrok())

@@ -15,35 +15,35 @@ Welcome to PersonalCloud's documentation!
 PersonalCloud - Main Module
 ===========================
 
-.. automodule:: fileserver.server
+.. automodule:: fileware.server
    :members:
    :undoc-members:
 
 Open SSL
 ========
 
-.. automodule:: fileserver.cert
+.. automodule:: fileware.cert
    :members:
    :undoc-members:
 
 Models
 ======
 
-.. automodule:: fileserver.models
+.. automodule:: fileware.models
    :members:
    :undoc-members:
 
 Ngrok - Main Module
 ===================
 
-.. automodule:: fileserver.ngrok_connector
+.. automodule:: fileware.ngrok_connector
    :members:
    :undoc-members:
 
 Volume
 ======
 
-.. automodule:: fileserver.helpers.volume
+.. automodule:: fileware.helpers.volume
    :members:
    :undoc-members:
 

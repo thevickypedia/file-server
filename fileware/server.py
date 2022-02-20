@@ -4,6 +4,7 @@ import functools
 import logging.config
 import os
 import ssl
+import warnings
 from datetime import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from multiprocessing import Process
@@ -15,8 +16,8 @@ from urllib.request import urlopen
 import yaml
 from gmailconnector.send_email import SendEmail
 
-from fileserver import cert, env, ngrok_connector
-from fileserver.models import LogConfig
+from fileware import cert, env, ngrok_connector
+from fileware.models import LogConfig
 
 if not os.path.isfile(LogConfig.SERVER_LOG_FILE):
     Path(LogConfig.SERVER_LOG_FILE).touch()
@@ -91,7 +92,7 @@ class Authenticator(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         """Serve a front end with user authentication."""
-        if reset_auth() and 'Authorization' in self.headers.keys():
+        if _reset_auth() and 'Authorization' in self.headers.keys():
             logger.warning('Authorized via stored cookies. However session expired, so headers have been reset.')
             self.headers.replace_header('Authorization', None)
             self.disable_cache()
@@ -213,7 +214,7 @@ class Authenticator(SimpleHTTPRequestHandler):
         self.headers.add_header(_name='Clear-Site-Data', _value='"cache", "cookies", "storage", "executionContexts"')
 
 
-def reset_auth() -> bool:
+def _reset_auth() -> bool:
     """Tells if the authentication header has to be reset and cache to be cleared.
 
     See Also:
@@ -231,20 +232,24 @@ def reset_auth() -> bool:
         return True
 
 
-def server_function() -> None:
-    """Initiates the ``FileServer``.
+def _initiate_connection() -> HTTPServer:
+    """Initiates fileserver connection after trying to trigger ngrok tunnel.
 
     See Also:
         - Checks for ``cert.pem`` and ``key.pem`` files in ~home/ssh path.
         - If not generates a self-signed certificate using ``OpenSSL``
         - If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.
+
+    Returns:
+        HTTPServer:
+        Returns the server connection class.
     """
     socket_, public_url = ngrok_connector.connect()
     if socket_ and public_url:
         Process(target=ngrok_connector.tunnel, kwargs={'sock': socket_}).start()
 
     with open('url', 'w') as url_file:
-        url_file.write(public_url)
+        url_file.write(str(public_url))
 
     ssh_dir = env.home_dir + os.path.sep + os.path.join('.ssh')
     cert_file = os.path.expanduser(ssh_dir) + os.path.sep + "cert.pem"
@@ -278,6 +283,45 @@ def server_function() -> None:
     if public_url:
         logger.info(f"Hosted at public endpoint: {public_url}")
 
+    return server
+
+
+def serve(port: int = None, gmail_user: str = None, gmail_pass: str = None, recipient: str = None,
+          username: str = None, password: str = None, host_dir: str = None,
+          ngrok_auth: str = None) -> None:
+    """Initiates the ``FileServer``.
+
+    Args:
+        port: Port number in which the file server is running.
+        gmail_user: Username for email notification.
+        gmail_pass: Password for email notification.
+        recipient: Email address to receive notification.
+        username: Username to access fileserver.
+        password: Password to access fileserver.
+        host_dir: Takes the path to serve as an argument. Can also be loaded via env vars.
+        ngrok_auth: Ngrok auth token for tunneling.
+    """
+    if port:
+        env.port = port
+    if gmail_user:
+        env.gmail_user = gmail_user
+    if gmail_pass:
+        env.gmail_pass = gmail_pass
+    if recipient:
+        env.recipient = recipient
+    if username:
+        env.username = username
+    if password:
+        env.password = password
+    if ngrok_auth:
+        env.ngrok_auth = ngrok_auth
+    if host_dir:
+        if os.path.isdir(host_dir):
+            env.host_dir = host_dir
+        else:
+            warnings.warn(f"The specified path: {host_dir} doesn't exist. Defaulting to {env.host_dir}")
+
+    server = _initiate_connection()
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -289,7 +333,3 @@ def server_function() -> None:
         logger.info("File server has been terminated.")
         if os.path.isfile('url'):
             os.remove('url')
-
-
-if __name__ == '__main__':
-    server_function()
