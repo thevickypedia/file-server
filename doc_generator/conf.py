@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Personal Cloud'
+project = 'FileWare'
 copyright = '2021, Vignesh Sivanandha Rao'
 author = 'Vignesh Sivanandha Rao'
 

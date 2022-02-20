@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Welcome to PersonalCloud’s documentation! &#8212; Personal Cloud  documentation</title>
+    <title>Welcome to PersonalCloud’s documentation! &#8212; FileWare  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/classic.css" />
     
@@ -31,7 +31,7 @@
         <li class="right" >
           <a href="README.html" title="Versions Supported"
              accesskey="N">next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Personal Cloud  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">FileWare  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Welcome to PersonalCloud’s documentation!</a></li> 
       </ul>
     </div>  
@@ -51,19 +51,20 @@
 <li class="toctree-l1"><a class="reference internal" href="README.html#repo-stats">Repo Stats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="README.html#code-stats">Code Stats</a></li>
 <li class="toctree-l1"><a class="reference internal" href="README.html#activity">Activity</a></li>
-<li class="toctree-l1"><a class="reference internal" href="README.html#file-server">File Server</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="README.html#fileware">FileWare</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="README.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#usage">Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#license-copyright">License &amp; copyright</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </section>
-<section id="module-fileserver.server">
-<span id="personalcloud-main-module"></span><h1>PersonalCloud - Main Module<a class="headerlink" href="#module-fileserver.server" title="Permalink to this headline">¶</a></h1>
+<section id="module-fileware.server">
+<span id="personalcloud-main-module"></span><h1>PersonalCloud - Main Module<a class="headerlink" href="#module-fileware.server" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileserver.server.</span></span><span class="sig-name descname"><span class="pre">Authenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileserver.server.Authenticator" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileware.server.</span></span><span class="sig-name descname"><span class="pre">Authenticator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileware.server.Authenticator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main class to present webpages and authentication.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Authenticator</span>
 </pre></div>
@@ -74,7 +75,7 @@
 <li><p>Browser’s default pop up will be shown prompting the user to enter the username and password.</p></li>
 <li><p>Enter the Username and Password that was set in <a class="reference external" href="https://git.io/JCfzq">environment variables</a></p></li>
 <li><p>The username and password are set as encoded auth headers, which are matched against the encoded env vars.</p></li>
-<li><p>Upon successful authentication, a welcome page loads. Click on proceed to access the PersonalCloud.</p></li>
+<li><p>Upon successful authentication, a welcome page loads. Click on proceed to access the FileServer.</p></li>
 </ul>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -86,38 +87,38 @@
 </ul>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator.disable_cache">
-<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.Authenticator.disable_cache" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator.disable_cache">
+<span class="sig-name descname"><span class="pre">disable_cache</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.Authenticator.disable_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Headers to force no-cache and site-data to expire.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator.do_AUTH">
-<span class="sig-name descname"><span class="pre">do_AUTH</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.Authenticator.do_AUTH" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator.do_AUTH">
+<span class="sig-name descname"><span class="pre">do_AUTH</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.Authenticator.do_AUTH" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends headers to authenticate the requester.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator.do_GET">
-<span class="sig-name descname"><span class="pre">do_GET</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.Authenticator.do_GET" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator.do_GET">
+<span class="sig-name descname"><span class="pre">do_GET</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.Authenticator.do_GET" title="Permalink to this definition">¶</a></dt>
 <dd><p>Serve a front end with user authentication.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator.do_HEAD">
-<span class="sig-name descname"><span class="pre">do_HEAD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.Authenticator.do_HEAD" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator.do_HEAD">
+<span class="sig-name descname"><span class="pre">do_HEAD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.Authenticator.do_HEAD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sends 200 response and sends headers when authentication is successful.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator.do_POST">
-<span class="sig-name descname"><span class="pre">do_POST</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.Authenticator.do_POST" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator.do_POST">
+<span class="sig-name descname"><span class="pre">do_POST</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.Authenticator.do_POST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles POST request and writes the received data into a yaml file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.server.Authenticator.log_message">
-<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.Authenticator.log_message" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.server.Authenticator.log_message">
+<span class="sig-name descname"><span class="pre">log_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.Authenticator.log_message" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppresses logs from http.server by holding the args.</p>
 <p>Overwrites the base method: <cite>BaseHTTPRequestHandler.log_message()</cite></p>
 <dl class="field-list simple">
@@ -133,43 +134,38 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.server.reset_auth">
-<span class="sig-prename descclassname"><span class="pre">fileserver.server.</span></span><span class="sig-name descname"><span class="pre">reset_auth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#fileserver.server.reset_auth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tells if the authentication header has to be reset and cache to be cleared.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Note that if an authentication is done at the end of 15 minutes, there will be a re-auth prompted.</p>
-</div>
+<dt class="sig sig-object py" id="fileware.server.serve">
+<span class="sig-prename descclassname"><span class="pre">fileware.server.</span></span><span class="sig-name descname"><span class="pre">serve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngrok_auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_pass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.serve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates the <code class="docutils literal notranslate"><span class="pre">FileServer</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True if it is the first login attempt, or it has been more than 15 minutes since the first/previous expiry.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>port</strong> – Port number in which the file server is running.</p></li>
+<li><p><strong>username</strong> – Username to access fileserver.</p></li>
+<li><p><strong>password</strong> – Password to access fileserver.</p></li>
+<li><p><strong>host_dir</strong> – Takes the path to serve as an argument. Can also be loaded via env vars.</p></li>
+<li><p><strong>ngrok_auth</strong> – Ngrok auth token for tunneling.</p></li>
+<li><p><strong>gmail_user</strong> – Username for email notification.</p></li>
+<li><p><strong>gmail_pass</strong> – Password for email notification.</p></li>
+<li><p><strong>recipient</strong> – Email address to receive notification.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="fileserver.server.server_function">
-<span class="sig-prename descclassname"><span class="pre">fileserver.server.</span></span><span class="sig-name descname"><span class="pre">server_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.server.server_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates the <code class="docutils literal notranslate"><span class="pre">FileServer</span></code>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p>Checks for <code class="docutils literal notranslate"><span class="pre">cert.pem</span></code> and <code class="docutils literal notranslate"><span class="pre">key.pem</span></code> files in ~home/ssh path.</p></li>
-<li><p>If not generates a self-signed certificate using <code class="docutils literal notranslate"><span class="pre">OpenSSL</span></code></p></li>
-<li><p>If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.</p></li>
+<li><p>All these arguments can be loaded via env vars by placing the key-value pairs in a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.env</span></code> file should be stored in the current working directory.</p></li>
 </ul>
 </div>
 </dd></dl>
 
 </section>
-<section id="module-fileserver.cert">
-<span id="open-ssl"></span><h1>Open SSL<a class="headerlink" href="#module-fileserver.cert" title="Permalink to this headline">¶</a></h1>
+<section id="module-fileware.cert">
+<span id="open-ssl"></span><h1>Open SSL<a class="headerlink" href="#module-fileware.cert" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.cert.generate_cert">
-<span class="sig-prename descclassname"><span class="pre">fileserver.cert.</span></span><span class="sig-name descname"><span class="pre">generate_cert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">common_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'US'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locality_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Columbia'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_or_province_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Missouri'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization_unit_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Information</span> <span class="pre">Technology'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validity_start_in_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validity_end_in_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">315360000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'key.pem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cert.pem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#fileserver.cert.generate_cert" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.cert.generate_cert">
+<span class="sig-prename descclassname"><span class="pre">fileware.cert.</span></span><span class="sig-name descname"><span class="pre">generate_cert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">common_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'US'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locality_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'New</span> <span class="pre">York'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_or_province_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'New</span> <span class="pre">York'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organization_unit_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Information</span> <span class="pre">Technology'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validity_start_in_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validity_end_in_seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">315360000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'key.pem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cert.pem'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4096</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#fileware.cert.generate_cert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a private/self-signed certificate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -204,48 +200,23 @@
 </dd></dl>
 
 </section>
-<section id="module-fileserver.models">
-<span id="models"></span><h1>Models<a class="headerlink" href="#module-fileserver.models" title="Permalink to this headline">¶</a></h1>
+<section id="module-fileware.models">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-fileware.models" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="fileserver.models.LogConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileserver.models.</span></span><span class="sig-name descname"><span class="pre">LogConfig</span></span><a class="headerlink" href="#fileserver.models.LogConfig" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.models.LogConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileware.models.</span></span><span class="sig-name descname"><span class="pre">LogConfig</span></span><a class="headerlink" href="#fileware.models.LogConfig" title="Permalink to this definition">¶</a></dt>
 <dd><p>Custom log configuration.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">LogConfig</span>
 </pre></div>
 </div>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="fileserver.models.LogConfig.FILE_LOG_FORMAT">
-<span class="sig-name descname"><span class="pre">FILE_LOG_FORMAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'%(asctime)s</span> <span class="pre">-</span> <span class="pre">%(levelname)s</span> <span class="pre">-</span> <span class="pre">[%(module)s:%(lineno)d]</span> <span class="pre">-</span> <span class="pre">%(funcName)s</span> <span class="pre">-</span> <span class="pre">%(message)s'</span></em><a class="headerlink" href="#fileserver.models.LogConfig.FILE_LOG_FORMAT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="fileserver.models.LogConfig.LOGGING_CONFIG">
-<span class="sig-name descname"><span class="pre">LOGGING_CONFIG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'disable_existing_loggers':</span> <span class="pre">False,</span> <span class="pre">'formatters':</span> <span class="pre">{'server':</span> <span class="pre">{'datefmt':</span> <span class="pre">'%b</span> <span class="pre">%d,</span> <span class="pre">%Y</span> <span class="pre">%H:%M:%S',</span> <span class="pre">'filename':</span> <span class="pre">'logs/fileserver_02_20_2022.log',</span> <span class="pre">'format':</span> <span class="pre">'%(asctime)s</span> <span class="pre">-</span> <span class="pre">%(levelname)s</span> <span class="pre">-</span> <span class="pre">[%(module)s:%(lineno)d]</span> <span class="pre">-</span> <span class="pre">%(funcName)s</span> <span class="pre">-</span> <span class="pre">%(message)s'},</span> <span class="pre">'tunnel':</span> <span class="pre">{'datefmt':</span> <span class="pre">'%b</span> <span class="pre">%d,</span> <span class="pre">%Y</span> <span class="pre">%H:%M:%S',</span> <span class="pre">'filename':</span> <span class="pre">'logs/tunnel_02_20_2022.log',</span> <span class="pre">'format':</span> <span class="pre">'%(asctime)s</span> <span class="pre">-</span> <span class="pre">%(levelname)s</span> <span class="pre">-</span> <span class="pre">[%(module)s:%(lineno)d]</span> <span class="pre">-</span> <span class="pre">%(funcName)s</span> <span class="pre">-</span> <span class="pre">%(message)s'}},</span> <span class="pre">'handlers':</span> <span class="pre">{'server':</span> <span class="pre">{'class':</span> <span class="pre">'logging.FileHandler',</span> <span class="pre">'filename':</span> <span class="pre">'logs/fileserver_02_20_2022.log',</span> <span class="pre">'formatter':</span> <span class="pre">'server'},</span> <span class="pre">'tunnel':</span> <span class="pre">{'class':</span> <span class="pre">'logging.FileHandler',</span> <span class="pre">'filename':</span> <span class="pre">'logs/tunnel_02_20_2022.log',</span> <span class="pre">'formatter':</span> <span class="pre">'tunnel'}},</span> <span class="pre">'loggers':</span> <span class="pre">{'server':</span> <span class="pre">{'filename':</span> <span class="pre">'logs/fileserver_02_20_2022.log',</span> <span class="pre">'handlers':</span> <span class="pre">['server'],</span> <span class="pre">'level':</span> <span class="pre">'DEBUG'},</span> <span class="pre">'tunnel':</span> <span class="pre">{'filename':</span> <span class="pre">'logs/tunnel_02_20_2022.log',</span> <span class="pre">'handlers':</span> <span class="pre">['tunnel'],</span> <span class="pre">'level':</span> <span class="pre">'DEBUG'}},</span> <span class="pre">'version':</span> <span class="pre">1}</span></em><a class="headerlink" href="#fileserver.models.LogConfig.LOGGING_CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="fileserver.models.LogConfig.LOG_LEVEL">
-<span class="sig-name descname"><span class="pre">LOG_LEVEL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DEBUG'</span></em><a class="headerlink" href="#fileserver.models.LogConfig.LOG_LEVEL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="fileserver.models.LogConfig.SERVER_LOG_FILE">
-<span class="sig-name descname"><span class="pre">SERVER_LOG_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'logs/fileserver_02_20_2022.log'</span></em><a class="headerlink" href="#fileserver.models.LogConfig.SERVER_LOG_FILE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="fileserver.models.LogConfig.TUNNEL_LOG_FILE">
-<span class="sig-name descname"><span class="pre">TUNNEL_LOG_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'logs/tunnel_02_20_2022.log'</span></em><a class="headerlink" href="#fileserver.models.LogConfig.TUNNEL_LOG_FILE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
-<section id="module-fileserver.ngrok_connector">
-<span id="ngrok-main-module"></span><h1>Ngrok - Main Module<a class="headerlink" href="#module-fileserver.ngrok_connector" title="Permalink to this headline">¶</a></h1>
+<section id="module-fileware.ngrok_connector">
+<span id="ngrok-main-module"></span><h1>Ngrok - Main Module<a class="headerlink" href="#module-fileware.ngrok_connector" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.ngrok_connector.connect">
-<span class="sig-prename descclassname"><span class="pre">fileserver.ngrok_connector.</span></span><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileserver.ngrok_connector.connect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.ngrok_connector.connect">
+<span class="sig-prename descclassname"><span class="pre">fileware.ngrok_connector.</span></span><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileware.ngrok_connector.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an HTTP socket and uses <cite>pyngrok</cite> module to bind the socket.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -281,8 +252,8 @@
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.ngrok_connector.get_ngrok">
-<span class="sig-prename descclassname"><span class="pre">fileserver.ngrok_connector.</span></span><span class="sig-name descname"><span class="pre">get_ngrok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#fileserver.ngrok_connector.get_ngrok" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.ngrok_connector.get_ngrok">
+<span class="sig-prename descclassname"><span class="pre">fileware.ngrok_connector.</span></span><span class="sig-name descname"><span class="pre">get_ngrok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#fileware.ngrok_connector.get_ngrok" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identifies if an existing ngrok tunnel by sending a <cite>GET</cite> request to api/tunnels to get the <cite>ngrok</cite> public url.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -304,8 +275,8 @@ However, as a sanity check, the script uses port number stored in env var to mak
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.ngrok_connector.tunnel">
-<span class="sig-prename descclassname"><span class="pre">fileserver.ngrok_connector.</span></span><span class="sig-name descname"><span class="pre">tunnel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">socket.socket</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.ngrok_connector.tunnel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.ngrok_connector.tunnel">
+<span class="sig-prename descclassname"><span class="pre">fileware.ngrok_connector.</span></span><span class="sig-name descname"><span class="pre">tunnel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">socket.socket</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.ngrok_connector.tunnel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates tunneling in a never ending loop.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -315,45 +286,45 @@ However, as a sanity check, the script uses port number stored in env var to mak
 </dd></dl>
 
 </section>
-<section id="module-fileserver.helpers.volume">
-<span id="volume"></span><h1>Volume<a class="headerlink" href="#module-fileserver.helpers.volume" title="Permalink to this headline">¶</a></h1>
+<section id="module-fileware.helpers.volume">
+<span id="volume"></span><h1>Volume<a class="headerlink" href="#module-fileware.helpers.volume" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.Volume">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileserver.helpers.volume.</span></span><span class="sig-name descname"><span class="pre">Volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileserver.helpers.volume.Volume" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.Volume">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileware.helpers.volume.</span></span><span class="sig-name descname"><span class="pre">Volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileware.helpers.volume.Volume" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates Volume object to mount, unmount and stop the disk usage.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Volume</span>
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.Volume.mount_disk_by_label">
-<span class="sig-name descname"><span class="pre">mount_disk_by_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.helpers.volume.Volume.mount_disk_by_label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.Volume.mount_disk_by_label">
+<span class="sig-name descname"><span class="pre">mount_disk_by_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.helpers.volume.Volume.mount_disk_by_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a terminal command to mount the disk using the volume name.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.Volume.mount_disk_by_uuid">
-<span class="sig-name descname"><span class="pre">mount_disk_by_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.helpers.volume.Volume.mount_disk_by_uuid" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.Volume.mount_disk_by_uuid">
+<span class="sig-name descname"><span class="pre">mount_disk_by_uuid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.helpers.volume.Volume.mount_disk_by_uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tries to mount the disk using UUID which is updated by the <cite>unmount_disk</cite> function.</p>
 <p>Calls <cite>mount_disk_by_label</cite> if UUID is None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.Volume.stop_usage">
-<span class="sig-name descname"><span class="pre">stop_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.helpers.volume.Volume.stop_usage" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.Volume.stop_usage">
+<span class="sig-name descname"><span class="pre">stop_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.helpers.volume.Volume.stop_usage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Kills all the background processes utilizing the volume to stop the disk usage.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.Volume.unmount_disk">
-<span class="sig-name descname"><span class="pre">unmount_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileserver.helpers.volume.Volume.unmount_disk" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.Volume.unmount_disk">
+<span class="sig-name descname"><span class="pre">unmount_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.helpers.volume.Volume.unmount_disk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ejects the disk from parent device.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.device_model">
-<span class="sig-prename descclassname"><span class="pre">fileserver.helpers.volume.</span></span><span class="sig-name descname"><span class="pre">device_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#fileserver.helpers.volume.device_model" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.device_model">
+<span class="sig-prename descclassname"><span class="pre">fileware.helpers.volume.</span></span><span class="sig-name descname"><span class="pre">device_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#fileware.helpers.volume.device_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses <cite>sysctl</cite> command to get the device model and version information.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -366,8 +337,8 @@ However, as a sanity check, the script uses port number stored in env var to mak
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="fileserver.helpers.volume.extract_str">
-<span class="sig-prename descclassname"><span class="pre">fileserver.helpers.volume.</span></span><span class="sig-name descname"><span class="pre">extract_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#fileserver.helpers.volume.extract_str" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="fileware.helpers.volume.extract_str">
+<span class="sig-prename descclassname"><span class="pre">fileware.helpers.volume.</span></span><span class="sig-name descname"><span class="pre">extract_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#fileware.helpers.volume.extract_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracts strings from the received input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -403,11 +374,11 @@ However, as a sanity check, the script uses port number stored in env var to mak
     <h3><a href="#">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Welcome to PersonalCloud’s documentation!</a></li>
-<li><a class="reference internal" href="#module-fileserver.server">PersonalCloud - Main Module</a></li>
-<li><a class="reference internal" href="#module-fileserver.cert">Open SSL</a></li>
-<li><a class="reference internal" href="#module-fileserver.models">Models</a></li>
-<li><a class="reference internal" href="#module-fileserver.ngrok_connector">Ngrok - Main Module</a></li>
-<li><a class="reference internal" href="#module-fileserver.helpers.volume">Volume</a></li>
+<li><a class="reference internal" href="#module-fileware.server">PersonalCloud - Main Module</a></li>
+<li><a class="reference internal" href="#module-fileware.cert">Open SSL</a></li>
+<li><a class="reference internal" href="#module-fileware.models">Models</a></li>
+<li><a class="reference internal" href="#module-fileware.ngrok_connector">Ngrok - Main Module</a></li>
+<li><a class="reference internal" href="#module-fileware.helpers.volume">Volume</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
@@ -450,7 +421,7 @@ However, as a sanity check, the script uses port number stored in env var to mak
         <li class="right" >
           <a href="README.html" title="Versions Supported"
              >next</a> |</li>
-        <li class="nav-item nav-item-0"><a href="#">Personal Cloud  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="#">FileWare  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Welcome to PersonalCloud’s documentation!</a></li> 
       </ul>
     </div>

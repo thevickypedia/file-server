@@ -31,7 +31,7 @@ Models
 
 .. automodule:: fileware.models
    :members:
-   :undoc-members:
+   :exclude-members: FILE_LOG_FORMAT, LOGGING_CONFIG, LOG_LEVEL, SERVER_LOG_FILE, TUNNEL_LOG_FILE
 
 Ngrok - Main Module
 ===================

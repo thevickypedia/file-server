@@ -11,7 +11,9 @@ from multiprocessing import Process
 from pathlib import Path, PurePath
 from socket import AF_INET, SOCK_DGRAM, socket
 from time import time
+from typing import AnyStr, Union
 from urllib.request import urlopen
+from uuid import UUID
 
 import yaml
 from gmailconnector.send_email import SendEmail
@@ -48,7 +50,7 @@ class Authenticator(SimpleHTTPRequestHandler):
         - Browser's default pop up will be shown prompting the user to enter the username and password.
         - Enter the Username and Password that was set in `environment variables <https://git.io/JCfzq>`__
         - The username and password are set as encoded auth headers, which are matched against the encoded env vars.
-        - Upon successful authentication, a welcome page loads. Click on proceed to access the PersonalCloud.
+        - Upon successful authentication, a welcome page loads. Click on proceed to access the FileServer.
 
     See Also:
         - To perform authentication, a `do_AUTH()` is implemented sending 401 and WWW-Authenticate header in response.
@@ -185,7 +187,7 @@ class Authenticator(SimpleHTTPRequestHandler):
         with open(client_file, 'r') as client:
             attachment_info = client.read()
 
-        email_body = f"A connection with status `{status}` has been made to your personal cloud serving at " \
+        email_body = f"A connection with status `{status}` has been made to your file server hosted at " \
                      f"{endpoint}\n\nDetails of the client are below. If this was you, you may disregard this email. " \
                      f"Otherwise stop the server immediately and rotate your credentials before restarting." \
                      f"\n\n\n{attachment_info}\n\n"
@@ -286,20 +288,24 @@ def _initiate_connection() -> HTTPServer:
     return server
 
 
-def serve(port: int = None, gmail_user: str = None, gmail_pass: str = None, recipient: str = None,
-          username: str = None, password: str = None, host_dir: str = None,
-          ngrok_auth: str = None) -> None:
+def serve(port: Union[int, str] = None, username: AnyStr = None, password: AnyStr = None, host_dir: AnyStr = None,
+          ngrok_auth: Union[UUID, str] = None, gmail_user: str = None, gmail_pass: str = None,
+          recipient: str = None) -> None:
     """Initiates the ``FileServer``.
 
     Args:
         port: Port number in which the file server is running.
-        gmail_user: Username for email notification.
-        gmail_pass: Password for email notification.
-        recipient: Email address to receive notification.
         username: Username to access fileserver.
         password: Password to access fileserver.
         host_dir: Takes the path to serve as an argument. Can also be loaded via env vars.
         ngrok_auth: Ngrok auth token for tunneling.
+        gmail_user: Username for email notification.
+        gmail_pass: Password for email notification.
+        recipient: Email address to receive notification.
+
+    See Also:
+        - All these arguments can be loaded via env vars by placing the key-value pairs in a ``.env`` file.
+        - The ``.env`` file should be stored in the current working directory.
     """
     if port:
         env.port = port

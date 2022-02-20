@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.1.8 (02/20/2022)
+------------------
+- Update branch name in github actions
+- Update README.md and CHANGELOG
+
 1.1.7 (02/20/2022)
 ------------------
 - Create a pypi module
