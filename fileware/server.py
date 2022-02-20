@@ -4,27 +4,23 @@ import functools
 import logging.config
 import os
 import ssl
-import warnings
 from datetime import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from multiprocessing import Process
 from pathlib import Path, PurePath
 from socket import AF_INET, SOCK_DGRAM, socket
 from time import time
-from typing import AnyStr, Union
 from urllib.request import urlopen
-from uuid import UUID
 
 import yaml
 from gmailconnector.send_email import SendEmail
 
-from fileware import cert, env, ngrok_connector
-from fileware.models import LogConfig
+from . import cert, env, models, ngrok
 
-if not os.path.isfile(LogConfig.SERVER_LOG_FILE):
-    Path(LogConfig.SERVER_LOG_FILE).touch()
+if not os.path.isfile(models.LogConfig.SERVER_LOG_FILE):
+    Path(models.LogConfig.SERVER_LOG_FILE).touch()
 
-logging.config.dictConfig(config=LogConfig.LOGGING_CONFIG)
+logging.config.dictConfig(config=models.LogConfig.LOGGING_CONFIG)
 logger = logging.getLogger('server')
 
 HTML_PATH = f"{PurePath(__file__).parent}{os.path.sep}html{os.path.sep}"
@@ -181,25 +177,25 @@ class Authenticator(SimpleHTTPRequestHandler):
                                                                                       'An undefined login attempt']:
             return
 
-        if not (endpoint := ngrok_connector.get_ngrok()):
+        if not (endpoint := ngrok.get_ngrok()):
             endpoint = env.endpoint or f"http://{':'.join(map(str, self.connection.getsockname()))}"
 
         with open(client_file, 'r') as client:
             attachment_info = client.read()
 
-        email_body = f"A connection with status `{status}` has been made to your file server hosted at " \
-                     f"{endpoint}\n\nDetails of the client are below. If this was you, you may disregard this email. " \
-                     f"Otherwise stop the server immediately and rotate your credentials before restarting." \
-                     f"\n\n\n{attachment_info}\n\n"
+        body = f"A connection with status `{status}` has been made to your file server hosted at " \
+               f"{endpoint}\n\nDetails of the client are below. If this was you, you may disregard this email. " \
+               f"Otherwise stop the server immediately and rotate your credentials before restarting." \
+               f"\n\n\n{attachment_info}\n\n"
 
         if env.host_dir == env.home_dir:
             base_path = PurePath(__file__)
-            email_body += f"\n\n\nLogs: {endpoint}/" \
-                          f"{(str(base_path).strip(base_path.name) + LogConfig.SERVER_LOG_FILE).strip(env.host_dir)}"
+            body += f"\n\n\nLogs: {endpoint}/" \
+                    f"{(str(base_path).strip(base_path.name) + models.LogConfig.SERVER_LOG_FILE).strip(env.host_dir)}"
 
         response = SendEmail(gmail_user=env.gmail_user, gmail_pass=env.gmail_pass, recipient=env.recipient,
                              subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
-                             body=email_body).send_email()
+                             body=body).send_email()
         if response.ok:
             logger.info('Email has been sent successfully.')
         else:
@@ -234,21 +230,17 @@ def _reset_auth() -> bool:
         return True
 
 
-def _initiate_connection() -> HTTPServer:
+def initiate_connection() -> None:
     """Initiates fileserver connection after trying to trigger ngrok tunnel.
 
     See Also:
         - Checks for ``cert.pem`` and ``key.pem`` files in ~home/ssh path.
         - If not generates a self-signed certificate using ``OpenSSL``
         - If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.
-
-    Returns:
-        HTTPServer:
-        Returns the server connection class.
     """
-    socket_, public_url = ngrok_connector.connect()
+    socket_, public_url = ngrok.connect()
     if socket_ and public_url:
-        Process(target=ngrok_connector.tunnel, kwargs={'sock': socket_}).start()
+        Process(target=ngrok.tunnel, kwargs={'sock': socket_}).start()
 
     with open('url', 'w') as url_file:
         url_file.write(str(public_url))
@@ -285,49 +277,6 @@ def _initiate_connection() -> HTTPServer:
     if public_url:
         logger.info(f"Hosted at public endpoint: {public_url}")
 
-    return server
-
-
-def serve(port: Union[int, str] = None, username: AnyStr = None, password: AnyStr = None, host_dir: AnyStr = None,
-          ngrok_auth: Union[UUID, str] = None, gmail_user: str = None, gmail_pass: str = None,
-          recipient: str = None) -> None:
-    """Initiates the ``FileServer``.
-
-    Args:
-        port: Port number in which the file server is running.
-        username: Username to access fileserver.
-        password: Password to access fileserver.
-        host_dir: Takes the path to serve as an argument. Can also be loaded via env vars.
-        ngrok_auth: Ngrok auth token for tunneling.
-        gmail_user: Username for email notification.
-        gmail_pass: Password for email notification.
-        recipient: Email address to receive notification.
-
-    See Also:
-        - All these arguments can be loaded via env vars by placing the key-value pairs in a ``.env`` file.
-        - The ``.env`` file should be stored in the current working directory.
-    """
-    if port:
-        env.port = port
-    if gmail_user:
-        env.gmail_user = gmail_user
-    if gmail_pass:
-        env.gmail_pass = gmail_pass
-    if recipient:
-        env.recipient = recipient
-    if username:
-        env.username = username
-    if password:
-        env.password = password
-    if ngrok_auth:
-        env.ngrok_auth = ngrok_auth
-    if host_dir:
-        if os.path.isdir(host_dir):
-            env.host_dir = host_dir
-        else:
-            warnings.warn(f"The specified path: {host_dir} doesn't exist. Defaulting to {env.host_dir}")
-
-    server = _initiate_connection()
     try:
         server.serve_forever()
     except KeyboardInterrupt:

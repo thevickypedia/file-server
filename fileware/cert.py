@@ -6,20 +6,25 @@ from getpass import getuser
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
-from OpenSSL import crypto
+import OpenSSL
 
-IP_INFO = {}
 
-try:
-    IP_INFO = json.load(urlopen('https://ipinfo.io/json'))
-except HTTPError:
-    pass
+def ip_info() -> dict:
+    """Gets public IP information.
 
-if not IP_INFO:
+    Returns:
+        dict:
+        JSON loaded information from public IP information.
+    """
     try:
-        IP_INFO = json.load(urlopen('http://ip.jsontest.com'))
+        return json.load(urlopen('https://ipinfo.io/json'))
     except HTTPError:
         pass
+    try:
+        return json.load(urlopen('http://ip.jsontest.com'))
+    except HTTPError:
+        pass
+    return {}
 
 
 def _get_serial() -> bytes:
@@ -53,9 +58,9 @@ def _generate_serial_hash(byte_size: int = 18, int_size: int = 36) -> int:
 
 def generate_cert(common_name: str,
                   email_address: str = None,
-                  country_name: str = IP_INFO.get('country', 'US'),
-                  locality_name: str = IP_INFO.get('city', 'New York'),
-                  state_or_province_name: str = IP_INFO.get('region', 'New York'),
+                  country_name: str = None,
+                  locality_name: str = None,
+                  state_or_province_name: str = None,
                   organization_name: str = None,
                   organization_unit_name: str = "Information Technology",
                   validity_start_in_seconds: int = 0,
@@ -86,16 +91,21 @@ def generate_cert(common_name: str,
         bool:
         Boolean flag to indicate whether ``cert.pem`` and ``key.pem`` files are empty.
     """
+    ip_ = ip_info()
+    country_name = country_name or ip_.get('country', 'US')
+    locality_name = locality_name or ip_.get('city', 'New York')
+    state_or_province_name = state_or_province_name or ip_.get('region', 'New York')
+
     if key_size not in [2048, 4096]:
         raise ValueError('Certificate key size should be either 2048 or 4096.')
     signature_bytes = 256 if key_size == 2048 else 512  # Refer: https://crypto.stackexchange.com/a/3508
 
     # Creates a key pair
-    key = crypto.PKey()
-    key.generate_key(type=crypto.TYPE_RSA, bits=key_size)
+    key = OpenSSL.crypto.PKey()
+    key.generate_key(type=OpenSSL.crypto.TYPE_RSA, bits=key_size)
 
     # Creates a self-signed cert
-    cert = crypto.X509()
+    cert = OpenSSL.crypto.X509()
     cert.get_subject().C = country_name
     cert.get_subject().ST = state_or_province_name
     cert.get_subject().L = locality_name
@@ -113,9 +123,9 @@ def generate_cert(common_name: str,
 
     # Writes the cert file into specified names
     with open(cert_file, "w") as f:
-        f.write(crypto.dump_certificate(type=crypto.FILETYPE_PEM, cert=cert).decode("utf-8"))
+        f.write(OpenSSL.crypto.dump_certificate(type=OpenSSL.crypto.FILETYPE_PEM, cert=cert).decode("utf-8"))
     with open(key_file, "w") as f:
-        f.write(crypto.dump_privatekey(type=crypto.FILETYPE_PEM, pkey=key).decode("utf-8"))
+        f.write(OpenSSL.crypto.dump_privatekey(type=OpenSSL.crypto.FILETYPE_PEM, pkey=key).decode("utf-8"))
 
     if os.stat(cert_file).st_size != 0 and os.stat(key_file).st_size != 0:
         time.sleep(1)

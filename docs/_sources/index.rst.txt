@@ -1,10 +1,10 @@
-.. PersonalCloud documentation master file, created by
+.. FileWare documentation master file, created by
    sphinx-quickstart on Sat Jul 10 03:11:52 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to PersonalCloud's documentation!
-==========================================
+Welcome to FileWare's documentation!
+====================================
 
 .. toctree::
    :maxdepth: 2
@@ -12,8 +12,15 @@ Welcome to PersonalCloud's documentation!
 
    README
 
-PersonalCloud - Main Module
-===========================
+Initialize
+==========
+
+.. automodule:: fileware.__init__
+   :members:
+   :undoc-members:
+
+Server
+======
 
 .. automodule:: fileware.server
    :members:
@@ -33,10 +40,10 @@ Models
    :members:
    :exclude-members: FILE_LOG_FORMAT, LOGGING_CONFIG, LOG_LEVEL, SERVER_LOG_FILE, TUNNEL_LOG_FILE
 
-Ngrok - Main Module
-===================
+Ngrok
+=====
 
-.. automodule:: fileware.ngrok_connector
+.. automodule:: fileware.ngrok
    :members:
    :undoc-members:
 

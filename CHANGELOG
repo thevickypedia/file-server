@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.1.9 (02/20/2022)
+------------------
+- Use an __init__ file to get the startup args
+- Get IP information from a function instead of a dict
+- Update README.md and rename ngrok_connector.py
+
 1.1.8 (02/20/2022)
 ------------------
 - Update branch name in github actions

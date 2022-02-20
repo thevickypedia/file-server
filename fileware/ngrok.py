@@ -3,21 +3,21 @@ import os
 from pathlib import Path
 from socket import AF_INET, SOCK_STREAM, socket
 
+import pyngrok.conf
+import pyngrok.ngrok
 import requests
 import yaml
-from pyngrok import conf, ngrok
 from pyngrok.exception import PyngrokError
 from requests.exceptions import ConnectionError, InvalidURL
 
-from fileware import env
-from fileware.models import LogConfig
+from . import env, models
 
 os.makedirs('logs') if not os.path.isdir('logs') else None
 
-if not os.path.isfile(LogConfig.TUNNEL_LOG_FILE):
-    Path(LogConfig.TUNNEL_LOG_FILE).touch()
+if not os.path.isfile(models.LogConfig.TUNNEL_LOG_FILE):
+    Path(models.LogConfig.TUNNEL_LOG_FILE).touch()
 
-logging.config.dictConfig(config=LogConfig.LOGGING_CONFIG)
+logging.config.dictConfig(config=models.LogConfig.LOGGING_CONFIG)
 logger = logging.getLogger('tunnel')
 
 
@@ -33,11 +33,18 @@ def get_ngrok() -> str or None:
         - On success, returns the `ngrok` public URL.
         - On failure, returns None to exit function.
     """
+    tunnels_url = f'http://{env.host}:4040/api/tunnels'
     try:
-        response = requests.get(f'http://{env.host}:4040/api/tunnels')
+        logger.info(f'Looking for existing tunnels at {tunnels_url}')
+        response = requests.get(url=tunnels_url)
     except InvalidURL:
+        logger.error(f'Invalid URL: {tunnels_url}')
         return
     except ConnectionError:
+        logger.error(f'Connection failed: {tunnels_url}')
+        return
+    if not response.ok:
+        logger.error(f'Failed response [{response.status_code}] from {tunnels_url}')
         return
 
     serving_at = yaml.load(response.content.decode(), Loader=yaml.FullLoader)['tunnels']
@@ -85,21 +92,23 @@ def connect(new_connection: bool = False):
 
     if env.ngrok_auth:
         logger.info('Using env var to set ngrok auth.')
-        ngrok.set_auth_token(env.ngrok_auth)
+        pyngrok.ngrok.set_auth_token(env.ngrok_auth)
     elif os.path.isfile('ngrok.yml'):
         logger.info('Using config file for ngrok auth')
-        conf.get_default().config_path = 'ngrok.yml'
+        pyngrok.conf.get_default().config_path = 'ngrok.yml'
     else:
+        logger.warning('Neither config file nor env var for ngrok auth was found.')
         return None, 'Tunneling is unavailable since ngrok config file is missing.'
 
     try:
-        endpoint = ngrok.connect(env.port, "http", options={"remote_addr": f"{env.host}:{env.port}"})
-        public_url = endpoint.public_url.replace('http', 'https')
+        endpoint = pyngrok.ngrok.connect(env.port, "http", options={"remote_addr": f"{env.host}:{env.port}"})
+        endpoint = endpoint.public_url.replace('http', 'https')
+        logger.info(f'Ngrok connection has been established at {endpoint}.')
     except PyngrokError as err:
         logger.error(err)
         return None, err
 
-    return sock, public_url
+    return sock, endpoint
 
 
 def tunnel(sock: socket) -> None:
@@ -120,5 +129,5 @@ def tunnel(sock: socket) -> None:
                 connection.close()
             break
 
-    ngrok.kill(pyngrok_config=None)  # uses default config when None is passed
+    pyngrok.ngrok.kill(pyngrok_config=None)  # uses default config when None is passed
     sock.close()
