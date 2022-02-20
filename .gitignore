@@ -3,7 +3,7 @@ venv
 .idea
 __pycache__
 
-# logs for both authserver.py and server.py (legacy) - will be decommissioned
+# place for log files
 logs
 
 # writes url to a file when ngrok generates an url (Jarvis uses it)

@@ -1,6 +1,5 @@
 ###### Versions Supported
-[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-385/)
-[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-391/)
+![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
 
 ###### Language Stats
 ![Language count](https://img.shields.io/github/languages/count/thevickypedia/personal-cloud)
@@ -16,17 +15,13 @@
 ![Modules](https://img.shields.io/github/search/thevickypedia/personal-cloud/module)
 ![Python](https://img.shields.io/github/search/thevickypedia/personal-cloud/.py)
 
-###### Deployments
-[![Docs](https://img.shields.io/docsrs/docs/latest)](https://thevickypedia.github.io/personal-cloud/)
-
 ###### Activity
-![Maintained](https://img.shields.io/maintenance/yes/2022)
 [![GitHub Repo created](https://img.shields.io/date/1618966420)](https://api.github.com/repos/thevickypedia/personal-cloud)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
 [![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/personal-cloud)](https://api.github.com/repos/thevickypedia/personal-cloud)
 
-# Personal Cloud with basic authentication
-Set up a personal cloud to access files in local machine from anywhere on the internet.
+# File Server
+Set up a file server to access files in local machine from anywhere on the internet.
 
 ## Setup
 ### Environment Variables Required:
@@ -42,26 +37,6 @@ Another important variable:<br>
 > Note: Hosts the entire home page by default.
 
 ### Environment Variables Optional:
-###### To host on a custom port:<br>
-
-<details>
-  <summary>Tips on choosing port numbers.</summary>
-<br>
-
-  > :bulb: &nbsp; Categories of port numbers.
-
-    Well-Known ports: 0 to 1023
-    Registered ports: 1024 to 49151
-    Dynamically available: 49152 to 65535
-
-  > :bulb: &nbsp; Command to check current port usage.
-
-  `netstat -anvp tcp | awk 'NR<3 || /LISTEN/'`
-
-</details>
-
-`port` - Choose a port number that's available.
-
 ###### To get notified when a client connects to your server.<br>
 `gmail_user` Username for a gmail account. 
 <br>
@@ -89,12 +64,12 @@ Another important variable:<br>
 #### Option 1:
 - `ngrok http $port`
 
-  > Uses a random port number if [env var for port](https://github.com/thevickypedia/personal-cloud#environment-variables-optional) is not set.
+  > Uses a random port number if env var for port.
 
 #### Option 2:
 - `python3 ngrok.py`
 
-  > Uses the port number `4443` by default if [env var for port](https://github.com/thevickypedia/personal-cloud#environment-variables-optional) is not set.
+  > Uses the port number `4443` by default if env var for port.
 
 ### Run-book:
 https://thevickypedia.github.io/personal-cloud/

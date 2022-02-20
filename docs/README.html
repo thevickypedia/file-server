@@ -43,8 +43,7 @@
             
   <section id="versions-supported">
 <h1>Versions Supported<a class="headerlink" href="#versions-supported" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://www.python.org/downloads/release/python-385/"><img alt="Python 3.8" src="https://img.shields.io/badge/python-3.8-blue.svg" /></a>
-<a class="reference external" href="https://www.python.org/downloads/release/python-391/"><img alt="Python 3.9" src="https://img.shields.io/badge/python-3.9-blue.svg" /></a></p>
+<p><img alt="Python" src="https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue" /></p>
 </section>
 <section id="language-stats">
 <h1>Language Stats<a class="headerlink" href="#language-stats" title="Permalink to this headline">¶</a></h1>
@@ -63,20 +62,15 @@
 <p><img alt="Modules" src="https://img.shields.io/github/search/thevickypedia/personal-cloud/module" />
 <img alt="Python" src="https://img.shields.io/github/search/thevickypedia/personal-cloud/.py" /></p>
 </section>
-<section id="deployments">
-<h1>Deployments<a class="headerlink" href="#deployments" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://thevickypedia.github.io/personal-cloud/"><img alt="Docs" src="https://img.shields.io/docsrs/docs/latest" /></a></p>
-</section>
 <section id="activity">
 <h1>Activity<a class="headerlink" href="#activity" title="Permalink to this headline">¶</a></h1>
-<p><img alt="Maintained" src="https://img.shields.io/maintenance/yes/2022" />
-<a class="reference external" href="https://api.github.com/repos/thevickypedia/personal-cloud"><img alt="GitHub Repo created" src="https://img.shields.io/date/1618966420" /></a>
+<p><a class="reference external" href="https://api.github.com/repos/thevickypedia/personal-cloud"><img alt="GitHub Repo created" src="https://img.shields.io/date/1618966420" /></a>
 <a class="reference external" href="https://api.github.com/repos/thevickypedia/personal-cloud"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/thevickypedia/personal-cloud" /></a>
 <a class="reference external" href="https://api.github.com/repos/thevickypedia/personal-cloud"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/thevickypedia/personal-cloud" /></a></p>
 </section>
-<section id="personal-cloud-with-basic-authentication">
-<h1>Personal Cloud with basic authentication<a class="headerlink" href="#personal-cloud-with-basic-authentication" title="Permalink to this headline">¶</a></h1>
-<p>Set up a personal cloud to access files in local machine from anywhere on the internet.</p>
+<section id="file-server">
+<h1>File Server<a class="headerlink" href="#file-server" title="Permalink to this headline">¶</a></h1>
+<p>Set up a file server to access files in local machine from anywhere on the internet.</p>
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <section id="environment-variables-required">
@@ -97,24 +91,6 @@
 </section>
 <section id="environment-variables-optional">
 <h3>Environment Variables Optional:<a class="headerlink" href="#environment-variables-optional" title="Permalink to this headline">¶</a></h3>
-<section id="to-host-on-a-custom-port-br">
-<h4>To host on a custom port:<br><a class="headerlink" href="#to-host-on-a-custom-port-br" title="Permalink to this headline">¶</a></h4>
-<details>
-  <summary>Tips on choosing port numbers.</summary>
-<br><blockquote>
-<div><p>:bulb:   Categories of port numbers.</p>
-</div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Well</span><span class="o">-</span><span class="n">Known</span> <span class="n">ports</span><span class="p">:</span> <span class="mi">0</span> <span class="n">to</span> <span class="mi">1023</span>
-<span class="n">Registered</span> <span class="n">ports</span><span class="p">:</span> <span class="mi">1024</span> <span class="n">to</span> <span class="mi">49151</span>
-<span class="n">Dynamically</span> <span class="n">available</span><span class="p">:</span> <span class="mi">49152</span> <span class="n">to</span> <span class="mi">65535</span>
-</pre></div>
-</div>
-<blockquote>
-<div><p>:bulb:   Command to check current port usage.</p>
-</div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">netstat</span> <span class="pre">-anvp</span> <span class="pre">tcp</span> <span class="pre">|</span> <span class="pre">awk</span> <span class="pre">'NR&lt;3</span> <span class="pre">||</span> <span class="pre">/LISTEN/'</span></code></p>
-</details><p><code class="docutils literal notranslate"><span class="pre">port</span></code> - Choose a port number that’s available.</p>
-</section>
 <section id="to-get-notified-when-a-client-connects-to-your-server-br">
 <h4>To get notified when a client connects to your server.<br><a class="headerlink" href="#to-get-notified-when-a-client-connects-to-your-server-br" title="Permalink to this headline">¶</a></h4>
 <p><code class="docutils literal notranslate"><span class="pre">gmail_user</span></code> Username for a gmail account.
@@ -152,7 +128,7 @@
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">ngrok</span> <span class="pre">http</span> <span class="pre">$port</span></code></p>
 <blockquote>
-<div><p>Uses a random port number if <a class="reference external" href="https://github.com/thevickypedia/personal-cloud#environment-variables-optional">env var for port</a> is not set.</p>
+<div><p>Uses a random port number if env var for port.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -162,7 +138,7 @@
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">ngrok.py</span></code></p>
 <blockquote>
-<div><p>Uses the port number <code class="docutils literal notranslate"><span class="pre">4443</span></code> by default if <a class="reference external" href="https://github.com/thevickypedia/personal-cloud#environment-variables-optional">env var for port</a> is not set.</p>
+<div><p>Uses the port number <code class="docutils literal notranslate"><span class="pre">4443</span></code> by default if env var for port.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -215,13 +191,11 @@ to update the <a class="reference external" href="#Run-book">runbook</a></p>
 <li><a class="reference internal" href="#language-stats">Language Stats</a></li>
 <li><a class="reference internal" href="#repo-stats">Repo Stats</a></li>
 <li><a class="reference internal" href="#code-stats">Code Stats</a></li>
-<li><a class="reference internal" href="#deployments">Deployments</a></li>
 <li><a class="reference internal" href="#activity">Activity</a></li>
-<li><a class="reference internal" href="#personal-cloud-with-basic-authentication">Personal Cloud with basic authentication</a><ul>
+<li><a class="reference internal" href="#file-server">File Server</a><ul>
 <li><a class="reference internal" href="#setup">Setup</a><ul>
 <li><a class="reference internal" href="#environment-variables-required">Environment Variables Required:</a></li>
 <li><a class="reference internal" href="#environment-variables-optional">Environment Variables Optional:</a><ul>
-<li><a class="reference internal" href="#to-host-on-a-custom-port-br">To host on a custom port:<br></a></li>
 <li><a class="reference internal" href="#to-get-notified-when-a-client-connects-to-your-server-br">To get notified when a client connects to your server.<br></a></li>
 <li><a class="reference internal" href="#http-server-py-simplehttprequesthandler-list-directory">http &gt; server.py &gt; SimpleHTTPRequestHandler &gt; list_directory()</a></li>
 </ul>
