@@ -1,6 +1,4 @@
-import logging.config
 import os
-from pathlib import Path
 from socket import AF_INET, SOCK_STREAM, socket
 
 import pyngrok.conf
@@ -12,13 +10,7 @@ from requests.exceptions import ConnectionError, InvalidURL
 
 from . import env, models
 
-os.makedirs('logs') if not os.path.isdir('logs') else None
-
-if not os.path.isfile(models.LogConfig.TUNNEL_LOG_FILE):
-    Path(models.LogConfig.TUNNEL_LOG_FILE).touch()
-
-logging.config.dictConfig(config=models.LogConfig.LOGGING_CONFIG)
-logger = logging.getLogger('tunnel')
+logger = models.ngrok_logger()
 
 
 def get_ngrok() -> str or None:
@@ -98,17 +90,16 @@ def connect(new_connection: bool = False):
         pyngrok.conf.get_default().config_path = 'ngrok.yml'
     else:
         logger.warning('Neither config file nor env var for ngrok auth was found.')
-        return None, 'Tunneling is unavailable since ngrok config file is missing.'
+        return None, None
 
     try:
         endpoint = pyngrok.ngrok.connect(env.port, "http", options={"remote_addr": f"{env.host}:{env.port}"})
         endpoint = endpoint.public_url.replace('http', 'https')
         logger.info(f'Ngrok connection has been established at {endpoint}.')
+        return sock, endpoint
     except PyngrokError as err:
         logger.error(err)
-        return None, err
-
-    return sock, endpoint
+        return None, None
 
 
 def tunnel(sock: socket) -> None:

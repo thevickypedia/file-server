@@ -57,31 +57,41 @@
 </section>
 <section id="module-fileware.__init__">
 <span id="initialize"></span><h1>Initialize<a class="headerlink" href="#module-fileware.__init__" title="Permalink to this headline">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="fileware.__init__.serve">
-<span class="sig-prename descclassname"><span class="pre">fileware.__init__.</span></span><span class="sig-name descname"><span class="pre">serve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngrok_auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_pass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.__init__.serve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates the <code class="docutils literal notranslate"><span class="pre">FileWare</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>port</strong> – Port number in which the file server is running.</p></li>
-<li><p><strong>username</strong> – Username to access fileserver.</p></li>
-<li><p><strong>password</strong> – Password to access fileserver.</p></li>
-<li><p><strong>host_dir</strong> – Takes the path to serve as an argument. Can also be loaded via env vars.</p></li>
-<li><p><strong>ngrok_auth</strong> – Ngrok auth token for tunneling.</p></li>
-<li><p><strong>gmail_user</strong> – Username for email notification.</p></li>
-<li><p><strong>gmail_pass</strong> – Password for email notification.</p></li>
-<li><p><strong>recipient</strong> – Email address to receive notification.</p></li>
-</ul>
-</dd>
-</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="fileware.__init__.FileWare">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileware.__init__.</span></span><span class="sig-name descname"><span class="pre">FileWare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">AnyStr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngrok_auth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">uuid.UUID</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmail_pass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recipient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileware.__init__.FileWare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to instantiate FileWare object, and run the file server in a thread.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">FileWare</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="fileware.__init__.FileWare.initiate_connection">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initiate_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#fileware.responder.Response" title="fileware.responder.Response"><span class="pre">fileware.responder.Response</span></a></span></span><a class="headerlink" href="#fileware.__init__.FileWare.initiate_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates fileserver connection after trying to trigger ngrok tunnel.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p>All these arguments can be loaded via env vars by placing the key-value pairs in a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">.env</span></code> file should be stored in the current working directory.</p></li>
+<li><p>Checks for <code class="docutils literal notranslate"><span class="pre">cert.pem</span></code> and <code class="docutils literal notranslate"><span class="pre">key.pem</span></code> files in ~home/ssh path.</p></li>
+<li><p>If not generates a self-signed certificate using <code class="docutils literal notranslate"><span class="pre">OpenSSL</span></code></p></li>
+<li><p>If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.</p></li>
 </ul>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fileware.__init__.FileWare.serve">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">serve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">http_server</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">http.server.HTTPServer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">socket_connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">socket.socket</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.__init__.FileWare.serve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the file server session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>http_server</strong> – Takes the HTTPServer object as an argument.</p></li>
+<li><p><strong>socket_connection</strong> – Socket connection in case ngrok tunneling is active.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -158,20 +168,6 @@
 
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="fileware.server.initiate_connection">
-<span class="sig-prename descclassname"><span class="pre">fileware.server.</span></span><span class="sig-name descname"><span class="pre">initiate_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#fileware.server.initiate_connection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates fileserver connection after trying to trigger ngrok tunnel.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p>Checks for <code class="docutils literal notranslate"><span class="pre">cert.pem</span></code> and <code class="docutils literal notranslate"><span class="pre">key.pem</span></code> files in ~home/ssh path.</p></li>
-<li><p>If not generates a self-signed certificate using <code class="docutils literal notranslate"><span class="pre">OpenSSL</span></code></p></li>
-<li><p>If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.</p></li>
-</ul>
-</div>
-</dd></dl>
-
 </section>
 <section id="module-fileware.cert">
 <span id="open-ssl"></span><h1>Open SSL<a class="headerlink" href="#module-fileware.cert" title="Permalink to this headline">¶</a></h1>
@@ -226,6 +222,74 @@
 </dd></dl>
 
 </section>
+<section id="module-fileware.responder">
+<span id="response-decorator"></span><h1>Response Decorator<a class="headerlink" href="#module-fileware.responder" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="fileware.responder.Response">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fileware.responder.</span></span><span class="sig-name descname"><span class="pre">Response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fileware.responder.Response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to format the response, so that it can be accessed as a property.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Response</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="fileware.responder.Response.json">
+<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#fileware.responder.Response.json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary of the argument that was received during class initialization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns the dictionary received as arg.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fileware.responder.Response.server">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">server</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">http.server.HTTPServer</span></em><a class="headerlink" href="#fileware.responder.Response.server" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the extracted class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Server class.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>HTTPServer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fileware.responder.Response.socket">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">socket</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">socket.socket</span></em><a class="headerlink" href="#fileware.responder.Response.socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the extracted class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Socket connection.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>socket</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="fileware.responder.Response.url">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#fileware.responder.Response.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the extracted class variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>URL.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-fileware.models">
 <span id="models"></span><h1>Models<a class="headerlink" href="#module-fileware.models" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
@@ -235,6 +299,34 @@
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">LogConfig</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fileware.models.ngrok_logger">
+<span class="sig-prename descclassname"><span class="pre">fileware.models.</span></span><span class="sig-name descname"><span class="pre">ngrok_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">logging.Logger</span></span></span><a class="headerlink" href="#fileware.models.ngrok_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a log file for ngrok logs and configures the logging config for ngrok logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns logger config for ngrok.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>logging.Logger</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fileware.models.server_logger">
+<span class="sig-prename descclassname"><span class="pre">fileware.models.</span></span><span class="sig-name descname"><span class="pre">server_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fileware.models.server_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a log file for server logs and configures the logging config for server logger.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Returns logger config for server.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>logging.Logger</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -403,6 +495,7 @@ However, as a sanity check, the script uses port number stored in env var to mak
 <li><a class="reference internal" href="#module-fileware.__init__">Initialize</a></li>
 <li><a class="reference internal" href="#module-fileware.server">Server</a></li>
 <li><a class="reference internal" href="#module-fileware.cert">Open SSL</a></li>
+<li><a class="reference internal" href="#module-fileware.responder">Response Decorator</a></li>
 <li><a class="reference internal" href="#module-fileware.models">Models</a></li>
 <li><a class="reference internal" href="#module-fileware.ngrok">Ngrok</a></li>
 <li><a class="reference internal" href="#module-fileware.helpers.volume">Volume</a></li>

@@ -33,6 +33,13 @@ Open SSL
    :members:
    :undoc-members:
 
+Response Decorator
+==================
+
+.. automodule:: fileware.responder
+   :members:
+   :undoc-members:
+
 Models
 ======
 

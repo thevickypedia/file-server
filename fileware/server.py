@@ -1,27 +1,18 @@
 import base64
 import binascii
-import functools
-import logging.config
 import os
-import ssl
 from datetime import datetime
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-from multiprocessing import Process
-from pathlib import Path, PurePath
-from socket import AF_INET, SOCK_DGRAM, socket
+from http.server import SimpleHTTPRequestHandler
+from pathlib import PurePath
 from time import time
 from urllib.request import urlopen
 
 import yaml
 from gmailconnector.send_email import SendEmail
 
-from . import cert, env, models, ngrok
+from . import env, models, ngrok
 
-if not os.path.isfile(models.LogConfig.SERVER_LOG_FILE):
-    Path(models.LogConfig.SERVER_LOG_FILE).touch()
-
-logging.config.dictConfig(config=models.LogConfig.LOGGING_CONFIG)
-logger = logging.getLogger('server')
+logger = models.server_logger()
 
 HTML_PATH = f"{PurePath(__file__).parent}{os.path.sep}html{os.path.sep}"
 
@@ -228,63 +219,3 @@ def _reset_auth() -> bool:
     elif time() - env.start_time > 900:
         env.start_time = time()
         return True
-
-
-def initiate_connection() -> None:
-    """Initiates fileserver connection after trying to trigger ngrok tunnel.
-
-    See Also:
-        - Checks for ``cert.pem`` and ``key.pem`` files in ~home/ssh path.
-        - If not generates a self-signed certificate using ``OpenSSL``
-        - If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.
-    """
-    socket_, public_url = ngrok.connect()
-    if socket_ and public_url:
-        Process(target=ngrok.tunnel, kwargs={'sock': socket_}).start()
-
-    with open('url', 'w') as url_file:
-        url_file.write(str(public_url))
-
-    ssh_dir = env.home_dir + os.path.sep + os.path.join('.ssh')
-    cert_file = os.path.expanduser(ssh_dir) + os.path.sep + "cert.pem"
-    key_file = os.path.expanduser(ssh_dir) + os.path.sep + "key.pem"
-
-    if not socket_:
-        ip_socket = socket(AF_INET, SOCK_DGRAM)
-        ip_socket.connect(("8.8.8.8", 80))
-        env.host = ip_socket.getsockname()[0]
-        if not all([os.path.isfile(cert_file), os.path.isfile(key_file)]):
-            cert.generate_cert(common_name='*.ngrok.com', cert_file=cert_file, key_file=key_file)
-
-    logger.info('Initiating file server.')
-    handler_class = functools.partial(
-        Authenticator,
-        username=env.username,
-        password=env.password,
-        directory=env.host_dir
-    )
-    server = HTTPServer(server_address=(env.host, env.port), RequestHandlerClass=handler_class)
-
-    if not socket_ and all([os.path.isfile(cert_file), os.path.isfile(key_file)]):
-        server.socket = ssl.wrap_socket(sock=server.socket, server_side=True,
-                                        certfile=cert_file, keyfile=key_file)
-        endpoint = f"https://{':'.join(map(str, server.server_address))}"
-    else:
-        endpoint = f"http://{':'.join(map(str, server.server_address))}"
-
-    logger.info(f"Serving at: {endpoint}")
-
-    if public_url:
-        logger.info(f"Hosted at public endpoint: {public_url}")
-
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        [(os.rename(new_name, old_name), logger.critical(f'Reverted {new_name} to {old_name}'))
-         for each in env.renamed for old_name, new_name in each.items() if env.renamed]
-        logger.info('Terminating file server.')
-        server.server_close()
-        server.shutdown()
-        logger.info("File server has been terminated.")
-        if os.path.isfile('url'):
-            os.remove('url')

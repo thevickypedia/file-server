@@ -51,12 +51,29 @@ Set up a file server to access files in local machine from anywhere on the inter
 python3 -m pip install fileware
 ```
 
+**With Threading**
 ```python
-import fileware
+from threading import Thread
 
+from fileware import FileWare
 
-if __name__ == '__main__':
-    fileware.serve()
+file_server = FileWare()
+response = file_server.initiate_connection()
+print(response.url)
+
+thread = Thread(target=file_server.serve, kwargs={'http_server': response.server, 'socket_connection': response.socket})
+thread.start()
+```
+
+**Without Threading**
+```python
+from fileware import FileWare
+
+file_server = FileWare()
+response = file_server.initiate_connection()
+print(response.url)
+
+file_server.serve(http_server=response.server, socket_connection=response.socket)
 ```
 
 > Env vars can be loaded by placing a .env file in current working directory.
