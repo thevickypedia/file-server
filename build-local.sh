@@ -18,7 +18,7 @@ read_module_version() {
 }
 
 read_module_version version.py version_info:version  # Reads var $2 from file $1 and assigns it to the var version
-statement="RUNNING THIS WILL BUILD V$version OF 'File-Server' IN PYPI AND MAY FAIL THE BUILD ON GITHUB ACTIONS"
+statement="RUNNING THIS WILL BUILD v$version OF '${PWD##*/}' IN PYPI AND MAY FAIL THE AUTOMATIC BUILD ON GITHUB ACTIONS"
 echo -e "\n**********************************************************************************************************"
 echo -e $statement
 echo -e "**********************************************************************************************************\n"

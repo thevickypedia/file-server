@@ -186,7 +186,7 @@ class Authenticator(SimpleHTTPRequestHandler):
 
         response = SendEmail(gmail_user=env.gmail_user, gmail_pass=env.gmail_pass, recipient=env.recipient,
                              subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
-                             body=body).send_email()
+                             body=body, sender='FileWare').send_email()
         if response.ok:
             logger.info('Email has been sent successfully.')
         else:

@@ -25,6 +25,11 @@
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/y/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
 [![GitHub last commit](https://img.shields.io/github/last-commit/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
 
+**Build Status**
+
+[![pypi-publish](https://github.com/thevickypedia/gmail-connector/actions/workflows/python-publish.yml/badge.svg)](https://github.com/thevickypedia/gmail-connector/actions/workflows/python-publish.yml)
+[![pages-build-deployment](https://github.com/thevickypedia/gmail-connector/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/thevickypedia/gmail-connector/actions/workflows/pages/pages-build-deployment)
+
 # FileWare
 Set up a file server to access files in local machine from anywhere on the internet.
 

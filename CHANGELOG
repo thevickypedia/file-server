@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.2.1 (02/21/2022)
+------------------
+- Update sender name in notifications
+- Update badges in README.md
+- Update build-local.sh to automatically pick repo name
+
 1.2.0 (02/21/2022)
 ------------------
 - Make app `Thread` compatible and create `Response` class
