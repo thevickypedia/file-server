@@ -2,11 +2,12 @@ import binascii
 import json
 import os
 import time
-from getpass import getuser
 from urllib.error import HTTPError
 from urllib.request import urlopen
 
 import OpenSSL
+
+from . import env
 
 
 def ip_info() -> dict:
@@ -112,7 +113,7 @@ def generate_cert(common_name: str,
     cert.get_subject().O = organization_name or common_name[0].upper() + common_name.partition('.')[0][1:]  # noqa: E741
     cert.get_subject().OU = organization_unit_name
     cert.get_subject().CN = common_name
-    cert.get_subject().emailAddress = email_address or f"{getuser()}@expose-localhost.com"
+    cert.get_subject().emailAddress = email_address or f"{env.username}@fileware.com"
     cert.set_serial_number(serial=cert.get_serial_number() or _generate_serial_hash())
     cert.gmtime_adj_notBefore(amount=validity_start_in_seconds)
     cert.gmtime_adj_notAfter(amount=validity_end_in_seconds)

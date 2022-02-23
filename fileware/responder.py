@@ -1,5 +1,5 @@
 from http.server import HTTPServer
-from socket import socket
+from multiprocessing import Process
 
 
 class Response:
@@ -16,29 +16,9 @@ class Response:
             dictionary: Takes a dictionary of key-value pairs as an argument.
         """
         self.raw: dict = dictionary
-        self._server: HTTPServer = dictionary.get('server')
-        self._socket: socket = dictionary.get('socket')
         self._url: str = dictionary.get('url')
-
-    @property
-    def server(self) -> HTTPServer:
-        """Returns the extracted class variable.
-
-        Returns:
-            HTTPServer:
-            Server class.
-        """
-        return self._server
-
-    @property
-    def socket(self) -> socket:
-        """Returns the extracted class variable.
-
-        Returns:
-            socket:
-            Socket connection.
-        """
-        return self._socket
+        self._server: HTTPServer = dictionary.get('server')
+        self._process: Process = dictionary.get('process')
 
     @property
     def url(self) -> str:
@@ -46,9 +26,29 @@ class Response:
 
         Returns:
             str:
-            URL.
+            Public URL from Ngrok or the local IP based endpoint.
         """
         return self._url
+
+    @property
+    def server(self) -> HTTPServer:
+        """Returns the extracted class variable.
+
+        Returns:
+            HTTPServer:
+            Web Server object.
+        """
+        return self._server
+
+    @property
+    def process(self) -> Process:
+        """Returns the extracted class variable.
+
+        Returns:
+            Process:
+            Process for Ngrok.
+        """
+        return self._process
 
     def json(self) -> dict:
         """Returns a dictionary of the argument that was received during class initialization.

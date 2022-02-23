@@ -13,8 +13,11 @@ from . import env, models
 logger = models.ngrok_logger()
 
 
-def get_ngrok() -> str or None:
+def get_ngrok(public: bool = True) -> str or None:
     """Identifies if an existing ngrok tunnel by sending a `GET` request to api/tunnels to get the `ngrok` public url.
+
+    Args:
+        public: Boolean flag, whether to get the public or private endpoint.
 
     See Also:
         Checks for output from get_port function. If nothing, then `ngrok` isn't running.
@@ -39,8 +42,12 @@ def get_ngrok() -> str or None:
         logger.error(f'Failed response [{response.status_code}] from {tunnels_url}')
         return
 
-    serving_at = yaml.load(response.content.decode(), Loader=yaml.FullLoader)['tunnels']
-    return serving_at[0].get('public_url')
+    serving_at = yaml.load(response.content.decode(), Loader=yaml.FullLoader).get('tunnels', [{}])[0]
+
+    if public:
+        return serving_at.get('public_url')
+    else:
+        return serving_at.get('config', {}).get('addr')
 
 
 def connect(new_connection: bool = False):
@@ -73,6 +80,10 @@ def connect(new_connection: bool = False):
         tuple:
         A tuple of the connected socket and the public URL.
     """
+    if (local_host := get_ngrok(public=False)) and local_host.endswith(str(env.port)):
+        logger.error(f'Ngrok tunnel is already running on {local_host}')
+        return None, None
+
     sock = socket(AF_INET, SOCK_STREAM)
 
     if new_connection:
@@ -110,15 +121,17 @@ def tunnel(sock: socket) -> None:
     """
     connection = None
     while True:
+        if env.STOPPER:
+            break
         try:
             logger.info("Waiting for a connection")
             connection, client_address = sock.accept()
             logger.info(f"Connection established from {client_address}")
         except KeyboardInterrupt:
-            logger.info("Shutting down server")
-            if connection:
-                connection.close()
             break
 
+    logger.info("Shutting down socket connection")
+    if connection:
+        connection.close()
     pyngrok.ngrok.kill(pyngrok_config=None)  # uses default config when None is passed
     sock.close()

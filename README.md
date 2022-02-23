@@ -58,32 +58,61 @@ python3 -m pip install fileware
 
 **With Threading**
 ```python
+import time
 from threading import Thread
 
-from fileware import FileWare
+import fileware
 
-file_server = FileWare()
-response = file_server.initiate_connection()
+
+# [OPTIONAL] - Override env vars for distributed usage or multiple ngrok accounts.
+fileware.override_env_vars(
+    gmail_user="Username@gmail.com",
+    gmail_pass="xxxxxxxxxx",
+    recipient="Recipient@gmail.com",
+    password="FileServer",
+    ngrok_auth="***********************"
+)
+
+# Initiates the connection and creates a new process if ngrok auth token is valid.
+response = fileware.initiate_connection()
 print(response.url)
 
-thread = Thread(target=file_server.serve, kwargs={'http_server': response.server, 'socket_connection': response.socket})
+# Runs the server in a thread alongside starting the ngrok process created previously.
+thread = Thread(target=fileware.serve,
+                kwargs={'http_server': response.server, 'process': response.process})
 thread.start()
+
+# Sleep or any other task in parallel.
+time.sleep(6e+1)
+
+# Shutdown the server and join the thread which spun the server up.
+fileware.shutdown(http_server=response.server, process=response.process)
+thread.join(2e+1)
 ```
 
-**Without Threading**
+**Without Threading - File Server will terminate only when the main process is killed.**
 ```python
-from fileware import FileWare
+import fileware
 
-file_server = FileWare()
-response = file_server.initiate_connection()
+response = fileware.initiate_connection()
 print(response.url)
 
-file_server.serve(http_server=response.server, socket_connection=response.socket)
+fileware.serve(http_server=response.server,process=response.process)
 ```
 
 > Env vars can be loaded by placing a .env file in current working directory.
 >
 > The `serve` function can also take arguments which can be used to override env vars.
+
+### Pypi Package
+[![pypi-module](https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg)](https://packaging.python.org/tutorials/packaging-projects/)
+
+[https://pypi.org/project/fileware/](https://pypi.org/project/fileware/)
+
+### Runbook
+[![made-with-sphinx-doc](https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg)](https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html)
+
+[https://thevickypedia.github.io/fileware/](https://thevickypedia.github.io/fileware/)
 
 **Run-book:**
 
@@ -101,7 +130,7 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 **Pre-Commit**
 
 `pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/fileware/blob/main/gen_docs.sh) 
-to update the [runbook](#Run-book)
+to update the runbook.
 
 > `pip install --no-cache --upgrade sphinx pre-commit recommonmark`
 

@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+1.2.2 (02/22/2022)
+------------------
+- Make app thread safe and add function to stop server
+- Remove OOP for better handling
+- Load env vars without verbose and override
+- Break ngrok tunneling when web server is stopped
+- Add a callable function to stop the server
+- Update README.md, docs and CHANGELOG
+- Update responder to return process instead of socket
+
 1.2.1 (02/21/2022)
 ------------------
 - Update sender name in notifications
