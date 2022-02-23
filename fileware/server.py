@@ -169,7 +169,7 @@ class Authenticator(SimpleHTTPRequestHandler):
             return
 
         if not (endpoint := ngrok.get_ngrok()):
-            endpoint = env.endpoint or f"http://{':'.join(map(str, self.connection.getsockname()))}"
+            endpoint = f"http://{':'.join(map(str, self.connection.getsockname()))}"
 
         with open(client_file, 'r') as client:
             attachment_info = client.read()

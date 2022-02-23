@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.2.3 (02/22/2022)
+------------------
+- Remove unused args
+- Bump version
+
 1.2.2 (02/22/2022)
 ------------------
 - Make app thread safe and add function to stop server

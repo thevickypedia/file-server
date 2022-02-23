@@ -13,8 +13,6 @@ start_time = time()  # set to the current time to reset the auth headers when ti
 first_run = True  # set first_run to True to prompt first time auth regardless of stored cookies
 authenticated = False  # set to False for the appropriate message to be written in the HTML file
 renamed = []  # set to empty list to append dictionaries with re-namings done for index.html
-notify = True  # notify is set to true by default unless the env vars are not present
-endpoint = None  # endpoint is set to None to make it a global variable
 
 STOPPER = False
 
