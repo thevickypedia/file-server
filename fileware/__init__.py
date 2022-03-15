@@ -70,24 +70,28 @@ def override_env_vars(port: Union[int, str] = None, username: AnyStr = None, pas
             warnings.warn(f"The specified path: {host_dir} doesn't exist. Defaulting to {env.host_dir}")
 
 
-def initiate_connection() -> Response:
-    """Initiates fileserver connection after trying to trigger ngrok tunnel.
+def initiate_connection(localhost: bool = True, secure: bool = True) -> Response:
+    """Initiates file-server connection after trying to trigger ngrok tunnel.
+
+    Args:
+        localhost: Takes a boolean value whether to host the server on 127.0.0.1 or local IP address.
+        secure: Takes a boolean flag whether to bind the ssl cert.
 
     See Also:
         - Checks for ``cert.pem`` and ``key.pem`` files in ``~home/ssh`` directory.
         - If not, generates a self-signed certificate using ``OpenSSL``
         - If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.
     """
+    socket_connection, public_url = None, None
     if is_port_in_use(port=env.port):
         logger.critical(f'Port number: {env.port} is currently being used.')
-        socket_connection, public_url = None, None
-    else:
+    elif localhost:
         socket_connection, public_url = ngrok.connect()
 
     cert_file = os.path.join(env.home_dir, ".ssh", "cert.pem")
     key_file = os.path.join(env.home_dir, ".ssh", "key.pem")
 
-    if not socket_connection:
+    if not socket_connection and not localhost:
         ip_socket = socket(AF_INET, SOCK_DGRAM)
         ip_socket.connect(("8.8.8.8", 80))
         env.host = ip_socket.getsockname()[0]
@@ -103,7 +107,7 @@ def initiate_connection() -> Response:
     )
     http_server = HTTPServer(server_address=(env.host, env.port), RequestHandlerClass=handler_class)
 
-    if not socket_connection and all([os.path.isfile(cert_file), os.path.isfile(key_file)]):
+    if not socket_connection and all([os.path.isfile(cert_file), os.path.isfile(key_file)]) and secure:
         http_server.socket = ssl.wrap_socket(sock=http_server.socket, server_side=True,
                                              certfile=cert_file, keyfile=key_file)
         endpoint = f"https://{':'.join(map(str, http_server.server_address))}"

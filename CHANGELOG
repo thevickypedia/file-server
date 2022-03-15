@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+1.2.4 (03/15/2022)
+------------------
+- Have `localhost` or local IP address as an option
+
 1.2.3 (02/22/2022)
 ------------------
 - Remove unused args

@@ -61,8 +61,16 @@
 <span id="initialize"></span><h1>Initialize<a class="headerlink" href="#module-fileware.__init__" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="fileware.__init__.initiate_connection">
-<span class="sig-prename descclassname"><span class="pre">fileware.__init__.</span></span><span class="sig-name descname"><span class="pre">initiate_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#fileware.responder.Response" title="fileware.responder.Response"><span class="pre">fileware.responder.Response</span></a></span></span><a class="headerlink" href="#fileware.__init__.initiate_connection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initiates fileserver connection after trying to trigger ngrok tunnel.</p>
+<span class="sig-prename descclassname"><span class="pre">fileware.__init__.</span></span><span class="sig-name descname"><span class="pre">initiate_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">localhost</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">secure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#fileware.responder.Response" title="fileware.responder.Response"><span class="pre">fileware.responder.Response</span></a></span></span><a class="headerlink" href="#fileware.__init__.initiate_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initiates file-server connection after trying to trigger ngrok tunnel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>localhost</strong> – Takes a boolean value whether to host the server on 127.0.0.1 or local IP address.</p></li>
+<li><p><strong>secure</strong> – Takes a boolean flag whether to bind the ssl cert.</p></li>
+</ul>
+</dd>
+</dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
