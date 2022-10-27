@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+1.2.5 (10/27/2022)
+------------------
+- Upgrade gmailconnector
+- Setup workflow dispatch for manual builds
+
 1.2.4 (03/15/2022)
 ------------------
 - Have `localhost` or local IP address as an option

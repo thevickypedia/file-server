@@ -184,9 +184,10 @@ class Authenticator(SimpleHTTPRequestHandler):
             body += f"\n\n\nLogs: {endpoint}/" \
                     f"{(str(base_path).strip(base_path.name) + models.LogConfig.SERVER_LOG_FILE).strip(env.host_dir)}"
 
-        response = SendEmail(gmail_user=env.gmail_user, gmail_pass=env.gmail_pass, recipient=env.recipient,
-                             subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
-                             body=body, sender='FileWare').send_email()
+        response = SendEmail(gmail_user=env.gmail_user, gmail_pass=env.gmail_pass).send_email(
+            recipient=env.recipient, subject=f"WARNING: {status} was detected. {current_time}", attachment=client_file,
+            body=body, sender='FileWare'
+        )
         if response.ok:
             logger.info('Email has been sent successfully.')
         else:
