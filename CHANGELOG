@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+1.2.6 (12/06/2022)
+------------------
+- Set pypi build upon release instead of commit
+- Simplify pypi build action
+- Update README.md
+- Upgrade sphinx
+
 1.2.5 (10/27/2022)
 ------------------
 - Upgrade gmailconnector

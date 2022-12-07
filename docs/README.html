@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
@@ -13,7 +13,9 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -62,10 +64,10 @@
 <p><a class="reference external" href="https://github.com/thevickypedia/gmail-connector/actions/workflows/python-publish.yml"><img alt="pypi-publish" src="https://github.com/thevickypedia/gmail-connector/actions/workflows/python-publish.yml/badge.svg" /></a>
 <a class="reference external" href="https://github.com/thevickypedia/gmail-connector/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/thevickypedia/gmail-connector/actions/workflows/pages/pages-build-deployment/badge.svg" /></a></p>
 <section id="fileware">
-<h1>FileWare<a class="headerlink" href="#fileware" title="Permalink to this headline">¶</a></h1>
+<h1>FileWare<a class="headerlink" href="#fileware" title="Permalink to this heading">¶</a></h1>
 <p>Set up a file server to access files in local machine from anywhere on the internet.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">¶</a></h2>
 <p><strong>Environment Variables:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>: Username to confirm identity. Defaults to user profile name.</p></li>
@@ -85,7 +87,7 @@
 </ul>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3 -m pip install fileware
 </pre></div>
 </div>
@@ -137,36 +139,39 @@
 </div></blockquote>
 </section>
 <section id="pypi-package">
-<h2>Pypi Package<a class="headerlink" href="#pypi-package" title="Permalink to this headline">¶</a></h2>
+<h2>Pypi Package<a class="headerlink" href="#pypi-package" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="https://packaging.python.org/tutorials/packaging-projects/"><img alt="pypi-module" src="https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg" /></a></p>
 <p><a class="reference external" href="https://pypi.org/project/fileware/">https://pypi.org/project/fileware/</a></p>
 </section>
-<section id="runbook">
-<h2>Runbook<a class="headerlink" href="#runbook" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html"><img alt="made-with-sphinx-doc" src="https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg" /></a></p>
-<p><a class="reference external" href="https://thevickypedia.github.io/fileware/">https://thevickypedia.github.io/fileware/</a></p>
-<p><strong>Run-book:</strong></p>
-<p>https://thevickypedia.github.io/fileware/</p>
-<blockquote>
-<div><p>Generated using <a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html"><code class="docutils literal notranslate"><span class="pre">sphinx-autogen</span></code></a></p>
-</div></blockquote>
-<p><strong>Coding Standards:</strong></p>
+<section id="coding-standards">
+<h2>Coding Standards<a class="headerlink" href="#coding-standards" title="Permalink to this heading">¶</a></h2>
 <p>Docstring format: <a class="reference external" href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings"><code class="docutils literal notranslate"><span class="pre">Google</span></code></a> <br>
 Styling conventions: <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/"><code class="docutils literal notranslate"><span class="pre">PEP</span> <span class="pre">8</span></code></a> <br>
 Clean code with pre-commit hooks: <a class="reference external" href="https://flake8.pycqa.org/en/latest/"><code class="docutils literal notranslate"><span class="pre">flake8</span></code></a> and
 <a class="reference external" href="https://pycqa.github.io/isort/"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a></p>
-<p><strong>Pre-Commit</strong></p>
-<p><code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> will run <code class="docutils literal notranslate"><span class="pre">flake8</span></code> and <code class="docutils literal notranslate"><span class="pre">isort</span></code> to ensure proper coding standards along with <a class="reference external" href="https://github.com/thevickypedia/fileware/blob/main/gen_docs.sh">docs_generator</a>
-to update the runbook.</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-cache</span> <span class="pre">--upgrade</span> <span class="pre">sphinx</span> <span class="pre">pre-commit</span> <span class="pre">recommonmark</span></code></p>
-</div></blockquote>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code></p>
-</div></blockquote>
+</section>
+<section id="linting">
+<h2>Linting<a class="headerlink" href="#linting" title="Permalink to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">PreCommit</span></code> will ensure linting, and the doc creation are run on every commit.</p>
+<p><strong>Requirement</strong>
+<br>
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-cache</span> <span class="pre">--upgrade</span> <span class="pre">sphinx</span> <span class="pre">pre-commit</span> <span class="pre">recommonmark</span></code></p>
+<p><strong>Usage</strong>
+<br>
+<code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code></p>
+</section>
+<section id="id1">
+<h2>Pypi Package<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://packaging.python.org/tutorials/packaging-projects/"><img alt="pypi-module" src="https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg" /></a></p>
+<p><a class="reference external" href="https://pypi.org/project/fileware/">https://pypi.org/project/fileware/</a></p>
+</section>
+<section id="runbook">
+<h2>Runbook<a class="headerlink" href="#runbook" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html"><img alt="made-with-sphinx-doc" src="https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg" /></a></p>
+<p><a class="reference external" href="https://thevickypedia.github.io/fileware/">https://thevickypedia.github.io/fileware/</a></p>
 </section>
 <section id="license-copyright">
-<h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Permalink to this headline">¶</a></h2>
+<h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Permalink to this heading">¶</a></h2>
 <p>© Vignesh Sivanandha Rao</p>
 <p>Licensed under the <a class="reference external" href="https://github.com/thevickypedia/fileware/blob/main/LICENSE">MIT License</a></p>
 </section>
@@ -186,6 +191,9 @@ to update the runbook.</p>
 <li><a class="reference internal" href="#setup">Setup</a></li>
 <li><a class="reference internal" href="#usage">Usage</a></li>
 <li><a class="reference internal" href="#pypi-package">Pypi Package</a></li>
+<li><a class="reference internal" href="#coding-standards">Coding Standards</a></li>
+<li><a class="reference internal" href="#linting">Linting</a></li>
+<li><a class="reference internal" href="#id1">Pypi Package</a></li>
 <li><a class="reference internal" href="#runbook">Runbook</a></li>
 <li><a class="reference internal" href="#license-copyright">License &amp; copyright</a></li>
 </ul>
@@ -214,7 +222,7 @@ to update the runbook.</p>
     </form>
     </div>
 </div>
-<script>$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -237,7 +245,7 @@ to update the runbook.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Vignesh Sivanandha Rao.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.4.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
     </div>
   </body>
 </html>

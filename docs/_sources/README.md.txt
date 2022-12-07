@@ -109,32 +109,32 @@ fileware.serve(http_server=response.server,process=response.process)
 
 [https://pypi.org/project/fileware/](https://pypi.org/project/fileware/)
 
-### Runbook
-[![made-with-sphinx-doc](https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg)](https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html)
-
-[https://thevickypedia.github.io/fileware/](https://thevickypedia.github.io/fileware/)
-
-**Run-book:**
-
-https://thevickypedia.github.io/fileware/
-
-> Generated using [`sphinx-autogen`](https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html)
-
-**Coding Standards:**
-
+## Coding Standards
 Docstring format: [`Google`](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) <br>
 Styling conventions: [`PEP 8`](https://www.python.org/dev/peps/pep-0008/) <br>
 Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/) and 
 [`isort`](https://pycqa.github.io/isort/)
 
-**Pre-Commit**
+## Linting
+`PreCommit` will ensure linting, and the doc creation are run on every commit.
 
-`pre-commit` will run `flake8` and `isort` to ensure proper coding standards along with [docs_generator](https://github.com/thevickypedia/fileware/blob/main/gen_docs.sh) 
-to update the runbook.
+**Requirement**
+<br>
+`pip install --no-cache --upgrade sphinx pre-commit recommonmark`
 
-> `pip install --no-cache --upgrade sphinx pre-commit recommonmark`
+**Usage**
+<br>
+`pre-commit run --all-files`
 
-> `pre-commit run --all-files`
+## Pypi Package
+[![pypi-module](https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg)](https://packaging.python.org/tutorials/packaging-projects/)
+
+[https://pypi.org/project/fileware/](https://pypi.org/project/fileware/)
+
+## Runbook
+[![made-with-sphinx-doc](https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg)](https://www.sphinx-doc.org/en/master/man/sphinx-autogen.html)
+
+[https://thevickypedia.github.io/fileware/](https://thevickypedia.github.io/fileware/)
 
 ## License & copyright
 
