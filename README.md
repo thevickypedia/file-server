@@ -37,15 +37,9 @@ Set up a file server to access files in local machine from anywhere on the inter
 **Environment Variables:**
 
 - `username`: Username to confirm identity. Defaults to user profile name.
-- `password`: Password for authentication. Defaults to `FileServer`
+- `password`: Password for authentication.
 - `port`: Port number to serve. Defaults to `4443`.
 - `host_path`: Path which is to be hosted. Defaults to `home` page.
-
-**To enable notifications during connections:**
-
-- `gmail_user`: Username for a gmail account.
-- `gmail_pass`: Password for the gmail account.
-- `recipient`: Recipient email address.
 
 **To host on a public facing URL:**
 - `ngrok_auth`: Ngrok token.
@@ -58,46 +52,41 @@ python3 -m pip install fileware
 
 **With Threading**
 ```python
-import time
 from threading import Thread
 
 import fileware
 
 
-# [OPTIONAL] - Override env vars for distributed usage or multiple ngrok accounts.
-fileware.override_env_vars(
-    gmail_user="Username@gmail.com",
-    gmail_pass="xxxxxxxxxx",
-    recipient="Recipient@gmail.com",
-    password="FileServer",
-    ngrok_auth="***********************"
-)
+fileware.env.port = 4568
+fileware.env.host_dir = "movies"
 
-# Initiates the connection and creates a new process if ngrok auth token is valid.
-response = fileware.initiate_connection()
-print(response.url)
 
-# Runs the server in a thread alongside starting the ngrok process created previously.
-thread = Thread(target=fileware.serve,
-                kwargs={'http_server': response.server, 'process': response.process})
-thread.start()
-
-# Sleep or any other task in parallel.
-time.sleep(6e+1)
-
-# Shutdown the server and join the thread which spun the server up.
-fileware.shutdown(http_server=response.server, process=response.process)
-thread.join(2e+1)
+if __name__ == '__main__':
+    # Initiates the connection and creates a new process if ngrok auth token is valid.
+    response = fileware.initiate_connection()
+    print(response.url)
+    
+    # Runs the server in a thread alongside starting the ngrok process created previously.
+    thread = Thread(target=fileware.serve,
+                    kwargs={'http_server': response.server, 'process': response.process})
+    thread.start()
+    
+    # Do your own task here
+    
+    # Shutdown the server and join the thread which spun the server up.
+    fileware.shutdown(http_server=response.server, process=response.process)
+    thread.join(2e+1)
 ```
 
 **Without Threading - File Server will terminate only when the main process is killed.**
 ```python
 import fileware
 
-response = fileware.initiate_connection()
-print(response.url)
 
-fileware.serve(http_server=response.server,process=response.process)
+if __name__ == '__main__':
+    response = fileware.initiate_connection()
+    print(response.url)
+    fileware.serve(http_server=response.server,process=response.process)
 ```
 
 > Env vars can be loaded by placing a .env file in current working directory.
@@ -120,7 +109,7 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 
 **Requirement**
 <br>
-`pip install --no-cache --upgrade sphinx pre-commit recommonmark`
+`pip install --no-cache pre-commit recommonmark sphinx==5.1.1`
 
 **Usage**
 <br>

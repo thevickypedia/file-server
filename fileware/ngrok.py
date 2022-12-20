@@ -8,11 +8,12 @@ import yaml
 from pyngrok.exception import PyngrokError
 from requests.exceptions import ConnectionError, InvalidURL
 
-from . import env, models
+from . import env, models, settings
 
 logger = models.ngrok_logger()
 
 
+# noinspection PyProtectedMember
 def get_ngrok(public: bool = True) -> str or None:
     """Identifies if an existing ngrok tunnel by sending a `GET` request to api/tunnels to get the `ngrok` public url.
 
@@ -28,7 +29,7 @@ def get_ngrok(public: bool = True) -> str or None:
         - On success, returns the `ngrok` public URL.
         - On failure, returns None to exit function.
     """
-    tunnels_url = f'http://{env.host}:4040/api/tunnels'
+    tunnels_url = f'http://{settings._host}:4040/api/tunnels'
     try:
         logger.info(f'Looking for existing tunnels at {tunnels_url}')
         response = requests.get(url=tunnels_url)
@@ -50,6 +51,7 @@ def get_ngrok(public: bool = True) -> str or None:
         return serving_at.get('config', {}).get('addr')
 
 
+# noinspection PyProtectedMember
 def connect(new_connection: bool = False):
     """Creates an HTTP socket and uses `pyngrok` module to bind the socket.
 
@@ -88,7 +90,7 @@ def connect(new_connection: bool = False):
 
     if new_connection:
         # Uncomment bind to create a whole new connection to the port
-        server_address = (env.host, env.port)  # Bind a local socket to the port
+        server_address = (settings._host, env.port)  # Bind a local socket to the port
         sock.bind(server_address)  # Bind only accepts tuples
 
     sock.listen(1)
@@ -104,7 +106,7 @@ def connect(new_connection: bool = False):
         return None, None
 
     try:
-        endpoint = pyngrok.ngrok.connect(env.port, "http", options={"remote_addr": f"{env.host}:{env.port}"})
+        endpoint = pyngrok.ngrok.connect(env.port, "http", options={"remote_addr": f"{settings._host}:{env.port}"})
         endpoint = endpoint.public_url.replace('http', 'https')
         logger.info(f'Ngrok connection has been established at {endpoint}.')
         return sock, endpoint
@@ -121,8 +123,6 @@ def tunnel(sock: socket) -> None:
     """
     connection = None
     while True:
-        if env.STOPPER:
-            break
         try:
             logger.info("Waiting for a connection")
             connection, client_address = sock.accept()

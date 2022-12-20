@@ -23,7 +23,7 @@ setup(
     name='fileware',
     version='.'.join(str(c) for c in version_info),
     description='Python module to, serve files in physical memory to localhost and tunnel to a public endpoint.',
-    long_description=read('README.md') + '\n\n' + read('CHANGELOG'),
+    long_description=read('README.md'),
     long_description_content_type='text/markdown',
     url='https://github.com/thevickypedia/fileware',
     author='Vignesh Sivanandha Rao',
@@ -37,6 +37,7 @@ setup(
     install_requires=read(name='requirements.txt').splitlines(),
     project_urls={
         'Docs': 'https://thevickypedia.github.io/fileware',
-        'Bug Tracker': 'https://github.com/thevickypedia/fileware/issues'
+        'Bug Tracker': 'https://github.com/thevickypedia/fileware/issues',
+        'Release Notes': 'https://github.com/thevickypedia/fileware/blob/main/release_notes.rst'
     }
 )

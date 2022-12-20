@@ -1,5 +1,14 @@
-Change Log
-==========
+Release Notes
+=============
+
+1.2.7 (12/19/2022)
+------------------
+- Remove notification service and override function
+- Make password mandatory
+- Restructure code
+- Remove redundancy
+- Cleanup and update README.md
+- CHANGELOG -> release_notes.rst
 
 1.2.6 (12/06/2022)
 ------------------

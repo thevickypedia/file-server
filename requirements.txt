@@ -1,6 +1,6 @@
-pyngrok>=5.1.0
+pyngrok>=5.2.1
 PyYAML>=6.0
 requests>=2.27.1
-gmail-connector>=0.5.4
+gmail-connector>=0.6.0
 pyOpenSSL>=22.0.0
 python-dotenv>=0.19.2

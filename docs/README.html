@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>FileWare &#8212; FileWare  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
@@ -15,7 +15,6 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -71,15 +70,9 @@
 <p><strong>Environment Variables:</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">username</span></code>: Username to confirm identity. Defaults to user profile name.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code>: Password for authentication. Defaults to <code class="docutils literal notranslate"><span class="pre">FileServer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">password</span></code>: Password for authentication.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">port</span></code>: Port number to serve. Defaults to <code class="docutils literal notranslate"><span class="pre">4443</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">host_path</span></code>: Path which is to be hosted. Defaults to <code class="docutils literal notranslate"><span class="pre">home</span></code> page.</p></li>
-</ul>
-<p><strong>To enable notifications during connections:</strong></p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">gmail_user</span></code>: Username for a gmail account.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gmail_pass</span></code>: Password for the gmail account.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">recipient</span></code>: Recipient email address.</p></li>
 </ul>
 <p><strong>To host on a public facing URL:</strong></p>
 <ul class="simple">
@@ -92,45 +85,40 @@
 </pre></div>
 </div>
 <p><strong>With Threading</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
 
 <span class="kn">import</span> <span class="nn">fileware</span>
 
 
-<span class="c1"># [OPTIONAL] - Override env vars for distributed usage or multiple ngrok accounts.</span>
-<span class="n">fileware</span><span class="o">.</span><span class="n">override_env_vars</span><span class="p">(</span>
-    <span class="n">gmail_user</span><span class="o">=</span><span class="s2">&quot;Username@gmail.com&quot;</span><span class="p">,</span>
-    <span class="n">gmail_pass</span><span class="o">=</span><span class="s2">&quot;xxxxxxxxxx&quot;</span><span class="p">,</span>
-    <span class="n">recipient</span><span class="o">=</span><span class="s2">&quot;Recipient@gmail.com&quot;</span><span class="p">,</span>
-    <span class="n">password</span><span class="o">=</span><span class="s2">&quot;FileServer&quot;</span><span class="p">,</span>
-    <span class="n">ngrok_auth</span><span class="o">=</span><span class="s2">&quot;***********************&quot;</span>
-<span class="p">)</span>
+<span class="n">fileware</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">4568</span>
+<span class="n">fileware</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">host_dir</span> <span class="o">=</span> <span class="s2">&quot;movies&quot;</span>
 
-<span class="c1"># Initiates the connection and creates a new process if ngrok auth token is valid.</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">fileware</span><span class="o">.</span><span class="n">initiate_connection</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
-<span class="c1"># Runs the server in a thread alongside starting the ngrok process created previously.</span>
-<span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fileware</span><span class="o">.</span><span class="n">serve</span><span class="p">,</span>
-                <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;http_server&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s1">&#39;process&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">})</span>
-<span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="c1"># Sleep or any other task in parallel.</span>
-<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">6e+1</span><span class="p">)</span>
-
-<span class="c1"># Shutdown the server and join the thread which spun the server up.</span>
-<span class="n">fileware</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">http_server</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
-<span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">2e+1</span><span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Initiates the connection and creates a new process if ngrok auth token is valid.</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">fileware</span><span class="o">.</span><span class="n">initiate_connection</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    
+    <span class="c1"># Runs the server in a thread alongside starting the ngrok process created previously.</span>
+    <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fileware</span><span class="o">.</span><span class="n">serve</span><span class="p">,</span>
+                    <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;http_server&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s1">&#39;process&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">})</span>
+    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    
+    <span class="c1"># Do your own task here</span>
+    
+    <span class="c1"># Shutdown the server and join the thread which spun the server up.</span>
+    <span class="n">fileware</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">http_server</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+    <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">2e+1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Without Threading - File Server will terminate only when the main process is killed.</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fileware</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">fileware</span><span class="o">.</span><span class="n">initiate_connection</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
-<span class="n">fileware</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">http_server</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span><span class="n">process</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">fileware</span><span class="o">.</span><span class="n">initiate_connection</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">fileware</span><span class="o">.</span><span class="n">serve</span><span class="p">(</span><span class="n">http_server</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span><span class="n">process</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
 </pre></div>
 </div>
 <blockquote>
@@ -155,7 +143,7 @@ Clean code with pre-commit hooks: <a class="reference external" href="https://fl
 <p><code class="docutils literal notranslate"><span class="pre">PreCommit</span></code> will ensure linting, and the doc creation are run on every commit.</p>
 <p><strong>Requirement</strong>
 <br>
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-cache</span> <span class="pre">--upgrade</span> <span class="pre">sphinx</span> <span class="pre">pre-commit</span> <span class="pre">recommonmark</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-cache</span> <span class="pre">pre-commit</span> <span class="pre">recommonmark</span> <span class="pre">sphinx==5.1.1</span></code></p>
 <p><strong>Usage</strong>
 <br>
 <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code></p>
@@ -245,7 +233,7 @@ Clean code with pre-commit hooks: <a class="reference external" href="https://fl
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Vignesh Sivanandha Rao.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
     </div>
   </body>
 </html>
