@@ -13,3 +13,9 @@ Release Notes
 v1.2.8-alpha (11/13/2023)
 -------------------------
 - Release alpha version after upgrading to pyproject.toml
+
+v1.3 (11/13/2023)
+-----------------
+- Use ``pydantic`` for data validation
+- Use ``gitverse`` to generate release notes
+- Update README.md and docs
