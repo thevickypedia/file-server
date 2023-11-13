@@ -1,7 +1,5 @@
 """Place for all necessary arguments accessed across multiple modules."""
 
-import os
-import socket
 import time
 
 _start_time = time.time()  # set to the current time to reset the auth headers when timeout is reached

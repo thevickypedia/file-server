@@ -1,9 +1,9 @@
 import base64
 import binascii
 import os
+import pathlib
+import time
 from http.server import SimpleHTTPRequestHandler
-from pathlib import PurePath
-from time import time
 
 import yaml
 
@@ -11,7 +11,7 @@ from . import models, settings
 
 logger = models.server_logger()
 
-HTML_PATH = f"{PurePath(__file__).parent}{os.path.sep}html{os.path.sep}"
+HTML_PATH = f"{pathlib.PurePath(__file__).parent}{os.path.sep}html{os.path.sep}"
 
 with open(f'{HTML_PATH}auth_server.html') as file:
     auth_success = file.read()
@@ -169,6 +169,6 @@ def _reset_auth() -> bool:
     if settings._first_run:
         settings._first_run = False
         return True
-    elif time() - settings._start_time > 900:
-        settings._start_time = time()
+    elif time.time() - settings._start_time > 900:
+        settings._start_time = time.time()
         return True

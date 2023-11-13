@@ -20,24 +20,24 @@ keywords = ["personal-cloud", "file-server", "ssl"]
 requires-python = ">=3.8"
 
 [tool.setuptools]
-packages     = ["fileware", "fileware.helpers", "fileware.html"]
+packages = ["fileware", "fileware.helpers", "fileware.html"]
 [tool.setuptools.package-data]
 "fileware.html" = ["*.html"]
 
 [tool.setuptools.dynamic]
-version      = {attr = "fileware.version"}
-dependencies = {file = [ "fileware/requirements.txt" ]}
+version = { attr = "fileware.version" }
+dependencies = { file = ["fileware/requirements.txt"] }
 
 [build-system]
-requires      = ["setuptools", "wheel"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project.optional-dependencies]
 dev = ["sphinx==5.1.1", "pre-commit", "recommonmark", "pytest"]
 
 [project.urls]
-Homepage        = "https://github.com/thevickypedia/fileware"
-Docs            = "https://thevickypedia.github.io/fileware"
-Source          = "https://github.com/thevickypedia/fileware"
-"Bug Tracker"   = "https://github.com/thevickypedia/fileware/issues"
+Homepage = "https://github.com/thevickypedia/fileware"
+Docs = "https://thevickypedia.github.io/fileware"
+Source = "https://github.com/thevickypedia/fileware"
+"Bug Tracker" = "https://github.com/thevickypedia/fileware/issues"
 "Release Notes" = "https://github.com/thevickypedia/fileware/blob/main/release_notes.rst"

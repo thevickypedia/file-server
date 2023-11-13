@@ -1,10 +1,12 @@
 import os
 from socket import AF_INET, SOCK_STREAM, socket
+from typing import Tuple, Union
 
 import pyngrok.conf
 import pyngrok.ngrok
 import requests
 import yaml
+from pydantic import HttpUrl
 from pyngrok.exception import PyngrokError
 from requests.exceptions import ConnectionError, InvalidURL
 
@@ -52,7 +54,7 @@ def get_ngrok(public: bool = True) -> str or None:
 
 
 # noinspection PyProtectedMember
-def connect(new_connection: bool = False):
+def connect(new_connection: bool = False) -> Union[Tuple[socket, HttpUrl], Tuple[None, None]]:
     """Creates an HTTP socket and uses `pyngrok` module to bind the socket.
 
     Args:
@@ -79,7 +81,7 @@ def connect(new_connection: bool = False):
             set_auth_token('<NGROK_AUTH_TOKEN>')
 
     Returns:
-        tuple:
+        Tuple[socket, HttpUrl]:
         A tuple of the connected socket and the public URL.
     """
     if (local_host := get_ngrok(public=False)) and local_host.endswith(str(models.env.port)):

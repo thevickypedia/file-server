@@ -11,7 +11,7 @@ from pydantic_settings import BaseSettings
 os.makedirs('logs') if not os.path.isdir('logs') else None
 
 
-def server_logger():
+def server_logger() -> logging.Logger:
     """Creates a log file for server logs and configures the logging config for server logger.
 
     Returns:
