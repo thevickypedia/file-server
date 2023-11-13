@@ -9,7 +9,7 @@ from . import cert, models, ngrok, settings
 from .responder import Response
 from .server import Authenticator
 
-version = "1.3-alpha"
+version = "1.3"
 logger = models.server_logger()
 
 
