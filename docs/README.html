@@ -43,15 +43,14 @@
           <div class="body" role="main">
             
   <p><strong>Versions Supported</strong></p>
-<p><img alt="Python" src="https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue" /></p>
+<p><img alt="Python" src="https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue" /></p>
 <p><strong>Language Stats</strong></p>
 <p><img alt="Language count" src="https://img.shields.io/github/languages/count/thevickypedia/fileware" />
 <img alt="Code coverage" src="https://img.shields.io/github/languages/top/thevickypedia/fileware" /></p>
 <p><strong>Repo Stats</strong></p>
 <p><a class="reference external" href="https://github.com/thevickypedia/fileware/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/thevickypedia/fileware" /></a>
 <a class="reference external" href="https://api.github.com/repos/thevickypedia/fileware"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/thevickypedia/fileware" /></a>
-<a class="reference external" href="https://api.github.com/repos/thevickypedia/fileware"><img alt="GitHub code size" src="https://img.shields.io/github/languages/code-size/thevickypedia/fileware" /></a>
-<a class="reference external" href="https://api.github.com/repos/thevickypedia/fileware"><img alt="LOC" src="https://img.shields.io/tokei/lines/github/thevickypedia/fileware" /></a></p>
+<a class="reference external" href="https://api.github.com/repos/thevickypedia/fileware"><img alt="GitHub code size" src="https://img.shields.io/github/languages/code-size/thevickypedia/fileware" /></a></p>
 <p><strong>Code Stats</strong></p>
 <p><img alt="Modules" src="https://img.shields.io/github/search/thevickypedia/fileware/module" />
 <img alt="Python" src="https://img.shields.io/github/search/thevickypedia/fileware/.py" /></p>
@@ -81,7 +80,7 @@
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3 -m pip install fileware
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>fileware
 </pre></div>
 </div>
 <p><strong>With Threading</strong></p>
@@ -90,22 +89,22 @@
 <span class="kn">import</span> <span class="nn">fileware</span>
 
 
-<span class="n">fileware</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">4568</span>
-<span class="n">fileware</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">host_dir</span> <span class="o">=</span> <span class="s2">&quot;movies&quot;</span>
+<span class="n">fileware</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">4568</span>
+<span class="n">fileware</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">host_dir</span> <span class="o">=</span> <span class="s2">&quot;movies&quot;</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="c1"># Initiates the connection and creates a new process if ngrok auth token is valid.</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">fileware</span><span class="o">.</span><span class="n">initiate_connection</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-    
+
     <span class="c1"># Runs the server in a thread alongside starting the ngrok process created previously.</span>
     <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fileware</span><span class="o">.</span><span class="n">serve</span><span class="p">,</span>
                     <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;http_server&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s1">&#39;process&#39;</span><span class="p">:</span> <span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">})</span>
     <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-    
+
     <span class="c1"># Do your own task here</span>
-    
+
     <span class="c1"># Shutdown the server and join the thread which spun the server up.</span>
     <span class="n">fileware</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">http_server</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">process</span><span class="p">)</span>
     <span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">2e+1</span><span class="p">)</span>
@@ -142,11 +141,15 @@ Clean code with pre-commit hooks: <a class="reference external" href="https://fl
 <h2>Linting<a class="headerlink" href="#linting" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">PreCommit</span></code> will ensure linting, and the doc creation are run on every commit.</p>
 <p><strong>Requirement</strong>
-<br>
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--no-cache</span> <span class="pre">pre-commit</span> <span class="pre">recommonmark</span> <span class="pre">sphinx==5.1.1</span></code></p>
+<br></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache<span class="w"> </span>pre-commit<span class="w"> </span>recommonmark<span class="w"> </span><span class="nv">sphinx</span><span class="o">==</span><span class="m">5</span>.1.1
+</pre></div>
+</div>
 <p><strong>Usage</strong>
-<br>
-<code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code></p>
+<br></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
 </section>
 <section id="id1">
 <h2>Pypi Package<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
@@ -160,7 +163,7 @@ Clean code with pre-commit hooks: <a class="reference external" href="https://fl
 </section>
 <section id="license-copyright">
 <h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Permalink to this heading">¶</a></h2>
-<p>© Vignesh Sivanandha Rao</p>
+<p>© Vignesh Rao</p>
 <p>Licensed under the <a class="reference external" href="https://github.com/thevickypedia/fileware/blob/main/LICENSE">MIT License</a></p>
 </section>
 </section>

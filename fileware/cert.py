@@ -7,7 +7,7 @@ from urllib.request import urlopen
 
 import OpenSSL
 
-from . import env
+from . import models
 
 
 def ip_info() -> dict:
@@ -113,7 +113,7 @@ def generate_cert(common_name: str,
     cert.get_subject().O = organization_name or common_name[0].upper() + common_name.partition('.')[0][1:]  # noqa: E741
     cert.get_subject().OU = organization_unit_name
     cert.get_subject().CN = common_name
-    cert.get_subject().emailAddress = email_address or f"{env.username}@fileware.com"
+    cert.get_subject().emailAddress = email_address or f"{models.env.username}@fileware.com"
     cert.set_serial_number(serial=cert.get_serial_number() or _generate_serial_hash())
     cert.gmtime_adj_notBefore(amount=validity_start_in_seconds)
     cert.gmtime_adj_notAfter(amount=validity_end_in_seconds)

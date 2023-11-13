@@ -5,7 +5,7 @@ from http.server import HTTPServer
 from multiprocessing import Process
 from socket import AF_INET, SOCK_DGRAM, SOCK_STREAM, socket
 
-from . import cert, env, models, ngrok, settings
+from . import cert, models, ngrok, settings
 from .responder import Response
 from .server import Authenticator
 
@@ -40,32 +40,32 @@ def initiate_connection(localhost: bool = True, secure: bool = True) -> Response
         - If not, generates a self-signed certificate using ``OpenSSL``
         - If ngrok tunnel is running on the port already, initiates file server on localhost else uses local IP.
     """
-    if not env.password:
+    if not models.env.password:
         raise ValueError("password is mandatory")
     socket_connection, public_url = None, None
-    if is_port_in_use(port=env.port):
-        logger.critical(f'Port number: {env.port} is currently being used.')
+    if is_port_in_use(port=models.env.port):
+        logger.critical(f'Port number: {models.env.port} is currently being used.')
     elif localhost:
         socket_connection, public_url = ngrok.connect()
 
-    cert_file = os.path.join(settings._home_dir, ".ssh", "cert.pem")
-    key_file = os.path.join(settings._home_dir, ".ssh", "key.pem")
+    cert_file = os.path.join(models.config.home_dir, ".ssh", "cert.pem")
+    key_file = os.path.join(models.config.home_dir, ".ssh", "key.pem")
 
     if not socket_connection and not localhost:
         ip_socket = socket(AF_INET, SOCK_DGRAM)
         ip_socket.connect(("8.8.8.8", 80))
-        settings._host = ip_socket.getsockname()[0]
+        models.config.host = ip_socket.getsockname()[0]
         if not all([os.path.isfile(cert_file), os.path.isfile(key_file)]):
             cert.generate_cert(common_name='*.ngrok.com', cert_file=cert_file, key_file=key_file)
 
     logger.info('Initiating file server.')
     handler_class = functools.partial(
         Authenticator,
-        username=env.username,
-        password=env.password,
-        directory=env.host_dir
+        username=models.env.username,
+        password=models.env.password,
+        directory=models.env.host_dir
     )
-    http_server = HTTPServer(server_address=(settings._host, env.port), RequestHandlerClass=handler_class)
+    http_server = HTTPServer(server_address=(models.config.host, models.env.port), RequestHandlerClass=handler_class)
 
     if not socket_connection and all([os.path.isfile(cert_file), os.path.isfile(key_file)]) and secure:
         http_server.socket = ssl.wrap_socket(sock=http_server.socket, server_side=True,
@@ -74,10 +74,10 @@ def initiate_connection(localhost: bool = True, secure: bool = True) -> Response
     else:
         endpoint = f"http://{':'.join(map(str, http_server.server_address))}"
 
-    logger.info(f"Serving at: {endpoint}")
+    logger.info("Serving at: %s", endpoint)
     process = None
     if socket_connection:
-        logger.info(f"Hosted at public endpoint: {public_url}")
+        logger.info("Hosted at public endpoint: %s", public_url)
         process = Process(target=ngrok.tunnel, kwargs={'sock': socket_connection})
 
     return Response({

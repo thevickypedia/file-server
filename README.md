@@ -56,22 +56,22 @@ from threading import Thread
 import fileware
 
 
-fileware.env.port = 4568
-fileware.env.host_dir = "movies"
+fileware.models.env.port = 4568
+fileware.models.env.host_dir = "movies"
 
 
 if __name__ == '__main__':
     # Initiates the connection and creates a new process if ngrok auth token is valid.
     response = fileware.initiate_connection()
     print(response.url)
-    
+
     # Runs the server in a thread alongside starting the ngrok process created previously.
     thread = Thread(target=fileware.serve,
                     kwargs={'http_server': response.server, 'process': response.process})
     thread.start()
-    
+
     # Do your own task here
-    
+
     # Shutdown the server and join the thread which spun the server up.
     fileware.shutdown(http_server=response.server, process=response.process)
     thread.join(2e+1)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
 ## Coding Standards
 Docstring format: [`Google`](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) <br>
 Styling conventions: [`PEP 8`](https://www.python.org/dev/peps/pep-0008/) <br>
-Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/) and 
+Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/) and
 [`isort`](https://pycqa.github.io/isort/)
 
 ## Linting
@@ -108,11 +108,15 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 
 **Requirement**
 <br>
-`pip install --no-cache pre-commit recommonmark sphinx==5.1.1`
+```shell
+pip install --no-cache pre-commit recommonmark sphinx==5.1.1
+```
 
 **Usage**
 <br>
-`pre-commit run --all-files`
+```shell
+pre-commit run --all-files
+```
 
 ## Pypi Package
 [![pypi-module](https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg)](https://packaging.python.org/tutorials/packaging-projects/)

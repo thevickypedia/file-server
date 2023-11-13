@@ -54,6 +54,13 @@ Ngrok
    :members:
    :undoc-members:
 
+Settings
+========
+
+.. automodule:: fileware.settings
+   :members:
+   :undoc-members:
+
 Volume
 ======
 

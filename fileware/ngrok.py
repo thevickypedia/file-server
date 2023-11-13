@@ -8,7 +8,7 @@ import yaml
 from pyngrok.exception import PyngrokError
 from requests.exceptions import ConnectionError, InvalidURL
 
-from . import env, models, settings
+from . import models
 
 logger = models.ngrok_logger()
 
@@ -29,18 +29,18 @@ def get_ngrok(public: bool = True) -> str or None:
         - On success, returns the `ngrok` public URL.
         - On failure, returns None to exit function.
     """
-    tunnels_url = f'http://{settings._host}:4040/api/tunnels'
+    tunnels_url = f'http://{models.config.host}:4040/api/tunnels'
     try:
-        logger.info(f'Looking for existing tunnels at {tunnels_url}')
+        logger.info('Looking for existing tunnels at %s', tunnels_url)
         response = requests.get(url=tunnels_url)
     except InvalidURL:
-        logger.error(f'Invalid URL: {tunnels_url}')
+        logger.error('Invalid URL: %s', tunnels_url)
         return
     except ConnectionError:
-        logger.error(f'Connection failed: {tunnels_url}')
+        logger.error('Connection failed: %s', tunnels_url)
         return
     if not response.ok:
-        logger.error(f'Failed response [{response.status_code}] from {tunnels_url}')
+        logger.error('Failed response [%d] from %s', response.status_code, tunnels_url)
         return
 
     serving_at = yaml.load(response.content.decode(), Loader=yaml.FullLoader).get('tunnels', [{}])[0]
@@ -82,22 +82,22 @@ def connect(new_connection: bool = False):
         tuple:
         A tuple of the connected socket and the public URL.
     """
-    if (local_host := get_ngrok(public=False)) and local_host.endswith(str(env.port)):
-        logger.error(f'Ngrok tunnel is already running on {local_host}')
+    if (local_host := get_ngrok(public=False)) and local_host.endswith(str(models.env.port)):
+        logger.error('Ngrok tunnel is already running on %s', local_host)
         return None, None
 
     sock = socket(AF_INET, SOCK_STREAM)
 
     if new_connection:
         # Uncomment bind to create a whole new connection to the port
-        server_address = (settings._host, env.port)  # Bind a local socket to the port
+        server_address = (models.config.host, models.env.port)  # Bind a local socket to the port
         sock.bind(server_address)  # Bind only accepts tuples
 
     sock.listen(1)
 
-    if env.ngrok_auth:
+    if models.env.ngrok_auth:
         logger.info('Using env var to set ngrok auth.')
-        pyngrok.ngrok.set_auth_token(env.ngrok_auth)
+        pyngrok.ngrok.set_auth_token(models.env.ngrok_auth)
     elif os.path.isfile('ngrok.yml'):
         logger.info('Using config file for ngrok auth')
         pyngrok.conf.get_default().config_path = 'ngrok.yml'
@@ -106,9 +106,10 @@ def connect(new_connection: bool = False):
         return None, None
 
     try:
-        endpoint = pyngrok.ngrok.connect(env.port, "http", options={"remote_addr": f"{settings._host}:{env.port}"})
+        endpoint = pyngrok.ngrok.connect(models.env.port, "http",
+                                         options={"remote_addr": f"{models.config.host}:{models.env.port}"})
         endpoint = endpoint.public_url.replace('http', 'https')
-        logger.info(f'Ngrok connection has been established at {endpoint}.')
+        logger.info('Ngrok connection has been established at %s', endpoint)
         return sock, endpoint
     except PyngrokError as err:
         logger.error(err)
@@ -126,7 +127,7 @@ def tunnel(sock: socket) -> None:
         try:
             logger.info("Waiting for a connection")
             connection, client_address = sock.accept()
-            logger.info(f"Connection established from {client_address}")
+            logger.info("Connection established from %s", client_address)
         except KeyboardInterrupt:
             break
 

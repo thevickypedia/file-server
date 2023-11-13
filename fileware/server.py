@@ -7,7 +7,7 @@ from time import time
 
 import yaml
 
-from . import env, models, settings
+from . import models, settings
 
 logger = models.server_logger()
 
@@ -68,9 +68,11 @@ class Authenticator(SimpleHTTPRequestHandler):
             method, status_code, ignore = args  # ignore always returns `-`
             method = str(method).split('/')[0].strip()
             if int(str(status_code).strip()) == 200:
-                logger.info(f'Received {status_code} while accessing a {method} method to reach {self.path}')
+                logger.info('Received %d while accessing a %s method to reach %s',
+                            status_code, method, self.path)
             else:
-                logger.error(f'Received {status_code} while accessing a {method} method to reach {self.path}')
+                logger.error('Received %d while accessing a %s method to reach %s',
+                             status_code, method, self.path)
 
     def do_HEAD(self) -> None:
         """Sends 200 response and sends headers when authentication is successful."""
@@ -93,7 +95,7 @@ class Authenticator(SimpleHTTPRequestHandler):
             else:
                 self.wfile.write(session_expiry.encode(encoding='UTF-8'))
         elif auth_header == "Basic " + self._auth:
-            target_path = env.host_dir + self.path
+            target_path = os.path.join(models.env.host_dir, self.path)
             if os.path.isdir(target_path) and 'index.html' in os.listdir(target_path):
                 old_name = target_path + 'index.html'
                 new_name = target_path + 'index_TEMP.html'
@@ -114,9 +116,9 @@ class Authenticator(SimpleHTTPRequestHandler):
             auth = auth_header.strip('Basic ')
             try:
                 auth = base64.b64decode(auth).decode().split(':')
-                logger.error(f'Authentication Blocked: Username: {auth[0]}\tPassword: {auth[1]}')
+                logger.error('Authentication Blocked: Username: %s\tPassword: %s', auth[0], auth[1])
             except binascii.Error:
-                logger.error(f'Authentication Blocked: Encoded: {auth}')
+                logger.error('Authentication Blocked: Encoded: %s', auth)
 
     def do_AUTH(self) -> None:
         """Sends headers to authenticate the requester."""

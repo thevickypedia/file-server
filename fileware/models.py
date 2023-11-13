@@ -1,7 +1,12 @@
 import logging.config
 import os
+import socket
 from datetime import datetime
 from pathlib import Path
+from typing import Union
+
+from pydantic import BaseConfig, DirectoryPath, IPvAnyAddress, PositiveInt
+from pydantic_settings import BaseSettings
 
 os.makedirs('logs') if not os.path.isdir('logs') else None
 
@@ -80,3 +85,42 @@ class LogConfig:
             "tunnel": {"handlers": ["tunnel"], "level": LOG_LEVEL, "filename": TUNNEL_LOG_FILE}
         }
     }
+
+
+class Config(BaseConfig):
+    """Configuration for host and home directory.
+
+    >>> Config
+
+    """
+
+    host: IPvAnyAddress = socket.gethostbyname('localhost')
+    home_dir: DirectoryPath = os.path.expanduser('~')
+
+
+config = Config()
+
+
+class EnvConfig(BaseSettings):
+    """Env configuration.
+
+    >>> EnvConfig
+
+    References:
+        https://docs.pydantic.dev/2.3/migration/#required-optional-and-nullable-fields
+    """
+
+    username: str
+    password: str
+    port: PositiveInt = 4443
+    host_dir: DirectoryPath = config.home_dir
+    ngrok_auth: Union[str, None] = None
+
+    class Config:
+        """Extra config for .env file and extra."""
+
+        extra = "allow"
+        env_file = os.environ.get('env_file', os.environ.get('ENV_FILE', '.env'))
+
+
+env = EnvConfig()
