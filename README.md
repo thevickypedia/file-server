@@ -1,6 +1,6 @@
 **Versions Supported**
 
-![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
+![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11-blue)
 
 **Language Stats**
 
@@ -12,7 +12,6 @@
 [![GitHub](https://img.shields.io/github/license/thevickypedia/fileware)](https://github.com/thevickypedia/fileware/blob/main/LICENSE)
 [![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
 [![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
-[![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/fileware)](https://api.github.com/repos/thevickypedia/fileware)
 
 **Code Stats**
 
@@ -127,6 +126,6 @@ Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/
 
 ## License & copyright
 
-&copy; Vignesh Sivanandha Rao
+&copy; Vignesh Rao
 
 Licensed under the [MIT License](https://github.com/thevickypedia/fileware/blob/main/LICENSE)
